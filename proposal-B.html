@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>提案 B — Notion 暖中性風格｜報班確認頁</title>
+<title>提案 B — Notion 暖中性風格｜完整三層設計系統</title>
 <style>
 /* ============================================================
    PROPOSAL B: Notion-Inspired Warm Neutral Design System
+   Layer 1 (Design Tokens) + Layer 2 (Components) + Layer 3 (Responsive)
    紙質溫暖 × 東方類比感 × 輕陰影 × 道場適用
    ============================================================ */
 
@@ -51,6 +52,9 @@
   --primitive-purple-500: #8b5cf6;
   --primitive-purple-bg: #f5f0fe;
   --primitive-purple-dark: #5b30c9;
+  --primitive-red-500: #c0392b;
+  --primitive-red-bg: #fdf0ef;
+  --primitive-red-dark: #7a1a12;
   --primitive-black-09: rgba(0, 0, 0, 0.09);
   --primitive-black-15: rgba(0, 0, 0, 0.15);
   --primitive-black-25: rgba(0, 0, 0, 0.25);
@@ -80,7 +84,7 @@
   --color-accent-hover: var(--primitive-orange-500);
   --color-accent-dark: var(--primitive-orange-dark);
   --color-teal: var(--primitive-teal-400);
-  --color-teal-deep: var(--primitive-teal-dark);   /* upgraded: was #3aada3, now deep for contrast */
+  --color-teal-deep: var(--primitive-teal-dark);
   --color-teal-light: var(--primitive-teal-100);
   --color-teal-hover: var(--primitive-teal-deep);
 
@@ -115,6 +119,9 @@
   --color-new: var(--primitive-purple-500);
   --color-new-bg: var(--primitive-purple-bg);
   --color-new-text: var(--primitive-purple-dark);
+  --color-danger: var(--primitive-red-500);
+  --color-danger-bg: var(--primitive-red-bg);
+  --color-danger-text: var(--primitive-red-dark);
 
   /* === Typography === */
   --font-sans: -apple-system, 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', 'Hiragino Sans GB', sans-serif;
@@ -133,7 +140,7 @@
   --weight-semibold: 600;
   --weight-bold: 700;
 
-  /* === Spacing (8px) === */
+  /* === Spacing (8px base) === */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -146,6 +153,7 @@
 
   /* === Layout === */
   --sidebar-w: 240px;
+  --sidebar-w-collapsed: 64px;
   --header-h: 52px;
 
   /* === Radius — Notion 偏圓潤 === */
@@ -201,6 +209,7 @@ body {
   flex-shrink: 0;
   width: var(--sidebar-w);
   letter-spacing: 0.04em;
+  transition: width 0.2s ease;
 }
 .header__logo-icon {
   width: 26px; height: 26px;
@@ -210,6 +219,7 @@ body {
   font-size: 14px;
   flex-shrink: 0;
 }
+.header__logo-text { transition: opacity 0.15s ease; }
 .header__divider {
   width: 1px;
   height: 20px;
@@ -234,6 +244,7 @@ body {
   transition: background-color 0.15s ease, color 0.15s ease;
   opacity: 0.7;
   cursor: pointer;
+  white-space: nowrap;
 }
 .nav-item:hover { background-color: var(--color-sidebar-hover); opacity: 1; }
 .nav-item--active {
@@ -246,6 +257,21 @@ body {
   align-items: center;
   gap: var(--space-4);
 }
+.hamburger-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  background: transparent;
+  border: 1px solid var(--color-sidebar-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--color-sidebar-text);
+  font-size: 16px;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease;
+}
+.hamburger-btn:hover { background-color: var(--color-sidebar-hover); }
 .user-btn {
   display: flex;
   align-items: center;
@@ -284,9 +310,11 @@ body {
   bottom: 0;
   left: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   z-index: 90;
   border-right: 3px solid var(--color-sidebar-border);
   padding: var(--space-4) var(--space-2) var(--space-8);
+  transition: width 0.2s ease, transform 0.25s ease;
 }
 .sidebar-group {
   margin-bottom: var(--space-4);
@@ -298,6 +326,9 @@ body {
   text-transform: uppercase;
   color: var(--color-sidebar-text-muted);
   padding: var(--space-2) var(--space-3) var(--space-1);
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.15s ease;
 }
 .sidebar-item {
   display: flex;
@@ -311,6 +342,8 @@ body {
   transition: background-color 0.12s ease;
   cursor: pointer;
   margin: 1px 0;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .sidebar-item:hover { background-color: var(--color-sidebar-hover); }
 .sidebar-item--active {
@@ -321,10 +354,12 @@ body {
 .sidebar-icon {
   font-size: 13px;
   width: 18px;
+  min-width: 18px;
   text-align: center;
   flex-shrink: 0;
   opacity: 0.8;
 }
+.sidebar-label { transition: opacity 0.15s ease; }
 .sidebar-badge {
   margin-left: auto;
   background: var(--color-accent);
@@ -333,6 +368,17 @@ body {
   font-weight: var(--weight-bold);
   padding: 1px 6px;
   border-radius: var(--radius-pill);
+  flex-shrink: 0;
+  transition: opacity 0.15s ease;
+}
+
+/* sidebar overlay (mobile) */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 40, 36, 0.45);
+  z-index: 85;
 }
 
 /* ── Main ── */
@@ -340,6 +386,7 @@ body {
   margin-left: var(--sidebar-w);
   flex: 1;
   background: var(--color-bg-warm);
+  transition: margin-left 0.2s ease;
 }
 
 /* ── Page Header ── */
@@ -383,6 +430,7 @@ body {
   font-weight: var(--weight-bold);
   color: var(--color-text-primary);
   letter-spacing: -0.5px;
+  text-wrap: balance;
 }
 .page-meta {
   font-size: var(--text-sm);
@@ -391,6 +439,7 @@ body {
   display: flex;
   gap: var(--space-5);
   align-items: center;
+  flex-wrap: wrap;
 }
 .meta-chip {
   display: inline-flex;
@@ -411,7 +460,7 @@ body {
   padding: var(--space-6) var(--space-8);
 }
 
-/* ── Stats Strip (Notion 風格) ── */
+/* ── Stats Strip ── */
 .stats-strip {
   display: flex;
   gap: var(--space-3);
@@ -507,12 +556,27 @@ body {
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .field-input:focus, .field-select:focus {
-  border-color: var(--color-teal);
-  box-shadow: 0 0 0 3px rgba(84, 209, 198, 0.15);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(212, 137, 106, 0.18);
+}
+.field-input.field--error {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.12);
+}
+.field-input:disabled, .field-select:disabled {
+  background: var(--color-bg-warm);
+  color: var(--color-text-tertiary);
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 .field-input::placeholder { color: var(--color-text-tertiary); }
+.field-error-msg {
+  font-size: var(--text-xs);
+  color: var(--color-danger);
+  margin-top: 3px;
+}
 
-/* Buttons */
+/* ── Buttons ── */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -530,7 +594,7 @@ body {
   white-space: nowrap;
   box-shadow: var(--shadow-btn);
 }
-/* Primary: deep teal for WCAG AA contrast (≥ 4.5:1 with white) */
+/* Primary: deep teal */
 .btn--primary {
   background-color: var(--color-teal-deep);
   color: #fff;
@@ -542,7 +606,32 @@ body {
 }
 .btn--primary:active { transform: scale(0.96); }
 
-/* Warm: deep burnt-orange for WCAG AA contrast (≥ 4.5:1 with white) */
+/* Secondary */
+.btn--secondary {
+  background-color: var(--primitive-cream-100);
+  color: var(--primitive-brown-900);
+  border: 1.5px solid var(--color-border-strong);
+  box-shadow: var(--shadow-btn);
+}
+.btn--secondary:hover {
+  background-color: var(--primitive-cream-400);
+  transform: translateY(-1px);
+}
+.btn--secondary:active { transform: scale(0.96); }
+
+/* Ghost */
+.btn--ghost {
+  background-color: transparent;
+  color: var(--color-accent-dark);
+  border: 1px solid transparent;
+  box-shadow: none;
+}
+.btn--ghost:hover {
+  background-color: var(--color-accent-light);
+  border-color: rgba(212, 137, 106, 0.3);
+}
+
+/* Warm (existing) */
 .btn--warm {
   background-color: var(--color-accent-dark);
   color: #fff;
@@ -553,13 +642,29 @@ body {
 }
 .btn--warm:active { transform: scale(0.96); }
 
-.btn--ghost {
-  background-color: var(--color-bg);
-  color: var(--color-text-secondary);
-  border: 1px solid var(--color-border-medium);
-  box-shadow: none;
+/* Danger */
+.btn--danger {
+  background-color: #5c1a12;
+  color: #fdf0ef;
 }
-.btn--ghost:hover { background-color: var(--color-bg-hover); }
+.btn--danger:hover {
+  background-color: var(--color-danger);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-float);
+}
+.btn--danger:active { transform: scale(0.96); }
+
+/* Disabled */
+.btn--disabled,
+.btn[disabled] {
+  background-color: var(--primitive-cream-500);
+  color: var(--color-text-tertiary);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none !important;
+  pointer-events: none;
+}
+
 .btn--lg {
   height: 44px;
   padding: 0 var(--space-6);
@@ -573,6 +678,8 @@ body {
   align-items: center;
   justify-content: space-between;
   margin: var(--space-5) 0 var(--space-3);
+  flex-wrap: wrap;
+  gap: var(--space-3);
 }
 .result-count {
   font-size: var(--text-sm);
@@ -582,7 +689,7 @@ body {
   color: var(--color-text-primary);
   font-weight: var(--weight-semibold);
 }
-.result-actions { display: flex; gap: var(--space-2); }
+.result-actions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
 
 /* ── Table ── */
 .table-card {
@@ -599,9 +706,7 @@ body {
   font-size: var(--text-sm);
   font-variant-numeric: tabular-nums;
 }
-.table thead {
-  background: var(--color-bg-warm);
-}
+.table thead { background: var(--color-bg-warm); }
 .table th {
   padding: var(--space-3) var(--space-4);
   text-align: left;
@@ -620,19 +725,25 @@ body {
   vertical-align: middle;
   color: var(--color-text-primary);
   white-space: nowrap;
+  line-height: 1.5;
+  height: 48px;
 }
-.table tbody tr {
-  transition: background-color 0.12s ease;
-}
-.table tbody tr:hover td {
-  background-color: var(--color-bg-selected);
-}
+.table tbody tr { transition: background-color 0.12s ease; }
+.table tbody tr:hover td { background-color: var(--primitive-yellow-bg); }
 .table tbody tr:last-child td { border-bottom: none; }
 .table tbody tr.row-selected td {
-  background-color: var(--color-teal-light);
+  background-color: var(--primitive-cream-50);
+  border-left: none;
+}
+/* Selected row: left border on first cell only */
+.table tbody tr.row-selected td:first-child {
+  box-shadow: inset 3px 0 0 var(--color-accent);
+}
+.table tbody tr:hover td:first-child {
+  box-shadow: none;
 }
 
-/* Sticky columns: checkbox + name */
+/* Sticky columns */
 .table th.col-check,
 .table td.col-check {
   position: sticky;
@@ -649,11 +760,11 @@ body {
 }
 .table tbody tr:hover td.col-check,
 .table tbody tr:hover td.col-name {
-  background-color: var(--color-bg-selected);
+  background-color: var(--primitive-yellow-bg);
 }
 .table tbody tr.row-selected td.col-check,
 .table tbody tr.row-selected td.col-name {
-  background-color: var(--color-teal-light);
+  background-color: var(--primitive-cream-50);
 }
 
 /* Checkbox */
@@ -664,7 +775,7 @@ body {
   accent-color: var(--color-teal-deep);
 }
 
-/* Badge */
+/* ── Badge ── */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -696,6 +807,46 @@ body {
   color: var(--color-new-text);
 }
 .badge--new .badge-dot { background: var(--color-new); }
+.badge--inactive {
+  background: var(--primitive-brown-100);
+  color: var(--primitive-brown-400);
+}
+.badge--inactive .badge-dot { background: var(--primitive-brown-300); }
+.badge--meal {
+  background: var(--color-accent-light);
+  color: var(--color-accent-dark);
+}
+.badge--meal .badge-dot { background: var(--color-accent); }
+.badge--no-meal {
+  background: var(--primitive-cream-400);
+  color: var(--primitive-brown-400);
+}
+.badge--no-meal .badge-dot { background: var(--primitive-brown-200); }
+.badge--stay {
+  background: var(--color-info-bg);
+  color: var(--color-info-text);
+}
+.badge--stay .badge-dot { background: var(--color-info); }
+.badge--clean {
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+.badge--clean .badge-dot { background: var(--color-success); }
+.badge--meat {
+  background: var(--primitive-red-bg);
+  color: var(--primitive-red-dark);
+}
+.badge--meat .badge-dot { background: var(--primitive-red-500); }
+.badge--review-pending {
+  background: var(--color-warning-bg);
+  color: var(--color-warning-text);
+}
+.badge--review-pending .badge-dot { background: var(--color-warning); }
+.badge--review-pass {
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+.badge--review-pass .badge-dot { background: var(--color-success); }
 
 /* Meal tags */
 .meal-row { display: flex; flex-wrap: wrap; gap: 3px; }
@@ -727,17 +878,16 @@ body {
   align-items: center;
   justify-content: space-between;
   box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+  flex-wrap: wrap;
+  gap: var(--space-4);
 }
 .footer-info {
   display: flex;
   gap: var(--space-6);
   align-items: center;
+  flex-wrap: wrap;
 }
-.footer-stat {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
+.footer-stat { display: flex; flex-direction: column; gap: 2px; }
 .footer-stat-label {
   font-size: var(--text-xs);
   color: var(--color-text-tertiary);
@@ -752,27 +902,269 @@ body {
   width: 1px; height: 36px;
   background: var(--color-border-medium);
 }
-.footer-btns { display: flex; gap: var(--space-3); }
+.footer-btns { display: flex; gap: var(--space-3); flex-wrap: wrap; }
 
-/* ── Responsive ── */
+/* ── Section Header ── */
+.section-header {
+  margin: var(--space-10) 0 var(--space-5);
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--color-border-medium);
+}
+.section-header h2 {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: -0.3px;
+  text-wrap: balance;
+}
+.section-header p {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-1);
+}
+
+/* ── Component Demo Card ── */
+.demo-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  margin-bottom: var(--space-5);
+}
+.demo-card-header {
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-bg-warm);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.demo-card-header h3 {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.demo-card-body {
+  padding: var(--space-6);
+}
+
+/* ── Button Demo ── */
+.btn-demo-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  align-items: flex-start;
+}
+.btn-demo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+.btn-demo-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+
+/* ── Input Demo ── */
+.input-demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-5);
+}
+.input-demo-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.input-demo-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+  font-family: var(--font-mono);
+}
+
+/* Focus demo */
+.field-input--focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(212, 137, 106, 0.18);
+}
+
+/* ── Badge Demo ── */
+.badge-demo-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+/* ── Table Demo (states) ── */
+.table-demo-note {
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+  margin-top: var(--space-3);
+  font-style: italic;
+}
+
+/* ── Layer 3 Info Bar ── */
+.layer3-info {
+  background: var(--color-info-bg);
+  border: 1px solid rgba(91, 119, 199, 0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-6);
+  margin-bottom: var(--space-5);
+  display: flex;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+.layer3-bp {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.layer3-bp-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--color-info-text);
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+.layer3-bp-desc {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+/* ── Mobile Card Table ── */
+.mobile-card-list { display: none; }
+.mobile-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-3);
+  box-shadow: var(--shadow-card);
+}
+.mobile-card-row {
+  display: flex;
+  gap: var(--space-3);
+  padding: 5px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.mobile-card-row:last-child { border-bottom: none; padding-bottom: 0; }
+.mobile-card-row:first-child { padding-top: 0; }
+.mobile-card-field {
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  min-width: 68px;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+.mobile-card-value {
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  flex: 1;
+}
+.mobile-card-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border-medium);
+}
+.mobile-card-name {
+  font-size: var(--text-md);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+}
+
+/* ============================================================
+   LAYER 3 — RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* Tablet (≤ 1024px): sidebar collapses to 64px icon-only */
+@media (max-width: 1024px) {
+  :root { --sidebar-w: var(--sidebar-w-collapsed); }
+
+  .sidebar {
+    width: var(--sidebar-w-collapsed);
+    padding: var(--space-4) var(--space-1) var(--space-8);
+  }
+  .sidebar-group-label,
+  .sidebar-label,
+  .sidebar-badge { opacity: 0; pointer-events: none; width: 0; overflow: hidden; }
+
+  .sidebar-item { justify-content: center; padding: 8px; gap: 0; }
+  .sidebar-icon { width: 28px; min-width: 28px; font-size: 15px; opacity: 1; }
+
+  .header__logo { width: var(--sidebar-w-collapsed); }
+  .header__logo-text { opacity: 0; width: 0; overflow: hidden; pointer-events: none; }
+
+  .stat-item { min-width: 90px; }
+  .content, .page-header { padding: var(--space-5) var(--space-6); }
+}
+
+/* Mobile (≤ 768px): sidebar hidden, hamburger visible, table → cards */
 @media (max-width: 768px) {
-  .sidebar { transform: translateX(-100%); }
+  :root { --sidebar-w: 240px; }
+
+  .sidebar {
+    width: var(--sidebar-w);
+    transform: translateX(-100%);
+    padding: var(--space-4) var(--space-2) var(--space-8);
+    z-index: 95;
+  }
+  .sidebar.is-open { transform: translateX(0); }
+  .sidebar-overlay.is-open { display: block; }
+
+  .sidebar-group-label,
+  .sidebar-label,
+  .sidebar-badge { opacity: 1; width: auto; overflow: visible; pointer-events: auto; }
+  .sidebar-item { justify-content: flex-start; padding: 7px var(--space-3); gap: var(--space-2); }
+  .sidebar-icon { width: 18px; min-width: 18px; font-size: 13px; }
+
+  .header__logo { width: auto; }
+  .header__logo-text { opacity: 1; width: auto; overflow: visible; }
+  .hamburger-btn { display: flex; }
+  .header__nav { display: none; }
+
   .main { margin-left: 0; }
   .content, .page-header { padding: var(--space-4); }
-  .footer { flex-direction: column; gap: var(--space-4); }
+  .footer { flex-direction: column; gap: var(--space-4); padding: var(--space-4); }
   .stats-strip { gap: var(--space-2); }
-  .stat-item { min-width: 90px; }
+  .stat-item { min-width: 80px; padding: var(--space-3) var(--space-4); }
+
+  /* Table → card list on mobile */
+  .table-card { display: none; }
+  .mobile-card-list { display: block; }
+
+  .result-meta { flex-direction: column; align-items: flex-start; }
+  .search-row { flex-direction: column; }
+  .field-group { min-width: 100%; }
+
+  .input-demo-grid { grid-template-columns: 1fr; }
+  .btn-demo-grid { gap: var(--space-3); }
 }
 </style>
 </head>
 <body>
 
+<!-- Sidebar overlay for mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <!-- ── Header ── -->
-<header class="header">
+<header class="header" data-layer="L1" data-note="Header 採用深棕 #2c2824，延續實體道場手冊的封面色感。高度 52px 略高於 A/C，給用戶更多喘息空間。">
   <div class="header__logo">
     <div class="header__logo-icon">正</div>
-    崇正道務管理
+    <span class="header__logo-text">崇正道務管理</span>
   </div>
+  <button class="hamburger-btn" id="hamburgerBtn" aria-label="開啟選單">&#9776;</button>
   <div class="header__divider"></div>
   <nav class="header__nav">
     <a href="#" class="nav-item nav-item--active">班務管理</a>
@@ -792,51 +1184,58 @@ body {
 <div class="shell">
 
   <!-- ── Sidebar ── -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar" data-layer="L1+L3" data-note="暖棕側欄源自 Notion 的文件感設計哲學：組織結構像一本打開的冊子，左側是目錄，右側是內文。桌面 240px / 平板 64px icon-only / 手機隱藏後滑入。">
     <div class="sidebar-group">
       <div class="sidebar-group-label">班務管理</div>
       <a href="#" class="sidebar-item sidebar-item--active">
-        <span>報班確認</span>
+        <span class="sidebar-icon">&#9632;</span>
+        <span class="sidebar-label">報班確認</span>
       </a>
       <a href="#" class="sidebar-item">
-        <span>班別管理</span>
+        <span class="sidebar-icon">&#9633;</span>
+        <span class="sidebar-label">班別管理</span>
       </a>
       <a href="#" class="sidebar-item">
-        <span>出席紀錄</span>
+        <span class="sidebar-icon">&#9675;</span>
+        <span class="sidebar-label">出席紀錄</span>
       </a>
     </div>
-
     <div class="sidebar-group">
       <div class="sidebar-group-label">成員管理</div>
       <a href="#" class="sidebar-item">
-        <span>求道名冊</span>
+        <span class="sidebar-icon">&#9654;</span>
+        <span class="sidebar-label">求道名冊</span>
         <span class="sidebar-badge">48</span>
       </a>
       <a href="#" class="sidebar-item">
-        <span>新增成員</span>
+        <span class="sidebar-icon">&#43;</span>
+        <span class="sidebar-label">新增成員</span>
       </a>
       <a href="#" class="sidebar-item">
-        <span>進階搜尋</span>
+        <span class="sidebar-icon">&#9670;</span>
+        <span class="sidebar-label">進階搜尋</span>
       </a>
     </div>
-
     <div class="sidebar-group">
       <div class="sidebar-group-label">組織架構</div>
       <a href="#" class="sidebar-item">
-        <span>道場資訊</span>
+        <span class="sidebar-icon">&#9651;</span>
+        <span class="sidebar-label">道場資訊</span>
       </a>
       <a href="#" class="sidebar-item">
-        <span>區域管理</span>
+        <span class="sidebar-icon">&#9632;</span>
+        <span class="sidebar-label">區域管理</span>
       </a>
     </div>
-
     <div class="sidebar-group">
       <div class="sidebar-group-label">系統設定</div>
       <a href="#" class="sidebar-item">
-        <span>授權管理</span>
+        <span class="sidebar-icon">&#9711;</span>
+        <span class="sidebar-label">授權管理</span>
       </a>
       <a href="#" class="sidebar-item">
-        <span>系統設定</span>
+        <span class="sidebar-icon">&#9679;</span>
+        <span class="sidebar-label">系統設定</span>
       </a>
     </div>
   </aside>
@@ -875,7 +1274,7 @@ body {
     <div class="content">
 
       <!-- Stats Strip -->
-      <div class="stats-strip">
+      <div class="stats-strip" data-layer="L2+UX" data-note="Stats Strip 用橘色數字強調，來自 B 提案的 warm accent token。橘色在心理學上有『行動號召』的語義，引導管理員確認人數後點擊加入。">
         <div class="stat-item">
           <span class="stat-num">4</span>
           <span class="stat-label">已選人數</span>
@@ -942,8 +1341,8 @@ body {
         </div>
       </div>
 
-      <!-- Table -->
-      <div class="table-card">
+      <!-- Table (desktop/tablet) -->
+      <div class="table-card" data-layer="L2" data-note="選取列用左邊框（3px 橘色）而非全底色填滿，是 Notion 設計語言的識別模式——強調而不干擾閱讀，降低視覺噪音。行高 48px 是三份中最寬鬆，為高年齡用戶設計。">
         <table class="table">
           <thead>
             <tr>
@@ -1030,6 +1429,246 @@ body {
         </table>
       </div>
 
+      <!-- Mobile Card List (visible only on mobile) -->
+      <div class="mobile-card-list">
+        <div class="mobile-card">
+          <div class="mobile-card-header-row">
+            <span class="mobile-card-name">志明</span>
+            <span class="badge badge--active"><span class="badge-dot"></span>在籍</span>
+          </div>
+          <div class="mobile-card-row">
+            <span class="mobile-card-field">本名</span>
+            <span class="mobile-card-value">陳大明</span>
+          </div>
+          <div class="mobile-card-row">
+            <span class="mobile-card-field">性別</span>
+            <span class="mobile-card-value gender-m">男</span>
+          </div>
+          <div class="mobile-card-row">
+            <span class="mobile-card-field">區別</span>
+            <span class="mobile-card-value">台北區</span>
+          </div>
+          <div class="mobile-card-row">
+            <span class="mobile-card-field">清口</span>
+            <span class="mobile-card-value clean-yes">✓</span>
+          </div>
+          <div class="mobile-card-row">
+            <span class="mobile-card-field">用餐/住宿</span>
+            <span class="mobile-card-value"><div class="meal-row"><span class="meal-tag">午餐</span><span class="meal-tag">住宿</span></div></span>
+          </div>
+        </div>
+        <div class="mobile-card">
+          <div class="mobile-card-header-row">
+            <span class="mobile-card-name">志慧</span>
+            <span class="badge badge--pending"><span class="badge-dot"></span>辦理中</span>
+          </div>
+          <div class="mobile-card-row">
+            <span class="mobile-card-field">本名</span>
+            <span class="mobile-card-value">林美惠</span>
+          </div>
+          <div class="mobile-card-row">
+            <span class="mobile-card-field">性別</span>
+            <span class="mobile-card-value gender-f">女</span>
+          </div>
+          <div class="mobile-card-row">
+            <span class="mobile-card-field">區別</span>
+            <span class="mobile-card-value">台中區</span>
+          </div>
+          <div class="mobile-card-row">
+            <span class="mobile-card-field">清口</span>
+            <span class="mobile-card-value clean-no">—</span>
+          </div>
+          <div class="mobile-card-row">
+            <span class="mobile-card-field">用餐/住宿</span>
+            <span class="mobile-card-value"><div class="meal-row"><span class="meal-tag">午餐</span></div></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           LAYER 2 — COMPONENT SYSTEM DEMO
+           ============================================================ -->
+      <div class="section-header">
+        <h2>Layer 2 — 元件規範（Component System）</h2>
+        <p>展示 B 提案暖中性設計系統的核心元件，每個元件皆有完整互動狀態與暖色回饋。</p>
+      </div>
+
+      <!-- 1. Button System -->
+      <div class="demo-card" data-layer="L2" data-note="B 提案的元件哲學：每個元件的 hover/focus/active 狀態都有明確的暖色回饋，讓操作感覺『有溫度』，不像冰冷的系統。">
+        <div class="demo-card-header">
+          <h3>1. 按鈕系統</h3>
+        </div>
+        <div class="demo-card-body">
+          <div class="btn-demo-grid">
+            <div class="btn-demo-item">
+              <button class="btn btn--primary">確認加入</button>
+              <span class="btn-demo-label">Primary</span>
+              <span style="font-size:11px; color: var(--color-text-tertiary);">深青 #1a6e6a / 白字</span>
+            </div>
+            <div class="btn-demo-item">
+              <button class="btn btn--secondary">暫存草稿</button>
+              <span class="btn-demo-label">Secondary</span>
+              <span style="font-size:11px; color: var(--color-text-tertiary);">暖米白底 / 深邊框</span>
+            </div>
+            <div class="btn-demo-item">
+              <button class="btn btn--ghost">取消操作</button>
+              <span class="btn-demo-label">Ghost</span>
+              <span style="font-size:11px; color: var(--color-text-tertiary);">透明底 / 橘色文字</span>
+            </div>
+            <div class="btn-demo-item">
+              <button class="btn btn--danger">刪除班別</button>
+              <span class="btn-demo-label">Danger</span>
+              <span style="font-size:11px; color: var(--color-text-tertiary);">深棕紅底 / 淡字</span>
+            </div>
+            <div class="btn-demo-item">
+              <button class="btn btn--disabled" disabled>已停用</button>
+              <span class="btn-demo-label">Disabled</span>
+              <span style="font-size:11px; color: var(--color-text-tertiary);">灰底 / 三色淡</span>
+            </div>
+            <div class="btn-demo-item">
+              <button class="btn btn--warm btn--lg">確定加入（大）</button>
+              <span class="btn-demo-label">Warm + Large</span>
+              <span style="font-size:11px; color: var(--color-text-tertiary);">高度 44px / 暖橘色</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Input States -->
+      <div class="demo-card">
+        <div class="demo-card-header">
+          <h3>2. 輸入欄位狀態</h3>
+        </div>
+        <div class="demo-card-body">
+          <div class="input-demo-grid">
+            <div class="input-demo-item">
+              <span class="input-demo-label">Default</span>
+              <div class="field-group">
+                <label class="field-label" for="demo-default">求道名</label>
+                <input type="text" id="demo-default" class="field-input" placeholder="輸入關鍵字">
+              </div>
+            </div>
+            <div class="input-demo-item">
+              <span class="input-demo-label">Focus（模擬）</span>
+              <div class="field-group">
+                <label class="field-label" for="demo-focus">求道名</label>
+                <input type="text" id="demo-focus" class="field-input field-input--focus" value="志明">
+              </div>
+              <span style="font-size:11px; color: var(--color-text-tertiary);">橘色邊框暈 + box-shadow</span>
+            </div>
+            <div class="input-demo-item">
+              <span class="input-demo-label">Error</span>
+              <div class="field-group">
+                <label class="field-label" for="demo-error">本名</label>
+                <input type="text" id="demo-error" class="field-input field--error" value="123">
+                <span class="field-error-msg">請輸入有效姓名</span>
+              </div>
+            </div>
+            <div class="input-demo-item">
+              <span class="input-demo-label">Disabled</span>
+              <div class="field-group">
+                <label class="field-label" for="demo-disabled">系統識別碼</label>
+                <input type="text" id="demo-disabled" class="field-input" value="SYS-00142" disabled>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Status Badges -->
+      <div class="demo-card">
+        <div class="demo-card-header">
+          <h3>3. 狀態徽章</h3>
+        </div>
+        <div class="demo-card-body">
+          <div class="badge-demo-grid">
+            <span class="badge badge--clean"><span class="badge-dot"></span>清口</span>
+            <span class="badge badge--meat"><span class="badge-dot"></span>葷食</span>
+            <span class="badge badge--meal"><span class="badge-dot"></span>用餐</span>
+            <span class="badge badge--no-meal"><span class="badge-dot"></span>不用餐</span>
+            <span class="badge badge--stay"><span class="badge-dot"></span>住宿</span>
+            <span class="badge badge--active"><span class="badge-dot"></span>Active</span>
+            <span class="badge badge--inactive"><span class="badge-dot"></span>Inactive</span>
+            <span class="badge badge--review-pending"><span class="badge-dot"></span>待審核</span>
+            <span class="badge badge--review-pass"><span class="badge-dot"></span>已通過</span>
+            <span class="badge badge--new"><span class="badge-dot"></span>新求道</span>
+            <span class="badge badge--pending"><span class="badge-dot"></span>辦理中</span>
+          </div>
+          <p style="font-size: var(--text-xs); color: var(--color-text-tertiary); margin-top: var(--space-4);">
+            Pill badge 風格 — 橘/青/灰/紅語意色系，dot 指示器與背景底色成對設計，低彩度確保文字可讀性。
+          </p>
+        </div>
+      </div>
+
+      <!-- 4. Table Row States -->
+      <div class="demo-card">
+        <div class="demo-card-header">
+          <h3>4. 表格列狀態</h3>
+        </div>
+        <div class="demo-card-body" style="padding: 0;">
+          <table class="table" style="border-radius: 0;">
+            <thead>
+              <tr>
+                <th style="width:44px;" scope="col">加入</th>
+                <th scope="col">求道名</th>
+                <th scope="col">區別</th>
+                <th scope="col">狀態</th>
+                <th scope="col">說明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="center"><input type="checkbox" class="checkbox" aria-label="一般列"></td>
+                <td><strong>志平</strong></td>
+                <td>台北區</td>
+                <td><span class="badge badge--active"><span class="badge-dot"></span>在籍</span></td>
+                <td style="color: var(--color-text-tertiary); font-size: var(--text-xs);">Normal — 預設白底</td>
+              </tr>
+              <tr style="background: var(--primitive-yellow-bg);">
+                <td class="center"><input type="checkbox" class="checkbox" aria-label="hover 列"></td>
+                <td><strong>志和</strong></td>
+                <td>台中區</td>
+                <td><span class="badge badge--pending"><span class="badge-dot"></span>辦理中</span></td>
+                <td style="color: var(--color-text-tertiary); font-size: var(--text-xs);">Hover — 暖米黃背景</td>
+              </tr>
+              <tr class="row-selected">
+                <td class="center" style="box-shadow: inset 3px 0 0 var(--color-accent);"><input type="checkbox" class="checkbox" checked aria-label="選取列"></td>
+                <td><strong>志義</strong></td>
+                <td>高雄區</td>
+                <td><span class="badge badge--active"><span class="badge-dot"></span>在籍</span></td>
+                <td style="color: var(--color-text-tertiary); font-size: var(--text-xs);">Selected — 奶油白 + 左側 3px 橘邊框</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="table-demo-note" style="padding: var(--space-4) var(--space-6);">
+            選取識別用左邊框（inset box-shadow 3px），而非全列填色——強調而不干擾閱讀，行高 48px。
+          </p>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           LAYER 3 — RESPONSIVE LAYOUT INFO
+           ============================================================ -->
+      <div class="section-header">
+        <h2>Layer 3 — 響應式佈局（Responsive Layout）</h2>
+        <p>縮放瀏覽器寬度可即時觀察三個斷點的佈局變化。</p>
+      </div>
+
+      <div class="layer3-info">
+        <div class="layer3-bp">
+          <span class="layer3-bp-label">Desktop &gt; 1024px</span>
+          <span class="layer3-bp-desc">側欄 240px 全展開，顯示文字標籤與徽章</span>
+        </div>
+        <div class="layer3-bp">
+          <span class="layer3-bp-label">Tablet ≤ 1024px</span>
+          <span class="layer3-bp-desc">側欄縮為 64px icon-only，文字隱藏，卡片 padding 縮減</span>
+        </div>
+        <div class="layer3-bp">
+          <span class="layer3-bp-label">Mobile ≤ 768px</span>
+          <span class="layer3-bp-desc">側欄隱藏，Header 顯示漢堡按鈕，表格轉為列卡片，欄位垂直排列</span>
+        </div>
+      </div>
+
     </div><!-- /content -->
 
     <!-- Footer -->
@@ -1052,13 +1691,82 @@ body {
       </div>
       <div class="footer-btns">
         <button class="btn btn--ghost btn--lg">取消</button>
-        <button class="btn btn--ghost btn--lg">預覽名冊</button>
+        <button class="btn btn--secondary btn--lg">預覽名冊</button>
         <button class="btn btn--warm btn--lg">確定加入</button>
       </div>
     </div>
 
   </main>
 </div>
+
+<script>
+// ── Hamburger / Sidebar Toggle ──
+(function() {
+  var btn = document.getElementById('hamburgerBtn');
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('sidebarOverlay');
+  if (!btn || !sidebar || !overlay) return;
+
+  function open() {
+    sidebar.classList.add('is-open');
+    overlay.classList.add('is-open');
+    btn.setAttribute('aria-expanded', 'true');
+  }
+  function close() {
+    sidebar.classList.remove('is-open');
+    overlay.classList.remove('is-open');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+
+  btn.addEventListener('click', function() {
+    sidebar.classList.contains('is-open') ? close() : open();
+  });
+  overlay.addEventListener('click', close);
+})();
+
+// ── Design Tooltip System (Warm Color) ──
+(function() {
+  var tooltip = document.createElement('div');
+  tooltip.id = 'design-tooltip';
+  tooltip.style.cssText = [
+    'position:fixed',
+    'bottom:24px',
+    'right:24px',
+    'max-width:320px',
+    'padding:14px 16px',
+    'background:#f9f7f4',
+    'color:#2c2824',
+    'border-radius:10px',
+    'font-size:13px',
+    'line-height:1.6',
+    'border-top:3px solid #d4896a',
+    'box-shadow:0 4px 20px rgba(44,40,36,0.15)',
+    'opacity:0',
+    'transition:opacity 0.2s ease',
+    'pointer-events:none',
+    'z-index:9999',
+    'font-family:-apple-system,PingFang TC,Noto Sans TC,sans-serif'
+  ].join(';');
+  document.body.appendChild(tooltip);
+
+  var timer;
+  document.addEventListener('mouseover', function(e) {
+    var target = e.target.closest('[data-note]');
+    clearTimeout(timer);
+    if (target) {
+      timer = setTimeout(function() {
+        var layer = target.dataset.layer || '';
+        tooltip.innerHTML =
+          (layer ? '<div style="font-size:11px;opacity:0.6;margin-bottom:4px;font-family:SF Mono,Monaco,Courier New,monospace;color:#d4896a;letter-spacing:0.04em">' + layer + '</div>' : '') +
+          target.dataset.note;
+        tooltip.style.opacity = '1';
+      }, 180);
+    } else {
+      tooltip.style.opacity = '0';
+    }
+  });
+})();
+</script>
 
 </body>
 </html>

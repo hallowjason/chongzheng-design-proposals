@@ -8,6 +8,7 @@
 /* ============================================================
    PROPOSAL A: Apple-inspired Design Token System
    崇正色系 × 語義化 Token × 8px Grid × 分層 Primitive/Semantic
+   Layer 1: Design Tokens / Layer 2: Component System / Layer 3: Responsive Layout
    ============================================================ */
 
 /* ── Primitive Tokens（原始色值層）── */
@@ -44,6 +45,11 @@
   --primitive-yellow-50: #fdf3d0;
   --primitive-blue-400: #1a6db5;
   --primitive-blue-50:  #e8f2fd;
+
+  /* Danger / Error */
+  --primitive-red-400: #b91c1c;
+  --primitive-red-50:  #fee2e2;
+  --primitive-red-600: #991b1b;
 }
 
 /* ── Semantic Tokens（語義層）── */
@@ -72,6 +78,10 @@
   --color-btn-primary:        var(--primitive-teal-600);
   --color-btn-primary-hover:  var(--primitive-teal-500);
 
+  /* Danger */
+  --color-btn-danger:       var(--primitive-red-400);
+  --color-btn-danger-hover: var(--primitive-red-600);
+
   /* Text */
   --color-text-primary:     #1a1a1a;
   --color-text-secondary:   #555548;
@@ -96,6 +106,9 @@
   --color-status-info:       var(--primitive-blue-400);
   --color-status-info-bg:    var(--primitive-blue-50);
   --color-status-info-text:  #0d4c8a;
+  --color-status-error:      var(--primitive-red-400);
+  --color-status-error-bg:   var(--primitive-red-50);
+  --color-status-error-text: #991b1b;
 
   /* Warm accent (橘色) */
   --color-warm-accent:    var(--primitive-sand-300);
@@ -141,6 +154,7 @@
 
   /* Layout */
   --sidebar-w: 256px;
+  --sidebar-w-collapsed: 64px;
   --header-h:  48px;
 
   /* Sticky column offsets */
@@ -203,6 +217,7 @@ body {
   flex-shrink: 0;
   width: var(--sidebar-w);
   padding-left: var(--space-2);
+  transition: width 0.2s ease;
 }
 .header__logo-mark {
   width: var(--size-logo-mark);
@@ -211,6 +226,13 @@ body {
   background: var(--color-interactive);
   display: inline-block;
   flex-shrink: 0;
+}
+.header__logo-text {
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.2s ease, max-width 0.2s ease;
+  max-width: 200px;
+  opacity: 1;
 }
 .header__nav {
   display: flex;
@@ -253,6 +275,23 @@ body {
   flex-shrink: 0;
 }
 
+/* Hamburger button (mobile only) */
+.hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-on-dark);
+  font-size: 18px;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s ease;
+  margin-right: var(--space-2);
+}
+.hamburger:hover { background: var(--color-bg-sidebar-hover); }
+
 /* ── Layout Shell ── */
 .shell {
   display: flex;
@@ -270,8 +309,10 @@ body {
   bottom: 0;
   left: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   z-index: 90;
   border-right: 1px solid var(--color-border-sidebar);
+  transition: width 0.2s ease, transform 0.25s ease;
 }
 .sidebar__section {
   padding: var(--space-6) 0 var(--space-2);
@@ -284,6 +325,9 @@ body {
   color: var(--color-text-on-dark-dim);
   padding: 0 var(--space-4) var(--space-2);
   opacity: 0.6;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.2s ease;
 }
 /* Sidebar items as buttons for proper semantics */
 .sidebar__item {
@@ -308,6 +352,8 @@ body {
   width: 100%;
   text-align: left;
   font-family: var(--font-sans);
+  white-space: nowrap;
+  overflow: hidden;
 }
 .sidebar__item:hover {
   background: var(--color-bg-sidebar-hover);
@@ -327,6 +373,10 @@ body {
   text-align: center;
   flex-shrink: 0;
 }
+.sidebar__item-text {
+  transition: opacity 0.2s ease;
+  overflow: hidden;
+}
 
 /* ── Main Content ── */
 .main {
@@ -334,6 +384,7 @@ body {
   flex: 1;
   background: var(--color-bg-primary);
   min-height: 100%;
+  transition: margin-left 0.2s ease;
 }
 
 /* ── Page Header ── */
@@ -447,6 +498,25 @@ body {
   box-shadow: 0 0 0 3px rgba(84, 209, 198, 0.20);
   background: var(--color-bg-elevated);
 }
+.field-input--error {
+  border-color: var(--color-status-error);
+  background: var(--color-bg-elevated);
+}
+.field-input--error:focus {
+  border-color: var(--color-status-error);
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.15);
+}
+.field-input:disabled {
+  background: var(--color-bg-subtle);
+  color: var(--color-text-placeholder);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.field-error-msg {
+  font-size: var(--text-xs);
+  color: var(--color-status-error-text);
+  margin-top: 2px;
+}
 .field-select {
   height: 40px;
   border: 1px solid var(--color-border);
@@ -516,6 +586,27 @@ body {
   border-color: var(--color-border-strong);
 }
 
+.btn--danger {
+  background: var(--color-btn-danger);
+  color: #fff;
+  box-shadow: var(--shadow-subtle);
+}
+.btn--danger:hover {
+  background: var(--color-btn-danger-hover);
+  box-shadow: var(--shadow-card);
+}
+
+.btn--disabled,
+.btn:disabled {
+  background: var(--primitive-gray-200);
+  color: var(--color-text-placeholder);
+  cursor: not-allowed;
+  box-shadow: none;
+  border: 1px solid var(--color-border-subtle);
+  pointer-events: none;
+}
+.btn--disabled:active { transform: none; }
+
 .btn--lg {
   height: 48px;
   padding: 0 var(--space-8);
@@ -535,6 +626,7 @@ body {
   margin-bottom: var(--space-3);
   font-size: var(--text-sm);
   color: var(--color-text-secondary);
+  flex-wrap: wrap;
 }
 .stats-strip strong {
   color: var(--color-interactive);
@@ -595,6 +687,9 @@ body {
 .table tr:hover td {
   background: var(--color-bg-primary);
 }
+.table tr.row--selected td {
+  background: rgba(84, 209, 198, 0.06);
+}
 .table tr:last-child td { border-bottom: none; }
 
 /* Sticky columns */
@@ -611,6 +706,9 @@ body {
 .table tr:hover td.col-sticky-1 {
   background: var(--color-bg-primary);
 }
+.table tr.row--selected td.col-sticky-1 {
+  background: rgba(84, 209, 198, 0.06);
+}
 
 .table th.col-sticky-3,
 .table td.col-sticky-3 {
@@ -625,6 +723,9 @@ body {
 }
 .table tr:hover td.col-sticky-3 {
   background: var(--color-bg-primary);
+}
+.table tr.row--selected td.col-sticky-3 {
+  background: rgba(84, 209, 198, 0.06);
 }
 
 /* Checkbox */
@@ -670,6 +771,22 @@ body {
   color: var(--color-status-info-text);
 }
 .badge--new::before { background: var(--color-status-info); }
+.badge--inactive {
+  background: var(--primitive-gray-200);
+  color: var(--primitive-gray-600);
+}
+.badge--inactive::before { background: var(--primitive-gray-500); }
+.badge--error {
+  background: var(--color-status-error-bg);
+  color: var(--color-status-error-text);
+}
+.badge--error::before { background: var(--color-status-error); }
+.badge--warm {
+  background: var(--color-warm-accent-bg);
+  color: var(--color-warm-accent-text);
+  border: 1px solid rgba(224, 111, 31, 0.18);
+}
+.badge--warm::before { background: var(--primitive-sand-400); }
 
 /* Meal tag */
 .meal-tag {
@@ -698,6 +815,8 @@ body {
   border-top: 1px solid var(--color-border-subtle);
   margin-top: var(--space-4);
   box-shadow: 0 -1px 4px rgba(40,30,20,0.06);
+  flex-wrap: wrap;
+  gap: var(--space-4);
 }
 .footer-summary {
   font-size: var(--text-sm);
@@ -707,7 +826,7 @@ body {
   color: var(--color-text-primary);
   font-weight: 600;
 }
-.footer-btns { display: flex; gap: var(--space-3); }
+.footer-btns { display: flex; gap: var(--space-3); flex-wrap: wrap; }
 
 /* ── Notification Dot ── */
 .notif-dot {
@@ -719,24 +838,265 @@ body {
   vertical-align: middle;
 }
 
-/* ── Responsive ── */
+/* ══════════════════════════════════════════
+   LAYER 2 — Component Demo Section
+   ══════════════════════════════════════════ */
+.component-demo {
+  padding: var(--space-8);
+  background: var(--color-bg-canvas);
+  border-top: 3px solid var(--color-border);
+}
+.demo-section-title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  margin-bottom: var(--space-2);
+}
+.demo-section-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-tertiary);
+  margin-bottom: var(--space-8);
+  font-family: var(--font-mono);
+}
+
+/* Demo block */
+.demo-block {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6) var(--space-7);
+  margin-bottom: var(--space-6);
+  box-shadow: var(--shadow-card);
+}
+.demo-block-title {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text-tertiary);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+/* Button row */
+.btn-demo-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+}
+.btn-demo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+.btn-demo-label {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+/* Input demo grid */
+.input-demo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+.input-demo-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.input-demo-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.04em;
+}
+.input-demo-state {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  font-family: var(--font-mono);
+  margin-top: var(--space-1);
+}
+/* Focus ring preview (static simulation) */
+.field-input--focus-preview {
+  border-color: var(--color-focus);
+  box-shadow: 0 0 0 3px rgba(84, 209, 198, 0.20);
+  background: var(--color-bg-elevated);
+  outline: none;
+}
+
+/* Badge demo row */
+.badge-demo-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+/* Demo table */
+.demo-table-note {
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+  margin-top: var(--space-3);
+  font-style: italic;
+}
+
+/* ══════════════════════════════════════════
+   LAYER 3 — Responsive Layout
+   ══════════════════════════════════════════ */
+
+/* Tablet: ≤ 1024px — Collapsed sidebar */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: var(--sidebar-w-collapsed);
+  }
+  .sidebar__section-label {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .sidebar__item-text {
+    opacity: 0;
+    max-width: 0;
+    pointer-events: none;
+  }
+  .sidebar__item {
+    justify-content: center;
+    padding: var(--space-3) 0;
+  }
+  .header__logo {
+    width: var(--sidebar-w-collapsed);
+  }
+  .header__logo-text {
+    opacity: 0;
+    max-width: 0;
+    pointer-events: none;
+  }
+  .main {
+    margin-left: var(--sidebar-w-collapsed);
+  }
+  .content { padding: var(--space-5) var(--space-6); }
+  .page-header { padding: var(--space-5) var(--space-6); }
+  .footer-actions { padding: var(--space-5) var(--space-6); }
+  .component-demo { padding: var(--space-6); }
+  .input-demo-grid { grid-template-columns: 1fr; }
+}
+
+/* Mobile: ≤ 768px — Hidden sidebar, card table */
 @media (max-width: 768px) {
-  .sidebar { transform: translateX(-100%); }
+  .sidebar {
+    width: var(--sidebar-w);
+    transform: translateX(-100%);
+  }
+  .sidebar.sidebar--open {
+    transform: translateX(0);
+    box-shadow: var(--shadow-popover);
+  }
+  .sidebar__section-label {
+    opacity: 0.6;
+    pointer-events: auto;
+  }
+  .sidebar__item-text {
+    opacity: 1;
+    max-width: 200px;
+    pointer-events: auto;
+  }
+  .sidebar__item {
+    justify-content: flex-start;
+    padding: var(--space-3) var(--space-4);
+  }
+  .hamburger { display: flex; }
+  .header__logo {
+    width: auto;
+    flex: 1;
+  }
+  .header__logo-text {
+    opacity: 1;
+    max-width: 200px;
+    pointer-events: auto;
+  }
+  .header__nav { display: none; }
   .main { margin-left: 0; }
   .content { padding: var(--space-4); }
   .page-header { padding: var(--space-4); }
-  .search-row { flex-direction: column; }
-  .field-group { min-width: 100%; }
+  .footer-actions {
+    padding: var(--space-4);
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .component-demo { padding: var(--space-4); }
+  .input-demo-grid { grid-template-columns: 1fr; }
+
+  /* Card-style table on mobile */
+  .table-container {
+    overflow-x: visible;
+    border-radius: var(--radius-md);
+  }
+  .table thead { display: none; }
+  .table tbody tr {
+    display: block;
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-3);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-subtle);
+  }
+  .table tbody tr:hover td { background: transparent; }
+  .table tbody td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+    white-space: normal;
+    font-size: var(--text-sm);
+  }
+  .table tbody td:last-child { border-bottom: none; }
+  .table tbody td::before {
+    content: attr(data-label);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+    width: 90px;
+  }
+  .table td.col-sticky-1,
+  .table td.col-sticky-3 {
+    position: static;
+    box-shadow: none;
+  }
+}
+
+/* Mobile overlay when sidebar open */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 89;
+}
+.sidebar-overlay--visible {
+  display: block;
 }
 </style>
 </head>
 <body>
 
 <!-- ── Header ── -->
-<header class="header">
+<header class="header" data-layer="L1" data-note="Header 採用深木炭 #282828 配米沙色 Logo，延續道場原有色系。高度 48px 符合後台慣例，精省垂直空間。漢堡按鈕在 ≤768px 才出現，避免桌面干擾。">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="開關選單">&#9776;</button>
   <div class="header__logo">
     <span class="header__logo-mark"></span>
-    崇正道務管理
+    <span class="header__logo-text">崇正道務管理</span>
   </div>
   <nav class="header__nav">
     <a href="#" class="header__nav-item header__nav-item--active">班務管理</a>
@@ -753,45 +1113,48 @@ body {
   </div>
 </header>
 
+<!-- Mobile sidebar overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
 <!-- ── Shell ── -->
 <div class="shell">
 
   <!-- ── Sidebar ── -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar" data-layer="L1+L3" data-note="側欄寬 256px（桌面）/ 64px（平板圖示模式）/ 隱藏後滑入（手機）。深色底確保與主內容區有強烈視覺分隔，引導用戶視線由左到右。transition 統一 0.2s ease，動作不拖沓。">
     <div class="sidebar__section">
       <div class="sidebar__section-label">班務</div>
       <button class="sidebar__item sidebar__item--active">
-        <span class="sidebar__icon">◆</span>報班管理
+        <span class="sidebar__icon">&#9670;</span><span class="sidebar__item-text">報班管理</span>
       </button>
       <button class="sidebar__item">
-        <span class="sidebar__icon">☰</span>班別一覽
+        <span class="sidebar__icon">&#9776;</span><span class="sidebar__item-text">班別一覽</span>
       </button>
       <button class="sidebar__item">
-        <span class="sidebar__icon">✓</span>出席紀錄
+        <span class="sidebar__icon">&#10003;</span><span class="sidebar__item-text">出席紀錄</span>
       </button>
     </div>
     <div class="sidebar__section">
       <div class="sidebar__section-label">成員</div>
       <button class="sidebar__item">
-        <span class="sidebar__icon">◎</span>求道名冊
+        <span class="sidebar__icon">&#9678;</span><span class="sidebar__item-text">求道名冊</span>
       </button>
       <button class="sidebar__item">
-        <span class="sidebar__icon">⊕</span>新增成員
+        <span class="sidebar__icon">&#8853;</span><span class="sidebar__item-text">新增成員</span>
       </button>
     </div>
     <div class="sidebar__section">
       <div class="sidebar__section-label">組織</div>
       <button class="sidebar__item">
-        <span class="sidebar__icon">▦</span>組織架構
+        <span class="sidebar__icon">&#9638;</span><span class="sidebar__item-text">組織架構</span>
       </button>
       <button class="sidebar__item">
-        <span class="sidebar__icon">◈</span>道場設定
+        <span class="sidebar__icon">&#9672;</span><span class="sidebar__item-text">道場設定</span>
       </button>
     </div>
     <div class="sidebar__section">
       <div class="sidebar__section-label">系統</div>
       <button class="sidebar__item">
-        <span class="sidebar__icon">⚙</span>授權管理<span class="notif-dot"></span>
+        <span class="sidebar__icon">&#9881;</span><span class="sidebar__item-text">授權管理<span class="notif-dot"></span></span>
       </button>
     </div>
   </aside>
@@ -863,7 +1226,7 @@ body {
       </div>
 
       <!-- Stats Strip -->
-      <div class="stats-strip" role="status" aria-live="polite">
+      <div class="stats-strip" role="status" aria-live="polite" data-layer="L2+UX" data-note="Stats Strip 即時統計：讓管理員在確認報名前掌握清口人數、用餐需求，減少事後統計的行政負擔。數字使用 font-variant-numeric: tabular-nums 避免跳動感。">
         <span>已選 <strong>3</strong> 人</span>
         <span>清口 <strong>2</strong> 人</span>
         <span>用餐 <strong>1</strong> 人</span>
@@ -880,7 +1243,7 @@ body {
       </div>
 
       <!-- Table -->
-      <div class="table-container">
+      <div class="table-container" data-layer="L2" data-note="表格 sticky 欄位設計：勾選欄與求道名欄固定，13 欄橫向捲動時用戶不會失去身份錨點。monospace 字型確保農曆日期對齊。手機版自動轉為卡片式佈局，每列變成獨立卡片。">
         <table class="table">
           <thead>
             <tr>
@@ -900,86 +1263,86 @@ body {
           </thead>
           <tbody>
             <tr>
-              <td class="center col-sticky-1" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">1</td>
-              <td class="gender-m">男</td>
-              <td class="col-sticky-3" style="font-weight: 600;">志明</td>
-              <td>陳大明</td>
-              <td style="font-family: var(--font-mono);">1985-03-15</td>
-              <td style="font-family: var(--font-mono);">民 74 年 2 月初一</td>
-              <td>台北區</td>
-              <td>李前人</td>
-              <td class="center"><span style="color: var(--color-status-success); font-weight:700;">✓</span></td>
-              <td><span class="badge badge--active">在籍</span></td>
-              <td>
+              <td class="center col-sticky-1" data-label="序號" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">1</td>
+              <td data-label="性別" class="gender-m">男</td>
+              <td data-label="求道名" class="col-sticky-3" style="font-weight: 600;">志明</td>
+              <td data-label="本名">陳大明</td>
+              <td data-label="生日" style="font-family: var(--font-mono);">1985-03-15</td>
+              <td data-label="求道日" style="font-family: var(--font-mono);">民 74 年 2 月初一</td>
+              <td data-label="區別">台北區</td>
+              <td data-label="成全者">李前人</td>
+              <td data-label="清口" class="center"><span style="color: var(--color-status-success); font-weight:700;">&#10003;</span></td>
+              <td data-label="狀態"><span class="badge badge--active">在籍</span></td>
+              <td data-label="用餐住宿">
                 <span class="meal-tag">午餐</span>
                 <span class="meal-tag">住宿</span>
               </td>
-              <td class="center"><input type="checkbox" class="checkbox" checked></td>
+              <td data-label="加入" class="center"><input type="checkbox" class="checkbox" checked></td>
             </tr>
             <tr>
-              <td class="center col-sticky-1" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">2</td>
-              <td class="gender-f">女</td>
-              <td class="col-sticky-3" style="font-weight: 600;">志慧</td>
-              <td>林美惠</td>
-              <td style="font-family: var(--font-mono);">1990-07-22</td>
-              <td style="font-family: var(--font-mono);">民 79 年 6 月初三</td>
-              <td>台中區</td>
-              <td>王前人</td>
-              <td class="center"><span style="color: var(--color-text-placeholder);">—</span></td>
-              <td><span class="badge badge--pending">辦理中</span></td>
-              <td>
+              <td class="center col-sticky-1" data-label="序號" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">2</td>
+              <td data-label="性別" class="gender-f">女</td>
+              <td data-label="求道名" class="col-sticky-3" style="font-weight: 600;">志慧</td>
+              <td data-label="本名">林美惠</td>
+              <td data-label="生日" style="font-family: var(--font-mono);">1990-07-22</td>
+              <td data-label="求道日" style="font-family: var(--font-mono);">民 79 年 6 月初三</td>
+              <td data-label="區別">台中區</td>
+              <td data-label="成全者">王前人</td>
+              <td data-label="清口" class="center"><span style="color: var(--color-text-placeholder);">—</span></td>
+              <td data-label="狀態"><span class="badge badge--pending">辦理中</span></td>
+              <td data-label="用餐住宿">
                 <span class="meal-tag">午餐</span>
               </td>
-              <td class="center"><input type="checkbox" class="checkbox" checked></td>
+              <td data-label="加入" class="center"><input type="checkbox" class="checkbox" checked></td>
             </tr>
-            <tr>
-              <td class="center col-sticky-1" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">3</td>
-              <td class="gender-m">男</td>
-              <td class="col-sticky-3" style="font-weight: 600;">志遠</td>
-              <td>張志遠</td>
-              <td style="font-family: var(--font-mono);">1978-11-05</td>
-              <td style="font-family: var(--font-mono);">民 67 年 9 月廿五</td>
-              <td>高雄區</td>
-              <td>黃前人</td>
-              <td class="center"><span style="color: var(--color-status-success); font-weight:700;">✓</span></td>
-              <td><span class="badge badge--active">在籍</span></td>
-              <td>
+            <tr class="row--selected">
+              <td class="center col-sticky-1" data-label="序號" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">3</td>
+              <td data-label="性別" class="gender-m">男</td>
+              <td data-label="求道名" class="col-sticky-3" style="font-weight: 600;">志遠</td>
+              <td data-label="本名">張志遠</td>
+              <td data-label="生日" style="font-family: var(--font-mono);">1978-11-05</td>
+              <td data-label="求道日" style="font-family: var(--font-mono);">民 67 年 9 月廿五</td>
+              <td data-label="區別">高雄區</td>
+              <td data-label="成全者">黃前人</td>
+              <td data-label="清口" class="center"><span style="color: var(--color-status-success); font-weight:700;">&#10003;</span></td>
+              <td data-label="狀態"><span class="badge badge--active">在籍</span></td>
+              <td data-label="用餐住宿">
                 <span class="meal-tag">三餐</span>
                 <span class="meal-tag">住宿</span>
               </td>
-              <td class="center"><input type="checkbox" class="checkbox" checked></td>
+              <td data-label="加入" class="center"><input type="checkbox" class="checkbox" checked></td>
             </tr>
             <tr>
-              <td class="center col-sticky-1" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">4</td>
-              <td class="gender-f">女</td>
-              <td class="col-sticky-3" style="font-weight: 600;">志純</td>
-              <td>吳美純</td>
-              <td style="font-family: var(--font-mono);">1995-02-18</td>
-              <td style="font-family: var(--font-mono);">民 84 年 1 月十九</td>
-              <td>台北區</td>
-              <td>李前人</td>
-              <td class="center"><span style="color: var(--color-text-placeholder);">—</span></td>
-              <td><span class="badge badge--new">新求道</span></td>
-              <td>
+              <td class="center col-sticky-1" data-label="序號" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">4</td>
+              <td data-label="性別" class="gender-f">女</td>
+              <td data-label="求道名" class="col-sticky-3" style="font-weight: 600;">志純</td>
+              <td data-label="本名">吳美純</td>
+              <td data-label="生日" style="font-family: var(--font-mono);">1995-02-18</td>
+              <td data-label="求道日" style="font-family: var(--font-mono);">民 84 年 1 月十九</td>
+              <td data-label="區別">台北區</td>
+              <td data-label="成全者">李前人</td>
+              <td data-label="清口" class="center"><span style="color: var(--color-text-placeholder);">—</span></td>
+              <td data-label="狀態"><span class="badge badge--new">新求道</span></td>
+              <td data-label="用餐住宿">
                 <span class="meal-tag">午晚餐</span>
               </td>
-              <td class="center"><input type="checkbox" class="checkbox"></td>
+              <td data-label="加入" class="center"><input type="checkbox" class="checkbox"></td>
             </tr>
             <tr>
-              <td class="center col-sticky-1" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">5</td>
-              <td class="gender-m">男</td>
-              <td class="col-sticky-3" style="font-weight: 600;">志仁</td>
-              <td>劉博仁</td>
-              <td style="font-family: var(--font-mono);">1982-09-30</td>
-              <td style="font-family: var(--font-mono);">民 71 年 8 月十四</td>
-              <td>台中區</td>
-              <td>張前人</td>
-              <td class="center"><span style="color: var(--color-status-success); font-weight:700;">✓</span></td>
-              <td><span class="badge badge--active">在籍</span></td>
-              <td>
+              <td class="center col-sticky-1" data-label="序號" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">5</td>
+              <td data-label="性別" class="gender-m">男</td>
+              <td data-label="求道名" class="col-sticky-3" style="font-weight: 600;">志仁</td>
+              <td data-label="本名">劉博仁</td>
+              <td data-label="生日" style="font-family: var(--font-mono);">1982-09-30</td>
+              <td data-label="求道日" style="font-family: var(--font-mono);">民 71 年 8 月十四</td>
+              <td data-label="區別">台中區</td>
+              <td data-label="成全者">張前人</td>
+              <td data-label="清口" class="center"><span style="color: var(--color-status-success); font-weight:700;">&#10003;</span></td>
+              <td data-label="狀態"><span class="badge badge--active">在籍</span></td>
+              <td data-label="用餐住宿">
                 <span class="meal-tag">午餐</span>
               </td>
-              <td class="center"><input type="checkbox" class="checkbox" checked></td>
+              <td data-label="加入" class="center"><input type="checkbox" class="checkbox" checked></td>
             </tr>
           </tbody>
         </table>
@@ -1001,8 +1364,183 @@ body {
       </div>
     </div>
 
+    <!-- ══════════════════════════════════════════
+         LAYER 2 — Component Demo Section
+         ══════════════════════════════════════════ -->
+    <section class="component-demo" data-layer="L2" data-note="Layer 2 元件系統：所有 button、input、badge 均使用語義 token，換色只需改 primitive layer，不需逐一修改元件。這裡展示完整的元件狀態矩陣，供設計評審與開發對齊使用。">
+
+      <h2 class="demo-section-title">Layer 2 — 元件規範（Component System）</h2>
+      <p class="demo-section-subtitle">所有元件均使用 semantic token，可從 primitive layer 統一換色</p>
+
+      <!-- 1. Button System -->
+      <div class="demo-block">
+        <div class="demo-block-title">1 / 按鈕系統（Button System）</div>
+        <div class="btn-demo-row">
+          <div class="btn-demo-item">
+            <button class="btn btn--primary">確定加入</button>
+            <span class="btn-demo-label">Primary</span>
+          </div>
+          <div class="btn-demo-item">
+            <button class="btn btn--secondary">取消</button>
+            <span class="btn-demo-label">Secondary</span>
+          </div>
+          <div class="btn-demo-item">
+            <button class="btn btn--ghost">篩選條件</button>
+            <span class="btn-demo-label">Ghost</span>
+          </div>
+          <div class="btn-demo-item">
+            <button class="btn btn--danger">刪除</button>
+            <span class="btn-demo-label">Danger</span>
+          </div>
+          <div class="btn-demo-item">
+            <button class="btn btn--disabled" disabled>確定加入</button>
+            <span class="btn-demo-label">Disabled</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Input Field States -->
+      <div class="demo-block">
+        <div class="demo-block-title">2 / 輸入欄位狀態（Input Field States）</div>
+        <div class="input-demo-grid">
+          <div class="input-demo-item">
+            <span class="input-demo-label">預設狀態</span>
+            <input type="text" class="field-input" placeholder="請輸入求道名" value="">
+            <span class="input-demo-state">Default</span>
+          </div>
+          <div class="input-demo-item">
+            <span class="input-demo-label">Focus 狀態</span>
+            <input type="text" class="field-input field-input--focus-preview" value="志明" readonly>
+            <span class="input-demo-state">Focus — 青色邊框 + 光暈</span>
+          </div>
+          <div class="input-demo-item">
+            <span class="input-demo-label">錯誤狀態</span>
+            <input type="text" class="field-input field-input--error" value="??##">
+            <span class="field-error-msg">格式不正確，請輸入中文姓名</span>
+            <span class="input-demo-state">Error — 紅框 + 錯誤訊息</span>
+          </div>
+          <div class="input-demo-item">
+            <span class="input-demo-label">停用狀態</span>
+            <input type="text" class="field-input" value="系統鎖定" disabled>
+            <span class="input-demo-state">Disabled — 灰背景不可操作</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Status Badges -->
+      <div class="demo-block">
+        <div class="demo-block-title">3 / 狀態徽章（Status Badges）</div>
+        <div class="badge-demo-row">
+          <span class="badge badge--active">在籍</span>
+          <span class="badge badge--pending">辦理中</span>
+          <span class="badge badge--new">新求道</span>
+          <span class="badge badge--inactive">停班</span>
+          <span class="badge badge--error">待審核</span>
+          <span class="badge badge--active">已通過</span>
+          <span class="badge badge--warm">清口</span>
+          <span class="badge badge--pending">葷食</span>
+          <span class="badge badge--new">用餐</span>
+          <span class="badge badge--inactive">不用餐</span>
+          <span class="badge badge--new">住宿</span>
+        </div>
+      </div>
+
+      <!-- 4. Table Row States -->
+      <div class="demo-block">
+        <div class="demo-block-title">4 / 表格列狀態（Table Row States）</div>
+        <div class="table-container" style="box-shadow: none; border: 1px solid var(--color-border-subtle);">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" style="width:40px;" class="center">#</th>
+                <th scope="col">求道名</th>
+                <th scope="col">狀態</th>
+                <th scope="col">區別</th>
+                <th scope="col" class="center" style="width:40px;">加入</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="center" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">1</td>
+                <td style="font-weight: 600;">志明</td>
+                <td><span class="badge badge--active">在籍</span></td>
+                <td>台北區</td>
+                <td class="center"><input type="checkbox" class="checkbox"></td>
+              </tr>
+              <tr style="background: var(--color-bg-primary);">
+                <td class="center" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">2</td>
+                <td style="font-weight: 600; color: var(--color-interactive-hover);">志慧</td>
+                <td><span class="badge badge--pending">辦理中</span></td>
+                <td>台中區</td>
+                <td class="center"><input type="checkbox" class="checkbox"></td>
+              </tr>
+              <tr class="row--selected">
+                <td class="center" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">3</td>
+                <td style="font-weight: 600;">志遠</td>
+                <td><span class="badge badge--active">在籍</span></td>
+                <td>高雄區</td>
+                <td class="center"><input type="checkbox" class="checkbox" checked></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="demo-table-note">表格互動狀態 — 選取（淡青底 + 勾選）、懸停（淡米底）、預設（白底）</p>
+      </div>
+
+    </section>
+
   </main>
 </div>
+
+<script>
+// ── Sidebar Toggle (Mobile) ──
+function toggleSidebar() {
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('sidebarOverlay');
+  sidebar.classList.toggle('sidebar--open');
+  overlay.classList.toggle('sidebar-overlay--visible');
+}
+
+// ── Design Tooltip System ──
+(function() {
+  var tooltip = document.createElement('div');
+  tooltip.id = 'design-tooltip';
+  tooltip.style.cssText = [
+    'position:fixed',
+    'bottom:24px',
+    'right:24px',
+    'max-width:320px',
+    'padding:14px 16px',
+    'background:#1a1a1a',
+    'color:#f5ede3',
+    'border-radius:10px',
+    'font-size:13px',
+    'line-height:1.55',
+    'box-shadow:0 4px 20px rgba(0,0,0,0.3)',
+    'opacity:0',
+    'transition:opacity 0.2s ease',
+    'pointer-events:none',
+    'z-index:9999',
+    'font-family:"PingFang TC","Noto Sans TC","Helvetica Neue",Arial,sans-serif'
+  ].join(';');
+  document.body.appendChild(tooltip);
+
+  var timer;
+  document.addEventListener('mouseover', function(e) {
+    var target = e.target.closest('[data-note]');
+    clearTimeout(timer);
+    if (target) {
+      timer = setTimeout(function() {
+        var layer = target.dataset.layer || '';
+        tooltip.innerHTML = '<div style="font-size:11px;opacity:0.6;margin-bottom:4px;font-family:monospace">' + layer + '</div>' + target.dataset.note;
+        tooltip.style.opacity = '1';
+      }, 180);
+    } else {
+      tooltip.style.opacity = '0';
+    }
+  });
+})();
+</script>
 
 </body>
 </html>

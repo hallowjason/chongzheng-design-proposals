@@ -32,31 +32,37 @@
       color: var(--text-primary);
       line-height: 1.6;
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* ── Header ── */
     .site-header {
       text-align: center;
-      padding: 56px 24px 48px;
+      padding: 60px 24px 52px;
       max-width: 900px;
       margin: 0 auto;
     }
 
-    .site-header .system-name {
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
+    .system-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
       color: var(--text-muted);
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
     }
 
     .site-header h1 {
-      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-size: clamp(1.75rem, 4vw, 2.625rem);
       font-weight: 700;
       color: var(--text-primary);
-      letter-spacing: -0.02em;
-      line-height: 1.25;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
       margin-bottom: 14px;
       text-wrap: balance;
     }
@@ -64,23 +70,24 @@
     .site-header .subtitle {
       font-size: 1rem;
       color: var(--text-secondary);
-      max-width: 480px;
+      max-width: 520px;
       margin: 0 auto;
+      line-height: 1.65;
     }
 
-    .divider {
-      width: 40px;
-      height: 2px;
+    .header-divider {
+      width: 36px;
+      height: 3px;
       background: var(--accent);
-      margin: 20px auto 0;
+      margin: 22px auto 0;
       border-radius: 2px;
     }
 
-    /* ── Proposal Cards Grid ── */
+    /* ── Proposals Section ── */
     .proposals-section {
-      max-width: 1240px;
+      max-width: 1280px;
       margin: 0 auto;
-      padding: 0 24px 64px;
+      padding: 0 28px 72px;
     }
 
     .proposals-grid {
@@ -93,56 +100,75 @@
       background: var(--surface);
       border-radius: var(--radius-card);
       box-shadow: var(--shadow-card);
-      overflow: hidden;
+      overflow: visible;
       display: flex;
       flex-direction: column;
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      transition: box-shadow 0.22s ease, transform 0.22s ease;
+      position: relative;
     }
 
     .proposal-card:hover {
       box-shadow: var(--shadow-card-hover);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
     }
 
     /* ── iframe Preview ── */
-    .preview-container {
+    .preview-wrapper {
       width: 100%;
-      height: 280px;
+      height: 260px;
       overflow: hidden;
-      background: #e8e8e4;
+      background: #eceae5;
       position: relative;
+      border-radius: var(--radius-card) var(--radius-card) 0 0;
       border-bottom: 1px solid var(--border);
     }
 
-    .preview-container iframe {
+    .preview-scaler {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .preview-wrapper iframe {
       width: 1440px;
       height: 900px;
       border: none;
-      transform: scale(0.375);
+      transform: scale(0.38);
       transform-origin: top left;
       pointer-events: none;
       display: block;
     }
 
+    /* proposal badge tag */
+    .proposal-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fff;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px);
+      padding: 4px 10px;
+      border-radius: 20px;
+      z-index: 2;
+    }
+
     /* ── Card Body ── */
     .card-body {
-      padding: 24px;
+      padding: 22px 24px 16px;
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-    }
-
-    .proposal-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      color: var(--text-muted);
-      text-transform: uppercase;
+      gap: 10px;
     }
 
     .proposal-title {
-      font-size: 1.0625rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--text-primary);
       line-height: 1.35;
@@ -153,15 +179,15 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 7px;
       flex: 1;
     }
 
     .proposal-features li {
-      font-size: 0.875rem;
+      font-size: 0.8375rem;
       color: var(--text-secondary);
-      line-height: 1.5;
-      padding-left: 14px;
+      line-height: 1.55;
+      padding-left: 15px;
       position: relative;
     }
 
@@ -169,16 +195,16 @@
       content: "";
       position: absolute;
       left: 0;
-      top: 9px;
+      top: 8px;
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      background: var(--text-muted);
+      background: var(--border);
     }
 
     /* ── CTA Button ── */
     .card-footer {
-      padding: 0 24px 24px;
+      padding: 0 24px 22px;
     }
 
     .btn-view {
@@ -194,29 +220,69 @@
       border: none;
       border-radius: var(--radius-btn);
       cursor: pointer;
-      text-decoration: none;
       letter-spacing: 0.02em;
-      transition: background 0.18s ease, opacity 0.18s ease;
+      transition: background 0.15s ease, transform 0.1s ease;
     }
 
     .btn-view:hover {
       background: #3d3d38;
-      opacity: 0.92;
     }
 
-    /* ── Comparison Table Section ── */
+    .btn-view:active {
+      transform: scale(0.98);
+    }
+
+    /* ── Proposal Overlay ── */
+    .proposal-overlay {
+      position: fixed;
+      background: #fff;
+      border-radius: 12px;
+      z-index: 1000;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.22);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(0,0,0,0.65);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-family: var(--font);
+      cursor: pointer;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+      transition: background 0.15s;
+      letter-spacing: 0.01em;
+    }
+
+    .close-btn:hover {
+      background: rgba(0,0,0,0.85);
+    }
+
+    /* ── Comparison Section ── */
     .comparison-section {
-      max-width: 1240px;
+      max-width: 1280px;
       margin: 0 auto;
-      padding: 0 24px 80px;
+      padding: 0 28px 88px;
     }
 
     .section-heading {
       font-size: 1.25rem;
       font-weight: 700;
       color: var(--text-primary);
-      letter-spacing: -0.01em;
-      margin-bottom: 20px;
+      letter-spacing: -0.015em;
+      margin-bottom: 6px;
+    }
+
+    .section-sub {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
     }
 
     .table-wrapper {
@@ -229,28 +295,53 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.875rem;
+      font-size: 0.8625rem;
     }
 
-    thead tr {
-      background: var(--accent);
-      color: #ffffff;
-    }
-
-    thead th {
-      padding: 14px 18px;
-      text-align: left;
-      font-weight: 600;
-      letter-spacing: 0.02em;
+    /* Layer section header rows */
+    .layer-header td {
+      padding: 11px 18px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fff;
       white-space: nowrap;
     }
 
-    thead th:first-child {
-      border-radius: var(--radius-card) 0 0 0;
+    .layer-header.layer-1 {
+      background: #1a1a2e;
     }
 
-    thead th:last-child {
-      border-radius: 0 var(--radius-card) 0 0;
+    .layer-header.layer-2 {
+      background: #2d4a7a;
+    }
+
+    .layer-header.layer-3 {
+      background: #3d7a6a;
+    }
+
+    /* Column headers */
+    .col-header-row th {
+      padding: 12px 18px;
+      text-align: left;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      color: #fff;
+      font-size: 0.8rem;
+    }
+
+    .col-header-row.layer-1 {
+      background: #252540;
+    }
+
+    .col-header-row.layer-2 {
+      background: #3a5a8a;
+    }
+
+    .col-header-row.layer-3 {
+      background: #4d8a7a;
     }
 
     tbody tr {
@@ -266,7 +357,7 @@
     }
 
     tbody td {
-      padding: 13px 18px;
+      padding: 12px 18px;
       color: var(--text-secondary);
       line-height: 1.55;
       vertical-align: top;
@@ -302,9 +393,6 @@
         padding-left: 16px;
         padding-right: 16px;
       }
-
-      thead th:first-child { border-radius: 0; }
-      thead th:last-child { border-radius: 0; }
     }
 
     @media (max-width: 600px) {
@@ -312,10 +400,11 @@
         border-radius: 8px;
       }
 
-      thead th,
+      .layer-header td,
+      .col-header-row th,
       tbody td {
-        padding: 11px 12px;
-        font-size: 0.8125rem;
+        padding: 10px 12px;
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -324,10 +413,10 @@
 
   <!-- Header -->
   <header class="site-header">
-    <p class="system-name">崇正道務管理系統</p>
+    <span class="system-badge">崇正道務管理系統</span>
     <h1>Design System 提案</h1>
-    <p class="subtitle">請團隊成員瀏覽三份提案，選出最符合道場氛圍與使用需求的設計方向</p>
-    <div class="divider"></div>
+    <p class="subtitle">三種視覺風格，請團隊選出偏好方向</p>
+    <div class="header-divider"></div>
   </header>
 
   <!-- Proposals Grid -->
@@ -335,59 +424,59 @@
     <div class="proposals-grid">
 
       <!-- Proposal A -->
-      <article class="proposal-card">
-        <div class="preview-container">
+      <article class="proposal-card" id="card-A">
+        <div class="preview-wrapper">
+          <span class="proposal-tag">Proposal A</span>
           <iframe src="./proposal-A.html" title="提案 A 預覽" loading="lazy" scrolling="no"></iframe>
         </div>
         <div class="card-body">
-          <span class="proposal-label">Proposal A</span>
-          <h2 class="proposal-title">崇正原色系 × Apple Token</h2>
+          <h2 class="proposal-title">提案 A — 崇正原色系 × Apple Token 架構</h2>
           <ul class="proposal-features">
-            <li>沉穩有根的米沙色底，貼近道場質樸氛圍</li>
-            <li>深木炭側欄搭配崇正青色強調，層次分明</li>
-            <li>Apple 圓潤圓角與柔光陰影，精緻而不張揚</li>
+            <li>沉穩有根的米沙色底配深木炭側欄、青色強調</li>
+            <li>Apple 圓潤陰影、最完整的 primitive/semantic 雙層 token</li>
+            <li>最符合道場氛圍，精緻而不張揚</li>
           </ul>
         </div>
         <div class="card-footer">
-          <a class="btn-view" href="./proposal-A.html" target="_blank" rel="noopener">查看完整提案</a>
+          <button class="btn-view" onclick="openProposal('A', this)">查看完整提案</button>
         </div>
       </article>
 
       <!-- Proposal B -->
-      <article class="proposal-card">
-        <div class="preview-container">
+      <article class="proposal-card" id="card-B">
+        <div class="preview-wrapper">
+          <span class="proposal-tag">Proposal B</span>
           <iframe src="./proposal-B.html" title="提案 B 預覽" loading="lazy" scrolling="no"></iframe>
         </div>
         <div class="card-body">
-          <span class="proposal-label">Proposal B</span>
-          <h2 class="proposal-title">暖中性 × 文件感</h2>
+          <h2 class="proposal-title">提案 B — 暖中性 × 文件感設計</h2>
           <ul class="proposal-features">
-            <li>暖米白底搭配深棕側欄，如紙張般的閱讀感</li>
-            <li>卡片塊狀結構清晰，視覺分區一目了然</li>
-            <li>最寬鬆行高設計，長時間操作最為舒適</li>
+            <li>暖米白底配深棕側欄、Notion 卡片塊狀結構</li>
+            <li>三份中最寬鬆行高、最舒適的閱讀節奏</li>
+            <li>溫和親切，如紙張般的長時操作體驗</li>
           </ul>
         </div>
         <div class="card-footer">
-          <a class="btn-view" href="./proposal-B.html" target="_blank" rel="noopener">查看完整提案</a>
+          <button class="btn-view" onclick="openProposal('B', this)">查看完整提案</button>
         </div>
       </article>
 
       <!-- Proposal C -->
-      <article class="proposal-card">
-        <div class="preview-container">
+      <article class="proposal-card" id="card-C">
+        <div class="preview-wrapper">
+          <span class="proposal-tag">Proposal C</span>
           <iframe src="./proposal-C.html" title="提案 C 預覽" loading="lazy" scrolling="no"></iframe>
         </div>
         <div class="card-body">
-          <span class="proposal-label">Proposal C</span>
-          <h2 class="proposal-title">Stripe Premium × 數據驅動</h2>
+          <h2 class="proposal-title">提案 C — Stripe Premium × 數據驅動</h2>
           <ul class="proposal-features">
-            <li>純白底配深海軍藍側欄，現代專業的企業風格</li>
-            <li>頂部數據統計卡（Stats Strip），關鍵數字一覽無遺</li>
-            <li>最高資訊密度，適合多工與數據監控場景</li>
+            <li>純白底配深海軍藍側欄、招牌 Stats Strip 統計卡</li>
+            <li>最高資訊密度，適合進階管理員</li>
+            <li>現代專業科技感，四色邊框數字卡最為突出</li>
           </ul>
         </div>
         <div class="card-footer">
-          <a class="btn-view" href="./proposal-C.html" target="_blank" rel="noopener">查看完整提案</a>
+          <button class="btn-view" onclick="openProposal('C', this)">查看完整提案</button>
         </div>
       </article>
 
@@ -396,61 +485,142 @@
 
   <!-- Comparison Table -->
   <section class="comparison-section">
-    <h2 class="section-heading">特色定位比較</h2>
+    <h2 class="section-heading">三層設計系統完整比較</h2>
+    <p class="section-sub">從 Design Tokens、Component System 到 Responsive Layout 全面對照</p>
     <div class="table-wrapper">
       <table>
-        <thead>
-          <tr>
+
+        <!-- Layer 1 Header -->
+        <tbody>
+          <tr class="layer-header layer-1">
+            <td colspan="4">Layer 1 — Design Tokens</td>
+          </tr>
+          <tr class="col-header-row layer-1">
             <th>比較面向</th>
             <th>提案 A</th>
             <th>提案 B</th>
             <th>提案 C</th>
           </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>色調方向</td>
-            <td>米沙色底 + 深木炭側欄</td>
-            <td>暖米白底 + 深棕側欄</td>
-            <td>純白底 + 深海軍藍側欄</td>
-          </tr>
-          <tr>
-            <td>風格感受</td>
-            <td>沉穩、有根、Apple 精緻感</td>
-            <td>溫暖、親和、紙張文件感</td>
-            <td>專業、數據驅動、Stripe 現代感</td>
-          </tr>
           <tr>
             <td>Token 架構</td>
-            <td>primitive / semantic 雙層（最完整）</td>
-            <td>primitive / semantic 雙層</td>
-            <td>primitive / semantic 雙層</td>
+            <td>primitive/semantic 雙層（最完整）</td>
+            <td>primitive/semantic 雙層</td>
+            <td>primitive/semantic 雙層</td>
           </tr>
           <tr>
-            <td>Stats 統計</td>
+            <td>色彩系統</td>
+            <td>崇正米色系 + 青色 accent</td>
+            <td>暖米白 + 棕橘 accent</td>
+            <td>純白 + 深海軍藍 + teal</td>
+          </tr>
+          <tr>
+            <td>字型 Scale</td>
+            <td>7 級（12–32px）+ 3 種 line-height</td>
+            <td>6 級 + 寬行高 1.6</td>
+            <td>6 級 + tabular-nums 數字對齊</td>
+          </tr>
+          <tr>
+            <td>Spacing Scale</td>
+            <td>8px base，13 級</td>
+            <td>8px base，10 級</td>
+            <td>8px base，10 級</td>
+          </tr>
+          <tr>
+            <td>情感對位</td>
+            <td>最符合道場氛圍</td>
+            <td>溫和親切、紙張感</td>
+            <td>現代專業、科技感</td>
+          </tr>
+
+          <!-- Layer 2 Header -->
+          <tr class="layer-header layer-2">
+            <td colspan="4">Layer 2 — Component System</td>
+          </tr>
+          <tr class="col-header-row layer-2">
+            <th>比較面向</th>
+            <th>提案 A</th>
+            <th>提案 B</th>
+            <th>提案 C</th>
+          </tr>
+          <tr>
+            <td>按鈕風格</td>
+            <td>圓角 6px + 柔光陰影</td>
+            <td>圓角 8px + 無陰影（扁平）</td>
+            <td>圓角 6px + 深色實心</td>
+          </tr>
+          <tr>
+            <td>表格選取</td>
+            <td>淡青底色填滿</td>
+            <td>左側 3px 橘色邊框</td>
+            <td>淡藍底 + 深藍左邊框</td>
+          </tr>
+          <tr>
+            <td>Badge 風格</td>
+            <td>pill + 語義底色</td>
+            <td>pill + 細邊框暖色</td>
+            <td>pill + 細邊框冷色</td>
+          </tr>
+          <tr>
+            <td>Focus 狀態</td>
+            <td>2px 青色 outline</td>
+            <td>2px 橘色 outline</td>
+            <td>2px teal outline</td>
+          </tr>
+          <tr>
+            <td>Stats Strip</td>
             <td>米色底 + 青色數字</td>
             <td>暖白卡片 + 橘色數字</td>
             <td>深藍卡片 + 四色邊框（最突出）</td>
           </tr>
           <tr>
             <td>表格密度</td>
-            <td>中等密度</td>
-            <td>最寬鬆（閱讀最舒適）</td>
-            <td>最緊湊（資訊最密）</td>
+            <td>行高 44px（中等）</td>
+            <td>行高 48px（最寬鬆）</td>
+            <td>行高 40px（最緊湊）</td>
+          </tr>
+
+          <!-- Layer 3 Header -->
+          <tr class="layer-header layer-3">
+            <td colspan="4">Layer 3 — Responsive Layout</td>
+          </tr>
+          <tr class="col-header-row layer-3">
+            <th>比較面向</th>
+            <th>提案 A</th>
+            <th>提案 B</th>
+            <th>提案 C</th>
           </tr>
           <tr>
-            <td>情感對位</td>
-            <td>最符合道場氛圍</td>
-            <td>溫和親切</td>
-            <td>現代專業</td>
+            <td>桌面側欄</td>
+            <td>256px</td>
+            <td>240px</td>
+            <td>232px</td>
           </tr>
           <tr>
-            <td>最大亮點</td>
-            <td>原色系 + 最完整架構</td>
-            <td>最舒適的閱讀節奏</td>
-            <td>數據一覽性最強</td>
+            <td>平板側欄</td>
+            <td>64px icon-only</td>
+            <td>64px icon-only</td>
+            <td>64px icon-only</td>
+          </tr>
+          <tr>
+            <td>手機側欄</td>
+            <td>滑入抽屜</td>
+            <td>滑入抽屜（棕色）</td>
+            <td>滑入抽屜（深藍）</td>
+          </tr>
+          <tr>
+            <td>手機表格</td>
+            <td>卡片式（米色底）</td>
+            <td>卡片式（暖白底）</td>
+            <td>卡片式（白底 teal 邊框）</td>
+          </tr>
+          <tr>
+            <td>Stats 手機</td>
+            <td>橫向統計列</td>
+            <td>2×2 grid</td>
+            <td>1×4 垂直排列</td>
           </tr>
         </tbody>
+
       </table>
     </div>
   </section>
@@ -460,5 +630,66 @@
     崇正道務管理系統開發團隊 &copy; 2026
   </footer>
 
+  <script>
+    function openProposal(id, btn) {
+      const card = document.getElementById('card-' + id);
+      const rect = card.getBoundingClientRect();
+
+      const overlay = document.createElement('div');
+      overlay.className = 'proposal-overlay';
+      overlay.style.cssText = `
+        position: fixed;
+        top: ${rect.top}px;
+        left: ${rect.left}px;
+        width: ${rect.width}px;
+        height: ${rect.height}px;
+        background: #fff;
+        border-radius: 12px;
+        z-index: 1000;
+        overflow: hidden;
+        transition: top 0.4s cubic-bezier(0.32,0.72,0,1),
+                    left 0.4s cubic-bezier(0.32,0.72,0,1),
+                    width 0.4s cubic-bezier(0.32,0.72,0,1),
+                    height 0.4s cubic-bezier(0.32,0.72,0,1),
+                    border-radius 0.4s ease;
+        box-shadow: 0 32px 80px rgba(0,0,0,0.22);
+      `;
+
+      const iframe = document.createElement('iframe');
+      iframe.src = './proposal-' + id + '.html';
+      iframe.style.cssText = 'width:100%;height:100%;border:none;opacity:0;transition:opacity 0.3s ease 0.3s;';
+      overlay.appendChild(iframe);
+
+      const closeBtn = document.createElement('button');
+      closeBtn.innerHTML = '&times; 返回總覽';
+      closeBtn.className = 'close-btn';
+      closeBtn.onclick = () => closeProposal(overlay, rect);
+      overlay.appendChild(closeBtn);
+
+      document.body.appendChild(overlay);
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          overlay.style.top = '0';
+          overlay.style.left = '0';
+          overlay.style.width = '100vw';
+          overlay.style.height = '100vh';
+          overlay.style.borderRadius = '0';
+          iframe.style.opacity = '1';
+        });
+      });
+    }
+
+    function closeProposal(overlay, rect) {
+      const iframe = overlay.querySelector('iframe');
+      iframe.style.opacity = '0';
+      overlay.style.top = rect.top + 'px';
+      overlay.style.left = rect.left + 'px';
+      overlay.style.width = rect.width + 'px';
+      overlay.style.height = rect.height + 'px';
+      overlay.style.borderRadius = '12px';
+      setTimeout(() => overlay.remove(), 420);
+    }
+  </script>
 </body>
 </html>

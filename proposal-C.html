@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>提案 C — Stripe Premium 風格｜報班確認頁</title>
+<title>提案 C — Stripe Premium 風格｜Layer 1-3 完整設計系統</title>
 <style>
 /* ============================================================
    PROPOSAL C: Stripe-Inspired Premium Enterprise
+   Layer 1: Design Tokens | Layer 2: Component System | Layer 3: Responsive Layout
    精緻財金感 × 藍灰主調 × 表格數據最優 × 完整語義 Token
    ============================================================ */
 
@@ -44,6 +45,7 @@
   --hds-primitive-amber-400: #f59e0b;
   --hds-primitive-amber-900: #92400e;
   --hds-primitive-red-500: #ef4444;
+  --hds-primitive-red-800: #991b1b;
   --hds-primitive-blue-500: #3b82f6;
   --hds-primitive-blue-800: #1d4ed8;
   --hds-primitive-violet-500: #8b5cf6;
@@ -101,6 +103,7 @@
   --hds-color-warning-text: var(--hds-primitive-amber-900);
   --hds-color-error: var(--hds-primitive-red-500);
   --hds-color-error-bg: rgba(239, 68, 68, 0.1);
+  --hds-color-error-text: var(--hds-primitive-red-800);
   --hds-color-info: var(--hds-primitive-blue-500);
   --hds-color-info-bg: rgba(59, 130, 246, 0.08);
   --hds-color-info-text: var(--hds-primitive-blue-800);
@@ -155,6 +158,7 @@
 
   /* === Layout === */
   --sidebar-w: 232px;
+  --sidebar-w-collapsed: 64px;
   --header-h: 56px;
 
   /* === Radius === */
@@ -326,6 +330,7 @@ body {
   z-index: 100;
   border-right: 1px solid var(--hds-sidebar-border);
   padding: var(--sp-4) var(--sp-2) var(--sp-12);
+  transition: width 0.2s ease;
 }
 .sb-group {
   margin-bottom: var(--sp-5);
@@ -338,6 +343,8 @@ body {
   color: var(--hds-sidebar-text-muted);
   padding: var(--sp-2) var(--sp-3);
   margin-bottom: var(--sp-1);
+  white-space: nowrap;
+  overflow: hidden;
 }
 .sb-item {
   display: flex;
@@ -352,6 +359,8 @@ body {
   text-decoration: none;
   margin: 1px 0;
   font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .sb-item:hover { background: var(--hds-sidebar-bg-hover); }
 .sb-item--active {
@@ -380,6 +389,8 @@ body {
   background: var(--hds-color-warm);
   color: var(--hds-primitive-white);
 }
+/* Sidebar collapsed: icon-only text hidden */
+.sb-item-text { flex: 1; overflow: hidden; }
 
 /* ── Main ── */
 .main {
@@ -387,6 +398,7 @@ body {
   flex: 1;
   background: var(--hds-color-bg-offset);
   min-height: calc(100vh - var(--header-h));
+  transition: margin-left 0.2s ease;
 }
 
 /* ── Page Header ── */
@@ -506,7 +518,7 @@ body {
 .field-input, .field-select {
   height: 38px;
   border: 1px solid var(--hds-color-border-medium);
-  background: var(--hds-color-bg);
+  background: var(--hds-color-bg-subtle);
   padding: 0 var(--sp-3);
   font-size: var(--text-sm);
   font-family: var(--font-body);
@@ -519,6 +531,7 @@ body {
 .field-input:focus, .field-select:focus {
   border-color: var(--hds-color-border-focus);
   box-shadow: var(--hds-shadow-focus);
+  background: var(--hds-color-bg);
 }
 .field-input::placeholder { color: var(--hds-color-placeholder); }
 
@@ -550,6 +563,44 @@ body {
   background: var(--hds-primitive-navy-800);
   box-shadow: 0px 4px 12px rgba(50,50,93,0.15), 0px 2px 6px rgba(0,0,0,0.1);
   transform: translateY(-1px);
+}
+.btn--secondary {
+  background: var(--hds-color-bg);
+  color: var(--hds-primitive-navy-800);
+  border: 1.5px solid var(--hds-primitive-navy-800);
+  box-shadow: var(--hds-shadow-xs);
+}
+.btn--secondary:hover {
+  background: var(--hds-primitive-gray-50);
+  box-shadow: var(--hds-shadow-sm);
+  transform: translateY(-1px);
+}
+.btn--teal {
+  background: var(--hds-primitive-teal-800);
+  color: var(--hds-primitive-white);
+  box-shadow: 0px 2px 8px rgba(26,92,88,0.3);
+}
+.btn--teal:hover {
+  background: var(--hds-primitive-teal-700);
+  transform: translateY(-1px);
+  box-shadow: 0px 4px 12px rgba(26,92,88,0.4);
+}
+.btn--danger {
+  background: #7f1d1d;
+  color: var(--hds-primitive-white);
+  box-shadow: 0px 2px 8px rgba(127,29,29,0.3);
+}
+.btn--danger:hover {
+  background: #991b1b;
+  transform: translateY(-1px);
+}
+.btn--disabled, .btn:disabled {
+  background: var(--hds-color-bg-subtle);
+  color: var(--hds-color-placeholder);
+  border: 1px solid var(--hds-color-border);
+  cursor: not-allowed;
+  box-shadow: none;
+  pointer-events: none;
 }
 .btn--confirm {
   background: linear-gradient(135deg, var(--hds-primitive-warm-500) 0%, var(--hds-primitive-warm-600) 100%);
@@ -641,8 +692,12 @@ body {
 .tbl tbody tr {
   transition: background 0.1s;
 }
-.tbl tbody tr:hover td { background: var(--hds-color-bg-offset); }
+.tbl tbody tr:hover td { background: var(--hds-color-bg-subtle); }
 .tbl tbody tr.selected td { background: var(--hds-color-primary-light); }
+.tbl tbody tr.tbl-row--selected-demo td {
+  background: var(--hds-color-primary-light);
+  border-left: 3px solid var(--hds-primitive-navy-800);
+}
 .tbl tbody tr:last-child td { border-bottom: none; }
 
 /* Sticky columns */
@@ -689,6 +744,7 @@ body {
   font-weight: 700;
   white-space: nowrap;
   letter-spacing: 0.03em;
+  border: 1px solid transparent;
 }
 .badge-dot {
   width: var(--sp-1); height: var(--sp-1);
@@ -698,18 +754,45 @@ body {
 .badge--success {
   background: var(--hds-color-success-bg);
   color: var(--hds-color-success-text);
+  border-color: rgba(21,190,83,0.2);
 }
 .badge--success .badge-dot { background: var(--hds-color-success); }
 .badge--warning {
   background: var(--hds-color-warning-bg);
   color: var(--hds-color-warning-text);
+  border-color: rgba(245,158,11,0.2);
 }
 .badge--warning .badge-dot { background: var(--hds-color-warning); }
 .badge--new {
   background: var(--hds-color-new-bg);
   color: var(--hds-color-new-text);
+  border-color: rgba(139,92,246,0.2);
 }
 .badge--new .badge-dot { background: var(--hds-color-new); }
+.badge--error {
+  background: var(--hds-color-error-bg);
+  color: var(--hds-color-error-text);
+  border-color: rgba(239,68,68,0.2);
+}
+.badge--error .badge-dot { background: var(--hds-color-error); }
+.badge--info {
+  background: var(--hds-color-info-bg);
+  color: var(--hds-color-info-text);
+  border-color: rgba(59,130,246,0.2);
+}
+.badge--info .badge-dot { background: var(--hds-color-info); }
+.badge--neutral {
+  background: var(--hds-color-bg-subtle);
+  color: var(--hds-color-secondary);
+  border-color: var(--hds-color-border);
+}
+.badge--neutral .badge-dot { background: var(--hds-color-placeholder); }
+.badge--warm {
+  background: var(--hds-color-warm-light);
+  color: var(--hds-color-warm);
+  border-color: var(--hds-color-warm-border);
+}
+.badge--warm .badge-dot { background: var(--hds-color-warm); }
 
 /* Meal tags */
 .meal-wrap { display: flex; gap: 3px; flex-wrap: wrap; }
@@ -843,21 +926,392 @@ body {
 }
 .footer-btns { display: flex; gap: var(--sp-3); align-items: center; }
 
-/* ── Responsive ── */
+/* ══════════════════════════════════════════════════════════════
+   LAYER 2 — Component System Demo Section
+   ══════════════════════════════════════════════════════════════ */
+.layer-section {
+  padding: var(--sp-6) var(--sp-8);
+  background: var(--hds-color-bg-offset);
+}
+.layer-section-title {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--hds-color-heading);
+  letter-spacing: -0.3px;
+  margin-bottom: var(--sp-2);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+.layer-badge {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 3px var(--sp-3);
+  border-radius: var(--radius-pill);
+  background: var(--hds-primitive-navy-800);
+  color: var(--hds-primitive-teal-400);
+  font-family: var(--font-mono);
+}
+.layer-section-desc {
+  font-size: var(--text-sm);
+  color: var(--hds-color-tertiary);
+  margin-bottom: var(--sp-6);
+}
+
+/* Component sub-section */
+.comp-section {
+  margin-bottom: var(--sp-6);
+}
+.comp-section-title {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--hds-color-secondary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: var(--sp-3);
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--hds-color-border);
+}
+.comp-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+/* Input demo states */
+.input-demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--sp-4);
+}
+.input-demo-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.input-demo-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--hds-color-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.field-input--focus {
+  border-color: var(--hds-color-border-focus);
+  box-shadow: var(--hds-shadow-focus);
+  background: var(--hds-color-bg);
+}
+.field-input--error {
+  border-color: var(--hds-color-error);
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.15);
+  background: var(--hds-color-bg);
+}
+.field-input--disabled {
+  background: var(--hds-color-bg-subtle);
+  color: var(--hds-color-placeholder);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.input-error-msg {
+  font-size: var(--text-xs);
+  color: var(--hds-color-error);
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+/* Table demo */
+.tbl-demo {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+.tbl-demo th {
+  padding: var(--sp-3) var(--sp-4);
+  text-align: left;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--hds-color-secondary);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  background: var(--hds-color-bg-offset);
+  border-bottom: 1px solid var(--hds-color-border);
+  white-space: nowrap;
+}
+.tbl-demo td {
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--hds-color-border);
+  vertical-align: middle;
+  color: var(--hds-color-body);
+}
+.tbl-demo tr:last-child td { border-bottom: none; }
+.tbl-demo tr.row--hover td { background: var(--hds-color-bg-subtle); }
+.tbl-demo tr.row--selected td {
+  background: var(--hds-color-primary-light);
+  border-left: 3px solid var(--hds-primitive-navy-800);
+}
+
+/* Mini stats strip */
+.stats-strip--mini {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+.stat-card--mini {
+  background: var(--hds-primitive-navy-800);
+  border: 1px solid var(--hds-primitive-navy-600);
+  border-radius: var(--radius-md);
+  padding: var(--sp-3) var(--sp-4);
+  position: relative;
+  overflow: hidden;
+}
+.stat-card--mini::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(58,173,163,0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+.stat-value--mini {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--hds-primitive-white);
+  font-family: var(--font-mono);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.stat-label--mini {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--hds-sidebar-text);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 2px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LAYER 3 — Responsive: Tablet (≤ 1024px)
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: var(--sidebar-w-collapsed);
+    overflow: visible;
+  }
+  .sidebar .sb-label { display: none; }
+  .sidebar .sb-item-text { display: none; }
+  .sidebar .sb-count { display: none; }
+  .sidebar .sb-item {
+    justify-content: center;
+    padding: var(--sp-3);
+    gap: 0;
+  }
+  .sidebar .sb-icon { width: auto; font-size: 16px; }
+  .header-logo { width: var(--sidebar-w-collapsed); }
+  .header-logo .logo-text, .header-logo .logo-sub { display: none; }
+  .main { margin-left: var(--sidebar-w-collapsed); }
+  .stats-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
+  }
+  .stats-strip--mini {
+    grid-template-columns: 1fr 1fr;
+  }
+  .content { padding: var(--sp-5) var(--sp-5); }
+  .layer-section { padding: var(--sp-5) var(--sp-5); }
+  .page-header { padding: var(--sp-4) var(--sp-5) var(--sp-5); }
+  .footer { padding: var(--sp-4) var(--sp-5); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LAYER 3 — Responsive: Mobile (≤ 768px)
+   ══════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  .sidebar { transform: translateX(-100%); }
+  .sidebar {
+    transform: translateX(-100%);
+    width: var(--sidebar-w);
+  }
+  .sidebar.is-open {
+    transform: translateX(0);
+    overflow-y: auto;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.25);
+  }
+  .sidebar.is-open .sb-label { display: block; }
+  .sidebar.is-open .sb-item-text { display: block; }
+  .sidebar.is-open .sb-count { display: flex; }
+  .sidebar.is-open .sb-item { justify-content: flex-start; padding: var(--sp-2) var(--sp-3); gap: var(--sp-3); }
+  .sidebar.is-open .sb-icon { font-size: 14px; width: 20px; }
+
+  .hamburger-btn {
+    display: flex;
+  }
+  .header-logo { width: auto; }
+  .header-logo .logo-text, .header-logo .logo-sub { display: block; }
   .main { margin-left: 0; }
   .content { padding: var(--sp-4); }
-  .stats-strip { flex-wrap: wrap; }
+  .layer-section { padding: var(--sp-4); }
+  .page-header { padding: var(--sp-4) var(--sp-4) var(--sp-4); }
+  .ph-body { flex-direction: column; gap: var(--sp-3); }
+  .ph-body > div:last-child { width: 100%; justify-content: flex-end; display: flex; }
+  .footer { flex-direction: column; gap: var(--sp-3); padding: var(--sp-4); }
+  .footer-btns { width: 100%; justify-content: flex-end; }
+  .stats-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
+  }
+  .stats-strip--mini {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Mobile: table → data cards */
+  .tbl-mobile-hide { display: none; }
+  .table-wrapper { border: none; background: transparent; box-shadow: none; }
+  .tbl { display: none; }
+  .mobile-card-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+  .mobile-card {
+    background: var(--hds-color-bg);
+    border: 1px solid var(--hds-color-border);
+    border-left: 3px solid var(--hds-color-primary);
+    border-radius: var(--radius-md);
+    padding: var(--sp-4);
+    box-shadow: var(--hds-shadow-xs);
+  }
+  .mobile-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--sp-3);
+  }
+  .mobile-card-name {
+    font-weight: 700;
+    color: var(--hds-color-heading);
+    font-size: var(--text-base);
+  }
+  .mobile-card-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-2) var(--sp-4);
+  }
+  .mobile-field-label {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--hds-color-tertiary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .mobile-field-value {
+    font-size: var(--text-sm);
+    color: var(--hds-color-body);
+  }
+  .header-nav { display: none; }
+  .header-sep { display: none; }
   .search-grid { grid-template-columns: 1fr 1fr; }
-  .footer { flex-direction: column; gap: var(--sp-3); }
 }
+
+/* Hamburger button (hidden by default on desktop) */
+.hamburger-btn {
+  display: none;
+  width: 32px; height: 32px;
+  background: var(--hds-sidebar-bg-hover);
+  border: 1px solid var(--hds-sidebar-border);
+  border-radius: var(--radius-sm);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 4px;
+  padding: 7px;
+  margin-right: var(--sp-3);
+}
+.hamburger-btn span {
+  display: block;
+  height: 2px;
+  background: var(--hds-sidebar-text);
+  border-radius: 1px;
+  width: 100%;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+/* Sidebar overlay on mobile */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10,14,26,0.5);
+  z-index: 99;
+}
+@media (max-width: 768px) {
+  .sidebar-overlay.is-visible { display: block; }
+}
+
+/* ── Layer annotation pill (for demo) ── */
+.layer-token-pill {
+  display: inline-block;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--hds-primitive-teal-400);
+  background: var(--hds-primitive-navy-800);
+  border: 1px solid var(--hds-primitive-navy-600);
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+  margin-left: var(--sp-2);
+}
+
+/* ── Responsive demo callout ── */
+.responsive-callout {
+  background: var(--hds-primitive-navy-800);
+  border: 1px solid var(--hds-primitive-navy-600);
+  border-left: 3px solid var(--hds-primitive-teal-400);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4) var(--sp-5);
+  margin-bottom: var(--sp-5);
+}
+.responsive-callout p {
+  font-size: var(--text-sm);
+  color: var(--hds-sidebar-text);
+  line-height: 1.6;
+}
+.responsive-callout strong { color: var(--hds-primitive-white); }
+
+/* breakpoint list */
+.bp-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+}
+.bp-item {
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  color: var(--hds-sidebar-text);
+  background: var(--hds-primitive-navy-700);
+  border: 1px solid var(--hds-primitive-navy-600);
+  padding: 3px var(--sp-3);
+  border-radius: var(--radius-xs);
+}
+.bp-item strong { color: var(--hds-primitive-teal-400); }
+
+/* Mobile card demo (always visible for showcase) */
+.mobile-demo-section .mobile-card-list { display: flex; }
 </style>
 </head>
 <body>
 
 <!-- ── Header ── -->
-<header class="header">
+<header class="header"
+  data-layer="L1"
+  data-note="深海軍藍 #1a1f2e 直接延伸至 Header，消除 header/sidebar 的視覺斷層。對於高頻使用的後台系統，減少視覺切換點可降低用戶的認知負荷。">
+  <button class="hamburger-btn" id="hamburger" type="button" aria-label="開啟選單">
+    <span></span><span></span><span></span>
+  </button>
   <div class="header-logo">
     <div class="logo-mark">☯</div>
     <div>
@@ -885,52 +1339,56 @@ body {
   </div>
 </header>
 
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
 <div class="shell">
 
   <!-- ── Sidebar ── -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar"
+    data-layer="L1+L3"
+    data-note="C 提案的 sidebar 採用最深的 navy-800，與白底主區形成最強對比（ΔLch > 60）。寬度 232px 是三份中最窄，留更多空間給數據主區。平板模式自動縮為 64px icon-only，手機模式完全隱藏。">
     <div class="sb-group">
       <div class="sb-label">班務</div>
       <a class="sb-item sb-item--active" href="#">
-        <span class="sb-icon">◈</span>報班確認
+        <span class="sb-icon">◈</span><span class="sb-item-text">報班確認</span>
       </a>
       <a class="sb-item" href="#">
-        <span class="sb-icon">☰</span>班別管理
+        <span class="sb-icon">☰</span><span class="sb-item-text">班別管理</span>
       </a>
       <a class="sb-item" href="#">
-        <span class="sb-icon">✓</span>出席紀錄
+        <span class="sb-icon">✓</span><span class="sb-item-text">出席紀錄</span>
       </a>
     </div>
     <div class="sb-group">
       <div class="sb-label">成員</div>
       <a class="sb-item" href="#">
-        <span class="sb-icon">◎</span>求道名冊
+        <span class="sb-icon">◎</span><span class="sb-item-text">求道名冊</span>
         <span class="sb-count">48</span>
       </a>
       <a class="sb-item" href="#">
-        <span class="sb-icon">⊕</span>新增成員
+        <span class="sb-icon">⊕</span><span class="sb-item-text">新增成員</span>
       </a>
       <a class="sb-item" href="#">
-        <span class="sb-icon">⊗</span>進階搜尋
+        <span class="sb-icon">⊗</span><span class="sb-item-text">進階搜尋</span>
       </a>
     </div>
     <div class="sb-group">
       <div class="sb-label">組織</div>
       <a class="sb-item" href="#">
-        <span class="sb-icon">▣</span>組織架構
+        <span class="sb-icon">▣</span><span class="sb-item-text">組織架構</span>
       </a>
       <a class="sb-item" href="#">
-        <span class="sb-icon">◧</span>區域管理
+        <span class="sb-icon">◧</span><span class="sb-item-text">區域管理</span>
       </a>
     </div>
     <div class="sb-group">
       <div class="sb-label">系統</div>
       <a class="sb-item" href="#">
-        <span class="sb-icon">⚿</span>授權管理
+        <span class="sb-icon">⚿</span><span class="sb-item-text">授權管理</span>
         <span class="sb-count sb-count--warm">2</span>
       </a>
       <a class="sb-item" href="#">
-        <span class="sb-icon">⚙</span>系統設定
+        <span class="sb-icon">⚙</span><span class="sb-item-text">系統設定</span>
       </a>
     </div>
   </aside>
@@ -967,7 +1425,9 @@ body {
     <div class="content">
 
       <!-- Stats Strip -->
-      <div class="stats-strip">
+      <div class="stats-strip"
+        data-layer="L2+UX"
+        data-note="Stats Strip 是 C 提案的招牌設計：讓管理員在確認前即時掌握人數統計。深色卡片四色 border-left 遵循語義色系（teal=已選、green=清口、orange=用餐、purple=住宿）。">
         <div class="stat-card stat-card--selected">
           <div class="stat-label">
             <span class="stat-indicator" style="background: var(--hds-primitive-teal-400);"></span>已選人數
@@ -1058,7 +1518,9 @@ body {
       </div>
 
       <!-- Table -->
-      <div class="table-wrapper">
+      <div class="table-wrapper"
+        data-layer="L2"
+        data-note="C 的表格行高 40px 是三份最緊湊，配合 tabular-nums 讓農曆日期、道親編號精準對齊。適合需要一次審核大量班員的進階管理員。">
         <table class="tbl">
           <thead>
             <tr>
@@ -1168,8 +1630,358 @@ body {
       </div>
     </div>
 
+    <!-- ══════════════════════════════════════════════════════
+         LAYER 2 — Component System Demo
+         ══════════════════════════════════════════════════════ -->
+    <div class="layer-section"
+      data-layer="L2"
+      data-note="C 的元件系統強調「狀態明確」：每種 button/input/badge 的 hover、focus、active 狀態都有清晰的視覺回饋，降低用戶的操作不確定感。"
+      id="component-demo">
+
+      <div class="layer-section-title">
+        <span class="layer-badge">Layer 2</span>
+        元件規範 — Component System
+      </div>
+      <p class="layer-section-desc">C 提案元件：深藍底色語境 × 細邊框 Pill 狀態徽章 × 高對比輸入欄位 × 緊湊表格</p>
+
+      <!-- 1. Button System -->
+      <div class="comp-section">
+        <div class="comp-section-title">按鈕系統</div>
+        <div class="comp-row">
+          <button class="btn btn--primary" type="button"
+            data-layer="L2"
+            data-note="Primary Button：深海軍藍 #0f1624 底白字。用於「確認加入」、「批次操作」等主要行動。hover 時上移 1px + 加深陰影，提供清楚的點擊回饋。">
+            Primary 主要
+          </button>
+          <button class="btn btn--secondary" type="button"
+            data-layer="L2"
+            data-note="Secondary Button：白底 + 深海軍藍邊框。用於「匯出」、「預覽」等次要行動。與 Primary 並排時形成明確的主從關係。">
+            Secondary 次要
+          </button>
+          <button class="btn btn--teal" type="button"
+            data-layer="L2"
+            data-note="Teal Button：深青 #1a5c58 底白字。用於道場特定操作如「標記清口確認」、「完成複核」。Teal 是 C 提案的品牌強調色。">
+            Teal 品牌色
+          </button>
+          <button class="btn btn--danger" type="button"
+            data-layer="L2"
+            data-note="Danger Button：深紅底白字。用於不可逆操作：刪除成員、撤銷確認。刻意選用暗紅而非鮮紅，在專業後台環境中不顯突兀。">
+            Danger 危險
+          </button>
+          <button class="btn btn--disabled" type="button"
+            data-layer="L2"
+            data-note="Disabled Button：灰底灰字。在未完成條件（未勾選班員）時自動停用主要操作，防止用戶誤觸。pointer-events:none 確保 hover 樣式也完全消除。">
+            Disabled 停用
+          </button>
+        </div>
+        <div class="comp-row" style="margin-top: var(--sp-3);">
+          <button class="btn btn--primary btn--sm" type="button">Small 小</button>
+          <button class="btn btn--secondary btn--sm" type="button">Small 次要</button>
+          <button class="btn btn--outline btn--sm" type="button">Small Outline</button>
+          <button class="btn btn--ghost btn--sm" type="button">Ghost 幽靈</button>
+          <button class="btn btn--primary btn--lg" type="button">Large 大</button>
+          <button class="btn btn--confirm btn--lg" type="button">確定加入 Large</button>
+        </div>
+      </div>
+
+      <!-- 2. Input States -->
+      <div class="comp-section"
+        data-layer="L2"
+        data-note="C 的輸入欄位底色使用 cool-gray #f0f2f7，與白色頁面背景形成輕微對比，讓表單邊界可辨識但不強烈。focus 時切換為白底 + teal 邊框 + 藍色光暈，視覺上「啟動」的感覺明確。">
+        <div class="comp-section-title">輸入欄位狀態</div>
+        <div class="input-demo-grid">
+          <div class="input-demo-item">
+            <div class="input-demo-label">預設</div>
+            <input type="text" class="field-input" placeholder="輸入求道名..." value="">
+          </div>
+          <div class="input-demo-item">
+            <div class="input-demo-label">Focus（啟動）</div>
+            <input type="text" class="field-input field-input--focus" value="志明" placeholder="">
+          </div>
+          <div class="input-demo-item">
+            <div class="input-demo-label">錯誤</div>
+            <input type="text" class="field-input field-input--error" value="123@#!">
+            <div class="input-error-msg">格式錯誤：求道名不得含特殊字元</div>
+          </div>
+          <div class="input-demo-item">
+            <div class="input-demo-label">停用</div>
+            <input type="text" class="field-input field-input--disabled" value="系統管理員" disabled>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Status Badges -->
+      <div class="comp-section">
+        <div class="comp-section-title">狀態徽章</div>
+        <div class="comp-row"
+          data-layer="L2"
+          data-note="C 的 badge 用細邊框 pill 樣式：半透明底色 + 1px 語義色邊框。相較純色底色，在白色表格中視覺更輕盈，不搶奪數據本身的注意力。">
+          <span class="badge badge--success"><span class="badge-dot"></span>在籍</span>
+          <span class="badge badge--warning"><span class="badge-dot"></span>辦理中</span>
+          <span class="badge badge--new"><span class="badge-dot"></span>新求道</span>
+          <span class="badge badge--error"><span class="badge-dot"></span>停籍</span>
+          <span class="badge badge--info"><span class="badge-dot"></span>待審核</span>
+          <span class="badge badge--neutral"><span class="badge-dot"></span>未分類</span>
+        </div>
+        <div class="comp-row" style="margin-top: var(--sp-3);">
+          <span class="badge badge--success"><span class="badge-dot"></span>清口</span>
+          <span class="badge badge--neutral"><span class="badge-dot"></span>葷食</span>
+          <span class="badge badge--warm"><span class="badge-dot"></span>用餐</span>
+          <span class="badge badge--neutral"><span class="badge-dot"></span>不用餐</span>
+          <span class="badge badge--info"><span class="badge-dot"></span>住宿</span>
+          <span class="badge badge--success"><span class="badge-dot"></span>Active</span>
+          <span class="badge badge--neutral"><span class="badge-dot"></span>Inactive</span>
+          <span class="badge badge--warning"><span class="badge-dot"></span>待審核</span>
+          <span class="badge badge--success"><span class="badge-dot"></span>已通過</span>
+        </div>
+      </div>
+
+      <!-- 4. Table Row States -->
+      <div class="comp-section">
+        <div class="comp-section-title">表格列狀態</div>
+        <p style="font-size: var(--text-xs); color: var(--hds-color-tertiary); margin-bottom: var(--sp-3);">
+          C 的表格是三份密度最高的，行高 40px 搭配 tabular-nums，適合需要快速掃視多筆資料的進階用戶。
+        </p>
+        <div class="panel" style="margin-bottom: 0;">
+          <table class="tbl-demo">
+            <thead>
+              <tr>
+                <th>求道名</th>
+                <th>性別</th>
+                <th>區別</th>
+                <th>狀態</th>
+                <th>用餐</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="name-link">志明</span> <span class="layer-token-pill">正常列</span></td>
+                <td class="g-m">男</td>
+                <td>台北區</td>
+                <td><span class="badge badge--success"><span class="badge-dot"></span>在籍</span></td>
+                <td><span class="meal-tag">午餐</span></td>
+              </tr>
+              <tr class="row--hover">
+                <td><span class="name-link">志慧</span> <span class="layer-token-pill">hover 列</span></td>
+                <td class="g-f">女</td>
+                <td>台中區</td>
+                <td><span class="badge badge--warning"><span class="badge-dot"></span>辦理中</span></td>
+                <td><span class="meal-tag">午晚餐</span></td>
+              </tr>
+              <tr class="row--selected">
+                <td><span class="name-link">志遠</span> <span class="layer-token-pill">選取列</span></td>
+                <td class="g-m">男</td>
+                <td>高雄區</td>
+                <td><span class="badge badge--success"><span class="badge-dot"></span>在籍</span></td>
+                <td><span class="meal-tag">三餐</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 5. Stats Strip Mini -->
+      <div class="comp-section">
+        <div class="comp-section-title">Stats Strip — C 提案招牌元件</div>
+        <div class="stats-strip--mini"
+          data-layer="L2+UX"
+          data-note="Stats Strip 迷你版：相同的深色卡片 + 四色語義 border-left。此元件讓管理員在確認操作前，無需點開任何浮層就能掌握即時人數統計，是 C 提案降低操作成本的核心 UX 設計。">
+          <div class="stat-card--mini" style="border-left: 3px solid var(--hds-primitive-teal-400);">
+            <div class="stat-label--mini">已選人數</div>
+            <div class="stat-value--mini">4</div>
+          </div>
+          <div class="stat-card--mini" style="border-left: 3px solid var(--hds-color-success);">
+            <div class="stat-label--mini">清口</div>
+            <div class="stat-value--mini">3</div>
+          </div>
+          <div class="stat-card--mini" style="border-left: 3px solid var(--hds-color-warm);">
+            <div class="stat-label--mini">用餐</div>
+            <div class="stat-value--mini">4</div>
+          </div>
+          <div class="stat-card--mini" style="border-left: 3px solid var(--hds-color-warning);">
+            <div class="stat-label--mini">住宿</div>
+            <div class="stat-value--mini">2</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /layer-section L2 -->
+
+    <!-- ══════════════════════════════════════════════════════
+         LAYER 3 — Responsive Layout Demo
+         ══════════════════════════════════════════════════════ -->
+    <div class="layer-section" style="border-top: 1px solid var(--hds-color-border);">
+
+      <div class="layer-section-title">
+        <span class="layer-badge">Layer 3</span>
+        響應式佈局 — Responsive Layout
+      </div>
+      <p class="layer-section-desc">C 提案三階段自適應：桌機完整模式 → 平板 icon-only sidebar → 手機卡片模式</p>
+
+      <!-- Breakpoint callout -->
+      <div class="responsive-callout">
+        <p><strong>請縮放瀏覽器視窗觀察佈局變化</strong></p>
+        <ul class="bp-list">
+          <li class="bp-item"><strong>&gt; 1024px</strong> 桌機：完整 sidebar 232px + 橫向 stats strip</li>
+          <li class="bp-item"><strong>≤ 1024px</strong> 平板：sidebar 縮為 64px icon-only + stats 2×2 grid</li>
+          <li class="bp-item"><strong>≤ 768px</strong> 手機：sidebar 隱藏（漢堡按鈕）+ 表格轉卡片 + stats 2×2</li>
+        </ul>
+      </div>
+
+      <!-- Mobile card demo (always visible for showcase) -->
+      <div class="comp-section mobile-demo-section">
+        <div class="comp-section-title">手機模式：表格 → 數據卡片</div>
+        <p style="font-size: var(--text-xs); color: var(--hds-color-tertiary); margin-bottom: var(--sp-3);">
+          手機寬度下，橫向表格改為垂直數據卡片。每列一張 white card，border-left 延續 C 提案的深藍邊框識別。
+        </p>
+        <div class="mobile-card-list">
+          <div class="mobile-card">
+            <div class="mobile-card-header">
+              <div>
+                <span class="mobile-card-name">志明</span>
+                <span class="g-m" style="margin-left: 8px; font-size: var(--text-sm);">男</span>
+              </div>
+              <div style="display: flex; gap: var(--sp-2); align-items: center;">
+                <span class="badge badge--success"><span class="badge-dot"></span>在籍</span>
+                <input type="checkbox" class="chk" checked>
+              </div>
+            </div>
+            <div class="mobile-card-fields">
+              <div>
+                <div class="mobile-field-label">本名</div>
+                <div class="mobile-field-value">陳大明</div>
+              </div>
+              <div>
+                <div class="mobile-field-label">區別</div>
+                <div class="mobile-field-value">台北區</div>
+              </div>
+              <div>
+                <div class="mobile-field-label">清口</div>
+                <div class="mobile-field-value"><span class="c-yes">是</span></div>
+              </div>
+              <div>
+                <div class="mobile-field-label">用餐 / 住宿</div>
+                <div class="mobile-field-value">
+                  <div class="meal-wrap">
+                    <span class="meal-tag">午餐</span>
+                    <span class="meal-tag">住宿</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mobile-card">
+            <div class="mobile-card-header">
+              <div>
+                <span class="mobile-card-name">志慧</span>
+                <span class="g-f" style="margin-left: 8px; font-size: var(--text-sm);">女</span>
+              </div>
+              <div style="display: flex; gap: var(--sp-2); align-items: center;">
+                <span class="badge badge--warning"><span class="badge-dot"></span>辦理中</span>
+                <input type="checkbox" class="chk" checked>
+              </div>
+            </div>
+            <div class="mobile-card-fields">
+              <div>
+                <div class="mobile-field-label">本名</div>
+                <div class="mobile-field-value">林美惠</div>
+              </div>
+              <div>
+                <div class="mobile-field-label">區別</div>
+                <div class="mobile-field-value">台中區</div>
+              </div>
+              <div>
+                <div class="mobile-field-label">清口</div>
+                <div class="mobile-field-value"><span class="c-no">否</span></div>
+              </div>
+              <div>
+                <div class="mobile-field-label">用餐 / 住宿</div>
+                <div class="mobile-field-value">
+                  <div class="meal-wrap"><span class="meal-tag">午餐</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /layer-section L3 -->
+
   </main>
 </div>
+
+<!-- ── Tooltip System (Proposal C style: dark navy + teal border) ── -->
+<script>
+(function() {
+  var tooltip = document.createElement('div');
+  tooltip.id = 'design-tooltip';
+  tooltip.style.cssText = [
+    'position:fixed',
+    'bottom:24px',
+    'right:24px',
+    'max-width:320px',
+    'padding:14px 16px',
+    'background:#1a1f2e',
+    'color:#c8d0e4',
+    'border-radius:10px',
+    'font-size:13px',
+    'line-height:1.55',
+    'border-left:3px solid #3aada3',
+    'box-shadow:0 4px 24px rgba(15,22,36,0.4)',
+    'opacity:0',
+    'transition:opacity 0.2s ease',
+    'pointer-events:none',
+    'z-index:9999',
+    'font-family:-apple-system,"PingFang TC","Noto Sans TC",sans-serif'
+  ].join(';');
+  document.body.appendChild(tooltip);
+
+  var timer;
+  document.addEventListener('mouseover', function(e) {
+    var target = e.target.closest('[data-note]');
+    clearTimeout(timer);
+    if (target) {
+      timer = setTimeout(function() {
+        var layer = target.dataset.layer || '';
+        tooltip.innerHTML = (layer
+          ? '<div style="font-size:11px;color:#3aada3;margin-bottom:4px;font-family:\'SF Mono\',\'Cascadia Mono\',monospace;letter-spacing:0.06em">' + layer + '</div>'
+          : '') + target.dataset.note;
+        tooltip.style.opacity = '1';
+      }, 180);
+    } else {
+      tooltip.style.opacity = '0';
+    }
+  });
+
+  document.addEventListener('mouseleave', function() {
+    clearTimeout(timer);
+    tooltip.style.opacity = '0';
+  });
+})();
+
+// ── Hamburger toggle ──
+(function() {
+  var btn = document.getElementById('hamburger');
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('sidebar-overlay');
+
+  function open() {
+    sidebar.classList.add('is-open');
+    overlay.classList.add('is-visible');
+    btn.setAttribute('aria-expanded', 'true');
+  }
+  function close() {
+    sidebar.classList.remove('is-open');
+    overlay.classList.remove('is-visible');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+
+  btn.addEventListener('click', function() {
+    if (sidebar.classList.contains('is-open')) { close(); } else { open(); }
+  });
+  overlay.addEventListener('click', close);
+})();
+</script>
 
 </body>
 </html>
