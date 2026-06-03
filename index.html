@@ -205,34 +205,62 @@
       background: var(--border);
     }
 
-    /* ── CTA Button ── */
+    /* ── Device Buttons ── */
     .card-footer {
-      padding: 0 24px 22px;
+      padding: 0 20px 20px;
     }
 
-    .btn-view {
-      display: block;
-      width: 100%;
-      padding: 11px 20px;
-      background: var(--accent);
-      color: #ffffff;
-      text-align: center;
+    .device-btns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .btn-device {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 10px 6px;
+      background: transparent;
+      color: var(--text-secondary);
       font-family: var(--font);
-      font-size: 0.875rem;
+      font-size: 0.8125rem;
       font-weight: 600;
-      border: none;
+      border: 1.5px solid var(--border);
       border-radius: var(--radius-btn);
       cursor: pointer;
       letter-spacing: 0.02em;
-      transition: background 0.15s ease, transform 0.1s ease;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
     }
 
-    .btn-view:hover {
-      background: #3d3d38;
+    .btn-device:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+      background: rgba(0,0,0,0.03);
     }
 
-    .btn-view:active {
-      transform: scale(0.98);
+    .btn-device:active {
+      transform: scale(0.97);
+    }
+
+    .btn-device svg {
+      width: 20px;
+      height: 20px;
+      opacity: 0.55;
+      transition: opacity 0.15s;
+      flex-shrink: 0;
+    }
+
+    .btn-device:hover svg {
+      opacity: 1;
+    }
+
+    .btn-device-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      line-height: 1;
     }
 
     /* ── Proposal Overlay ── */
@@ -301,50 +329,64 @@
       font-size: 0.8625rem;
     }
 
-    /* Layer section header rows */
+    /* Layer section header rows — 淺底深字，避開 nth-child 覆蓋問題 */
     .layer-header td {
-      padding: 11px 18px;
-      font-size: 0.75rem;
+      padding: 13px 18px 12px;
+      font-size: 0.775rem;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: #fff;
       white-space: nowrap;
     }
 
     .layer-header.layer-1 {
-      background: #1a1a2e;
+      background: #ecedf5 !important;
+      border-left: 4px solid #2c2c60;
+    }
+    .layer-header.layer-1 td {
+      color: #2c2c60;
+      border-left: none;
     }
 
     .layer-header.layer-2 {
-      background: #2d4a7a;
+      background: #e8eef8 !important;
+      border-left: 4px solid #1e4080;
+    }
+    .layer-header.layer-2 td {
+      color: #1e4080;
+      border-left: none;
     }
 
     .layer-header.layer-3 {
-      background: #3d7a6a;
+      background: #e6f3ef !important;
+      border-left: 4px solid #1e6050;
+    }
+    .layer-header.layer-3 td {
+      color: #1e6050;
+      border-left: none;
     }
 
     /* Column headers */
     .col-header-row th {
-      padding: 12px 18px;
+      padding: 11px 18px;
       text-align: left;
       font-weight: 700;
       letter-spacing: 0.03em;
       white-space: nowrap;
-      color: #fff;
+      color: #fff !important;
       font-size: 0.8rem;
     }
 
     .col-header-row.layer-1 {
-      background: #252540;
+      background: #252550 !important;
     }
 
     .col-header-row.layer-2 {
-      background: #3a5a8a;
+      background: #1e4a8a !important;
     }
 
     .col-header-row.layer-3 {
-      background: #4d8a7a;
+      background: #1e6a58 !important;
     }
 
     tbody tr {
@@ -441,7 +483,20 @@
           </ul>
         </div>
         <div class="card-footer">
-          <button class="btn-view" onclick="openProposal('A', this)">查看完整提案</button>
+          <div class="device-btns">
+            <button class="btn-device" onclick="openProposal('A','desktop')">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="16" height="11" rx="1.5"/><path d="M7 17h6M10 14v3"/></svg>
+              桌機
+            </button>
+            <button class="btn-device" onclick="openProposal('A','tablet')">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="1.5" width="12" height="17" rx="1.5"/><circle cx="10" cy="16" r="0.85" fill="currentColor" stroke="none"/></svg>
+              平板
+            </button>
+            <button class="btn-device" onclick="openProposal('A','mobile')">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="1" width="9" height="18" rx="2"/><circle cx="10" cy="16.5" r="0.85" fill="currentColor" stroke="none"/></svg>
+              手機
+            </button>
+          </div>
         </div>
       </article>
 
@@ -460,7 +515,20 @@
           </ul>
         </div>
         <div class="card-footer">
-          <button class="btn-view" onclick="openProposal('B', this)">查看完整提案</button>
+          <div class="device-btns">
+            <button class="btn-device" onclick="openProposal('B','desktop')">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="16" height="11" rx="1.5"/><path d="M7 17h6M10 14v3"/></svg>
+              桌機
+            </button>
+            <button class="btn-device" onclick="openProposal('B','tablet')">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="1.5" width="12" height="17" rx="1.5"/><circle cx="10" cy="16" r="0.85" fill="currentColor" stroke="none"/></svg>
+              平板
+            </button>
+            <button class="btn-device" onclick="openProposal('B','mobile')">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="1" width="9" height="18" rx="2"/><circle cx="10" cy="16.5" r="0.85" fill="currentColor" stroke="none"/></svg>
+              手機
+            </button>
+          </div>
         </div>
       </article>
 
@@ -479,7 +547,20 @@
           </ul>
         </div>
         <div class="card-footer">
-          <button class="btn-view" onclick="openProposal('C', this)">查看完整提案</button>
+          <div class="device-btns">
+            <button class="btn-device" onclick="openProposal('C','desktop')">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="16" height="11" rx="1.5"/><path d="M7 17h6M10 14v3"/></svg>
+              桌機
+            </button>
+            <button class="btn-device" onclick="openProposal('C','tablet')">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="1.5" width="12" height="17" rx="1.5"/><circle cx="10" cy="16" r="0.85" fill="currentColor" stroke="none"/></svg>
+              平板
+            </button>
+            <button class="btn-device" onclick="openProposal('C','mobile')">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="1" width="9" height="18" rx="2"/><circle cx="10" cy="16.5" r="0.85" fill="currentColor" stroke="none"/></svg>
+              手機
+            </button>
+          </div>
         </div>
       </article>
 
@@ -634,7 +715,8 @@
   </footer>
 
   <script>
-    function openProposal(id, btn) {
+    /* 桌機：從卡片動畫放大至全螢幕 */
+    function openDesktop(id) {
       const card = document.getElementById('card-' + id);
       const rect = card.getBoundingClientRect();
 
@@ -642,56 +724,107 @@
       overlay.className = 'proposal-overlay';
       overlay.style.cssText = `
         position: fixed;
-        top: ${rect.top}px;
-        left: ${rect.left}px;
-        width: ${rect.width}px;
-        height: ${rect.height}px;
-        background: #fff;
-        border-radius: 12px;
-        z-index: 1000;
-        overflow: hidden;
-        transition: top 0.4s cubic-bezier(0.32,0.72,0,1),
-                    left 0.4s cubic-bezier(0.32,0.72,0,1),
-                    width 0.4s cubic-bezier(0.32,0.72,0,1),
-                    height 0.4s cubic-bezier(0.32,0.72,0,1),
-                    border-radius 0.4s ease;
-        box-shadow: 0 32px 80px rgba(0,0,0,0.22);
+        top: ${rect.top}px; left: ${rect.left}px;
+        width: ${rect.width}px; height: ${rect.height}px;
+        background: #fff; border-radius: 12px; z-index: 1000; overflow: hidden;
+        transition: top .4s cubic-bezier(.32,.72,0,1), left .4s cubic-bezier(.32,.72,0,1),
+                    width .4s cubic-bezier(.32,.72,0,1), height .4s cubic-bezier(.32,.72,0,1),
+                    border-radius .4s ease;
+        box-shadow: 0 32px 80px rgba(0,0,0,.22);
       `;
 
       const iframe = document.createElement('iframe');
       iframe.src = './proposal-' + id + '.html';
-      iframe.style.cssText = 'width:100%;height:100%;border:none;opacity:0;transition:opacity 0.3s ease 0.3s;';
+      iframe.style.cssText = 'width:100%;height:100%;border:none;opacity:0;transition:opacity .3s ease .3s;';
       overlay.appendChild(iframe);
 
       const closeBtn = document.createElement('button');
       closeBtn.innerHTML = '&times; 返回總覽';
       closeBtn.className = 'close-btn';
-      closeBtn.onclick = () => closeProposal(overlay, rect);
+      closeBtn.onclick = () => {
+        iframe.style.opacity = '0';
+        overlay.style.top = rect.top + 'px'; overlay.style.left = rect.left + 'px';
+        overlay.style.width = rect.width + 'px'; overlay.style.height = rect.height + 'px';
+        overlay.style.borderRadius = '12px';
+        setTimeout(() => overlay.remove(), 420);
+      };
       overlay.appendChild(closeBtn);
-
       document.body.appendChild(overlay);
 
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          overlay.style.top = '0';
-          overlay.style.left = '0';
-          overlay.style.width = '100vw';
-          overlay.style.height = '100vh';
-          overlay.style.borderRadius = '0';
-          iframe.style.opacity = '1';
-        });
-      });
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        overlay.style.top = '0'; overlay.style.left = '0';
+        overlay.style.width = '100vw'; overlay.style.height = '100vh';
+        overlay.style.borderRadius = '0';
+        iframe.style.opacity = '1';
+      }));
     }
 
-    function closeProposal(overlay, rect) {
-      const iframe = overlay.querySelector('iframe');
-      iframe.style.opacity = '0';
-      overlay.style.top = rect.top + 'px';
-      overlay.style.left = rect.left + 'px';
-      overlay.style.width = rect.width + 'px';
-      overlay.style.height = rect.height + 'px';
-      overlay.style.borderRadius = '12px';
-      setTimeout(() => overlay.remove(), 420);
+    /* 平板/手機：淡入深色幕 + 裝置框 */
+    function openDeviceView(id, device) {
+      const configs = {
+        tablet: { w: 768,  h: null, label: '平板視圖 · 768px', radius: '14px' },
+        mobile: { w: 390,  h: 844, label: '手機視圖 · 390px',  radius: '36px' }
+      };
+      const cfg = configs[device];
+
+      const backdrop = document.createElement('div');
+      backdrop.style.cssText = `
+        position:fixed; inset:0; z-index:1000;
+        background: rgba(8,8,16,.82); backdrop-filter:blur(6px);
+        display:flex; flex-direction:column; align-items:center; justify-content:center;
+        padding:20px; opacity:0; transition:opacity .25s ease;
+      `;
+
+      const lbl = document.createElement('div');
+      lbl.textContent = cfg.label;
+      lbl.style.cssText = `
+        color:rgba(255,255,255,.55); font-size:11px; letter-spacing:.14em;
+        text-transform:uppercase; margin-bottom:14px; font-family:var(--font);
+      `;
+
+      const frameH = cfg.h
+        ? Math.min(cfg.h, window.innerHeight - 120)
+        : window.innerHeight - 120;
+      const frameW = Math.min(cfg.w, window.innerWidth - 40);
+
+      const frame = document.createElement('div');
+      frame.style.cssText = `
+        width:${frameW}px; height:${frameH}px; flex-shrink:0;
+        background:#fff; border-radius:${cfg.radius}; overflow:hidden;
+        box-shadow:0 0 0 1.5px rgba(255,255,255,.18), 0 40px 80px rgba(0,0,0,.55);
+      `;
+
+      const iframe = document.createElement('iframe');
+      iframe.src = './proposal-' + id + '.html';
+      iframe.style.cssText = `width:${cfg.w}px; max-width:100%; height:100%; border:none; display:block;`;
+      frame.appendChild(iframe);
+
+      const closeBtn = document.createElement('button');
+      closeBtn.innerHTML = '&times; 返回總覽';
+      closeBtn.style.cssText = `
+        margin-top:18px; background:rgba(255,255,255,.12); color:#fff;
+        border:1px solid rgba(255,255,255,.22); border-radius:20px;
+        padding:8px 22px; font-size:13px; font-family:var(--font);
+        cursor:pointer; letter-spacing:.03em; transition:background .15s;
+      `;
+      closeBtn.onmouseenter = () => closeBtn.style.background = 'rgba(255,255,255,.22)';
+      closeBtn.onmouseleave = () => closeBtn.style.background = 'rgba(255,255,255,.12)';
+
+      const dismiss = () => {
+        backdrop.style.opacity = '0';
+        setTimeout(() => backdrop.remove(), 250);
+      };
+      closeBtn.onclick = dismiss;
+      backdrop.addEventListener('click', e => { if (e.target === backdrop) dismiss(); });
+
+      backdrop.append(lbl, frame, closeBtn);
+      document.body.appendChild(backdrop);
+      requestAnimationFrame(() => requestAnimationFrame(() => { backdrop.style.opacity = '1'; }));
+    }
+
+    function openProposal(id, device) {
+      if (device === 'desktop') openDesktop(id);
+      else openDeviceView(id, device);
     }
   </script>
 </body>
