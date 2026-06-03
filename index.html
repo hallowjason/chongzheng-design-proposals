@@ -860,65 +860,9 @@
       else openDeviceView(id, device);
     }
 
-    /* 元件規範：全螢幕開提案頁，自動捲到 .component-demo */
+    /* 元件規範：開獨立 spec 頁 */
     function openSpec(id) {
-      const card = document.getElementById('card-' + id);
-      const rect = card.getBoundingClientRect();
-
-      const overlay = document.createElement('div');
-      overlay.className = 'proposal-overlay';
-      overlay.style.cssText = `
-        position:fixed;
-        top:${rect.top}px; left:${rect.left}px;
-        width:${rect.width}px; height:${rect.height}px;
-        background:#fff; border-radius:12px; z-index:1000; overflow:hidden;
-        transition: top .4s cubic-bezier(.32,.72,0,1), left .4s cubic-bezier(.32,.72,0,1),
-                    width .4s cubic-bezier(.32,.72,0,1), height .4s cubic-bezier(.32,.72,0,1),
-                    border-radius .4s ease;
-        box-shadow: 0 32px 80px rgba(0,0,0,.22);
-      `;
-
-      const specLabel = document.createElement('div');
-      specLabel.textContent = '元件規範';
-      specLabel.style.cssText = `
-        position:absolute; top:16px; right:16px; z-index:10;
-        background:rgba(0,0,0,.55); color:#fff; backdrop-filter:blur(8px);
-        font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
-        padding:4px 10px; border-radius:20px; font-family:var(--font);
-        pointer-events:none;
-      `;
-
-      const iframe = document.createElement('iframe');
-      iframe.src = './proposal-' + id + '.html';
-      iframe.style.cssText = 'width:100%;height:100%;border:none;opacity:0;transition:opacity .3s ease .3s;';
-      iframe.onload = () => {
-        try {
-          const el = iframe.contentWindow.document.querySelector('.component-demo');
-          if (el) setTimeout(() => el.scrollIntoView({ behavior: 'instant' }), 50);
-        } catch(e) {}
-      };
-      overlay.appendChild(iframe);
-      overlay.appendChild(specLabel);
-
-      const closeBtn = document.createElement('button');
-      closeBtn.innerHTML = '&times; 返回總覽';
-      closeBtn.className = 'close-btn';
-      closeBtn.onclick = () => {
-        iframe.style.opacity = '0';
-        overlay.style.top = rect.top + 'px'; overlay.style.left = rect.left + 'px';
-        overlay.style.width = rect.width + 'px'; overlay.style.height = rect.height + 'px';
-        overlay.style.borderRadius = '12px';
-        setTimeout(() => overlay.remove(), 420);
-      };
-      overlay.appendChild(closeBtn);
-      document.body.appendChild(overlay);
-
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        overlay.style.top = '0'; overlay.style.left = '0';
-        overlay.style.width = '100vw'; overlay.style.height = '100vh';
-        overlay.style.borderRadius = '0';
-        iframe.style.opacity = '1';
-      }));
+      window.location.href = './spec-' + id.toLowerCase() + '.html';
     }
   </script>
 </body>
