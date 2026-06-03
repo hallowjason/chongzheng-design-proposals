@@ -1434,7 +1434,10 @@ body {
         <div class="mobile-card">
           <div class="mobile-card-header-row">
             <span class="mobile-card-name">志明</span>
-            <span class="badge badge--active"><span class="badge-dot"></span>在籍</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="badge badge--active"><span class="badge-dot"></span>在籍</span>
+              <input type="checkbox" class="checkbox" checked>
+            </div>
           </div>
           <div class="mobile-card-row">
             <span class="mobile-card-field">本名</span>
@@ -1460,7 +1463,10 @@ body {
         <div class="mobile-card">
           <div class="mobile-card-header-row">
             <span class="mobile-card-name">志慧</span>
-            <span class="badge badge--pending"><span class="badge-dot"></span>辦理中</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="badge badge--pending"><span class="badge-dot"></span>辦理中</span>
+              <input type="checkbox" class="checkbox">
+            </div>
           </div>
           <div class="mobile-card-row">
             <span class="mobile-card-field">本名</span>
@@ -1489,73 +1495,132 @@ body {
 </div>
 
 <script>
-// ── Hamburger / Sidebar Toggle ──
-(function() {
-  var btn = document.getElementById('hamburgerBtn');
+// ── Sidebar Toggle ──
+function toggleSidebar() {
   var sidebar = document.getElementById('sidebar');
   var overlay = document.getElementById('sidebarOverlay');
-  if (!btn || !sidebar || !overlay) return;
+  if (!sidebar) return;
+  sidebar.classList.toggle('sidebar--open');
+  if (overlay) overlay.classList.toggle('sidebar-overlay--visible');
+}
 
-  function open() {
-    sidebar.classList.add('is-open');
-    overlay.classList.add('is-open');
-    btn.setAttribute('aria-expanded', 'true');
-  }
-  function close() {
-    sidebar.classList.remove('is-open');
-    overlay.classList.remove('is-open');
-    btn.setAttribute('aria-expanded', 'false');
-  }
-
-  btn.addEventListener('click', function() {
-    sidebar.classList.contains('is-open') ? close() : open();
-  });
-  overlay.addEventListener('click', close);
-})();
-
-// ── Design Tooltip System (Warm Color) ──
+// ── Checkbox row selection + footer counter ──
 (function() {
-  var tooltip = document.createElement('div');
-  tooltip.id = 'design-tooltip';
-  tooltip.style.cssText = [
-    'position:fixed',
-    'bottom:24px',
-    'right:24px',
-    'max-width:320px',
-    'padding:14px 16px',
-    'background:#f9f7f4',
-    'color:#2c2824',
-    'border-radius:10px',
-    'font-size:13px',
-    'line-height:1.6',
-    'border-top:3px solid #d4896a',
-    'box-shadow:0 4px 20px rgba(44,40,36,0.15)',
-    'opacity:0',
-    'transition:opacity 0.2s ease',
-    'pointer-events:none',
-    'z-index:9999',
-    'font-family:-apple-system,PingFang TC,Noto Sans TC,sans-serif'
-  ].join(';');
-  document.body.appendChild(tooltip);
+  function updateFooter() {
+    var checked = document.querySelectorAll('.table tbody .checkbox:checked');
+    var el = document.querySelector('.footer-summary strong');
+    if (el) el.textContent = checked.length;
+    document.querySelectorAll('.table tbody tr').forEach(function(tr) {
+      var cb = tr.querySelector('.checkbox');
+      tr.classList.toggle('row--selected', !!(cb && cb.checked));
+    });
+  }
+  document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('checkbox')) updateFooter();
+  });
+  updateFooter();
 
-  var timer;
-  document.addEventListener('mouseover', function(e) {
-    var target = e.target.closest('[data-note]');
-    clearTimeout(timer);
-    if (target) {
-      timer = setTimeout(function() {
-        var layer = target.dataset.layer || '';
-        tooltip.innerHTML =
-          (layer ? '<div style="font-size:11px;opacity:0.6;margin-bottom:4px;font-family:SF Mono,Monaco,Courier New,monospace;color:#d4896a;letter-spacing:0.04em">' + layer + '</div>' : '') +
-          target.dataset.note;
-        tooltip.style.opacity = '1';
-      }, 180);
-    } else {
-      tooltip.style.opacity = '0';
+  // Select-all / clear in footer
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    var text = btn.textContent.trim();
+    if (text === '全選' || text.includes('全選')) {
+      document.querySelectorAll('.table tbody .checkbox').forEach(function(cb) { cb.checked = true; });
+      updateFooter();
+    } else if (text === '取消' || text === '清除') {
+      document.querySelectorAll('.table tbody .checkbox').forEach(function(cb) { cb.checked = false; });
+      updateFooter();
+    } else if (text.includes('確定加入') || text.includes('加入')) {
+      showToast('✓ 已加入 ' + document.querySelectorAll('.table tbody .checkbox:checked').length + ' 位班員');
+    } else if (text.includes('預覽') || text.includes('匯出')) {
+      showToast('功能開發中...');
     }
   });
 })();
+
+// ── Search filter ──
+(function() {
+  var inputs = document.querySelectorAll('input[type="text"], input[type="search"]');
+  inputs.forEach(function(input) {
+    input.addEventListener('input', function() {
+      var q = this.value.toLowerCase().trim();
+      var rows = document.querySelectorAll('.table tbody tr');
+      rows.forEach(function(tr) {
+        tr.style.display = (!q || tr.textContent.toLowerCase().includes(q)) ? '' : 'none';
+      });
+    });
+    // select content on focus
+    input.addEventListener('focus', function() { this.select(); });
+  });
+  // Dropdowns
+  document.querySelectorAll('select').forEach(function(sel) {
+    sel.addEventListener('change', function() {
+      var q = this.value;
+      var label = this.previousElementSibling ? this.previousElementSibling.textContent : '';
+      if (!q) {
+        document.querySelectorAll('.table tbody tr').forEach(function(tr) { tr.style.display = ''; });
+        return;
+      }
+      document.querySelectorAll('.table tbody tr').forEach(function(tr) {
+        tr.style.display = tr.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+      });
+    });
+  });
+})();
+
+// ── Sidebar nav active ──
+document.querySelectorAll('.sidebar-item').forEach(function(item) {
+  item.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelectorAll('.sidebar-item').forEach(function(i) { i.classList.remove('sidebar-item--active'); });
+    this.classList.add('sidebar-item--active');
+  });
+});
+document.querySelectorAll('.nav-item').forEach(function(item) {
+  item.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelectorAll('.nav-item').forEach(function(i) { i.classList.remove('nav-item--active'); });
+    this.classList.add('nav-item--active');
+  });
+});
+
+// ── Toast ──
+function showToast(msg) {
+  var t = document.getElementById('toast-msg');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast-msg';
+    t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1a1a18;color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;z-index:9999;pointer-events:none;opacity:0;transition:opacity 0.2s ease;white-space:nowrap;font-family:inherit;';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function() { t.style.opacity = '0'; }, 2200);
+}
+
+// ── Design Tooltip ──
+(function() {
+  var tooltip = document.createElement('div');
+  tooltip.id = 'design-tooltip';
+  tooltip.style.cssText = 'position:fixed;bottom:24px;right:24px;max-width:320px;padding:14px 16px;background:#1a1a1a;color:#f5ede3;border-radius:10px;font-size:13px;line-height:1.55;box-shadow:0 4px 20px rgba(0,0,0,0.3);opacity:0;transition:opacity 0.2s ease;pointer-events:none;z-index:9998;font-family:"PingFang TC","Noto Sans TC",sans-serif';
+  document.body.appendChild(tooltip);
+  var timer;
+  document.addEventListener('mouseover', function(e) {
+    var t = e.target.closest('[data-note]');
+    clearTimeout(timer);
+    if (t) {
+      timer = setTimeout(function() {
+        var layer = t.dataset.layer || '';
+        tooltip.innerHTML = (layer ? '<div style="font-size:11px;opacity:0.6;margin-bottom:4px;font-family:monospace">' + layer + '</div>' : '') + t.dataset.note;
+        tooltip.style.opacity = '1';
+      }, 180);
+    } else { tooltip.style.opacity = '0'; }
+  });
+})();
 </script>
+
 
 </body>
 </html>

@@ -13,11 +13,11 @@
 
 /* ── Primitive Tokens (color primitives, never reference directly in components) ── */
 :root {
-  --hds-primitive-navy-900: #0f1624;
-  --hds-primitive-navy-800: #1a1f2e;
-  --hds-primitive-navy-700: #252c3e;
-  --hds-primitive-navy-600: #2f3750;
-  --hds-primitive-navy-500: #3e4d6a;
+  --hds-primitive-navy-900: #180e08;
+  --hds-primitive-navy-800: #2e1c0d;
+  --hds-primitive-navy-700: #3e2b18;
+  --hds-primitive-navy-600: #503a24;
+  --hds-primitive-navy-500: #6b4e38;
   --hds-primitive-teal-400: #54d1c6;
   --hds-primitive-teal-500: #3aada3;
   --hds-primitive-teal-600: #2d9089;
@@ -38,7 +38,7 @@
   --hds-primitive-gray-700: #64748d;
   --hds-primitive-gray-800: #3a4660;
   --hds-primitive-gray-900: #0d1f3a;
-  --hds-primitive-blue-700: #1d4ed8;
+  --hds-primitive-blue-700: #2d9089;
   --hds-primitive-pink-800: #9d174d;
   --hds-primitive-green-500: #15be53;
   --hds-primitive-green-800: #108c3d;
@@ -46,8 +46,8 @@
   --hds-primitive-amber-900: #92400e;
   --hds-primitive-red-500: #ef4444;
   --hds-primitive-red-800: #991b1b;
-  --hds-primitive-blue-500: #3b82f6;
-  --hds-primitive-blue-800: #1d4ed8;
+  --hds-primitive-blue-500: #54d1c6;
+  --hds-primitive-blue-800: #2d9089;
   --hds-primitive-violet-500: #8b5cf6;
   --hds-primitive-violet-800: #5b21b6;
   --hds-primitive-shadow-blue: rgba(50,50,93,1);
@@ -653,6 +653,7 @@ body {
 .result-controls { display: flex; gap: var(--sp-2); }
 
 /* ── Table ── */
+.mobile-card-list { display: none; }
 .table-wrapper {
   background: var(--hds-color-bg);
   border: 1px solid var(--hds-color-border);
@@ -1208,6 +1209,10 @@ body {
     font-size: var(--text-sm);
     color: var(--hds-color-body);
   }
+  .mobile-field-item {
+    font-size: var(--text-sm);
+    color: var(--hds-color-body);
+  }
   .header-nav { display: none; }
   .header-sep { display: none; }
   .search-grid { grid-template-columns: 1fr 1fr; }
@@ -1308,7 +1313,7 @@ body {
 <!-- ── Header ── -->
 <header class="header"
   data-layer="L1"
-  data-note="深海軍藍 #1a1f2e 直接延伸至 Header，消除 header/sidebar 的視覺斷層。對於高頻使用的後台系統，減少視覺切換點可降低用戶的認知負荷。">
+  data-note="深海軍藍 #2e1c0d 直接延伸至 Header，消除 header/sidebar 的視覺斷層。對於高頻使用的後台系統，減少視覺切換點可降低用戶的認知負荷。">
   <button class="hamburger-btn" id="hamburger" type="button" aria-label="開啟選單">
     <span></span><span></span><span></span>
   </button>
@@ -1613,6 +1618,80 @@ body {
         </table>
       </div>
 
+      <!-- Mobile Card List (visible ≤768px) -->
+      <div class="mobile-card-list" id="mobile-card-list-main">
+        <div class="mobile-card selected" data-name="志明">
+          <div class="mobile-card-header">
+            <span class="mobile-card-name">志明</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="badge badge--success"><span class="badge-dot"></span>在籍</span>
+              <input type="checkbox" class="chk" checked>
+            </div>
+          </div>
+          <div class="mobile-card-fields">
+            <span class="mobile-field-item">台北區</span>
+            <span class="mobile-field-item">清口 ✓</span>
+            <span class="meal-tag">午餐</span><span class="meal-tag">住宿</span>
+          </div>
+        </div>
+        <div class="mobile-card selected" data-name="志慧">
+          <div class="mobile-card-header">
+            <span class="mobile-card-name">志慧</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="badge badge--warning"><span class="badge-dot"></span>辦理中</span>
+              <input type="checkbox" class="chk" checked>
+            </div>
+          </div>
+          <div class="mobile-card-fields">
+            <span class="mobile-field-item">台中區</span>
+            <span class="mobile-field-item">葷食</span>
+            <span class="meal-tag">午餐</span>
+          </div>
+        </div>
+        <div class="mobile-card selected" data-name="志遠">
+          <div class="mobile-card-header">
+            <span class="mobile-card-name">志遠</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="badge badge--success"><span class="badge-dot"></span>在籍</span>
+              <input type="checkbox" class="chk" checked>
+            </div>
+          </div>
+          <div class="mobile-card-fields">
+            <span class="mobile-field-item">高雄區</span>
+            <span class="mobile-field-item">清口 ✓</span>
+            <span class="meal-tag">三餐</span><span class="meal-tag">住宿</span>
+          </div>
+        </div>
+        <div class="mobile-card" data-name="志純">
+          <div class="mobile-card-header">
+            <span class="mobile-card-name">志純</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="badge badge--new"><span class="badge-dot"></span>新求道</span>
+              <input type="checkbox" class="chk">
+            </div>
+          </div>
+          <div class="mobile-card-fields">
+            <span class="mobile-field-item">台北區</span>
+            <span class="mobile-field-item">葷食</span>
+            <span class="meal-tag">午晚餐</span>
+          </div>
+        </div>
+        <div class="mobile-card selected" data-name="志仁">
+          <div class="mobile-card-header">
+            <span class="mobile-card-name">志仁</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="badge badge--success"><span class="badge-dot"></span>在籍</span>
+              <input type="checkbox" class="chk" checked>
+            </div>
+          </div>
+          <div class="mobile-card-fields">
+            <span class="mobile-field-item">台中區</span>
+            <span class="mobile-field-item">清口 ✓</span>
+            <span class="meal-tag">午餐</span>
+          </div>
+        </div>
+      </div><!-- /mobile-card-list-main -->
+
     </div><!-- /content -->
 
     <!-- Footer -->
@@ -1631,181 +1710,136 @@ body {
     </div>
 
 
-    <!-- ══════════════════════════════════════════════════════
-         LAYER 3 — Responsive Layout Demo
-         ══════════════════════════════════════════════════════ -->
-    <div class="layer-section" style="border-top: 1px solid var(--hds-color-border);">
-
-      <div class="layer-section-title">
-        <span class="layer-badge">Layer 3</span>
-        響應式佈局 — Responsive Layout
-      </div>
-      <p class="layer-section-desc">C 提案三階段自適應：桌機完整模式 → 平板 icon-only sidebar → 手機卡片模式</p>
-
-      <!-- Breakpoint callout -->
-      <div class="responsive-callout">
-        <p><strong>請縮放瀏覽器視窗觀察佈局變化</strong></p>
-        <ul class="bp-list">
-          <li class="bp-item"><strong>&gt; 1024px</strong> 桌機：完整 sidebar 232px + 橫向 stats strip</li>
-          <li class="bp-item"><strong>≤ 1024px</strong> 平板：sidebar 縮為 64px icon-only + stats 2×2 grid</li>
-          <li class="bp-item"><strong>≤ 768px</strong> 手機：sidebar 隱藏（漢堡按鈕）+ 表格轉卡片 + stats 2×2</li>
-        </ul>
-      </div>
-
-      <!-- Mobile card demo (always visible for showcase) -->
-      <div class="comp-section mobile-demo-section">
-        <div class="comp-section-title">手機模式：表格 → 數據卡片</div>
-        <p style="font-size: var(--text-xs); color: var(--hds-color-tertiary); margin-bottom: var(--sp-3);">
-          手機寬度下，橫向表格改為垂直數據卡片。每列一張 white card，border-left 延續 C 提案的深藍邊框識別。
-        </p>
-        <div class="mobile-card-list">
-          <div class="mobile-card">
-            <div class="mobile-card-header">
-              <div>
-                <span class="mobile-card-name">志明</span>
-                <span class="g-m" style="margin-left: 8px; font-size: var(--text-sm);">男</span>
-              </div>
-              <div style="display: flex; gap: var(--sp-2); align-items: center;">
-                <span class="badge badge--success"><span class="badge-dot"></span>在籍</span>
-                <input type="checkbox" class="chk" checked>
-              </div>
-            </div>
-            <div class="mobile-card-fields">
-              <div>
-                <div class="mobile-field-label">本名</div>
-                <div class="mobile-field-value">陳大明</div>
-              </div>
-              <div>
-                <div class="mobile-field-label">區別</div>
-                <div class="mobile-field-value">台北區</div>
-              </div>
-              <div>
-                <div class="mobile-field-label">清口</div>
-                <div class="mobile-field-value"><span class="c-yes">是</span></div>
-              </div>
-              <div>
-                <div class="mobile-field-label">用餐 / 住宿</div>
-                <div class="mobile-field-value">
-                  <div class="meal-wrap">
-                    <span class="meal-tag">午餐</span>
-                    <span class="meal-tag">住宿</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mobile-card">
-            <div class="mobile-card-header">
-              <div>
-                <span class="mobile-card-name">志慧</span>
-                <span class="g-f" style="margin-left: 8px; font-size: var(--text-sm);">女</span>
-              </div>
-              <div style="display: flex; gap: var(--sp-2); align-items: center;">
-                <span class="badge badge--warning"><span class="badge-dot"></span>辦理中</span>
-                <input type="checkbox" class="chk" checked>
-              </div>
-            </div>
-            <div class="mobile-card-fields">
-              <div>
-                <div class="mobile-field-label">本名</div>
-                <div class="mobile-field-value">林美惠</div>
-              </div>
-              <div>
-                <div class="mobile-field-label">區別</div>
-                <div class="mobile-field-value">台中區</div>
-              </div>
-              <div>
-                <div class="mobile-field-label">清口</div>
-                <div class="mobile-field-value"><span class="c-no">否</span></div>
-              </div>
-              <div>
-                <div class="mobile-field-label">用餐 / 住宿</div>
-                <div class="mobile-field-value">
-                  <div class="meal-wrap"><span class="meal-tag">午餐</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /layer-section L3 -->
 
   </main>
 </div>
 
 <!-- ── Tooltip System (Proposal C style: dark navy + teal border) ── -->
 <script>
+// ── Sidebar Toggle ──
 (function() {
-  var tooltip = document.createElement('div');
-  tooltip.id = 'design-tooltip';
-  tooltip.style.cssText = [
-    'position:fixed',
-    'bottom:24px',
-    'right:24px',
-    'max-width:320px',
-    'padding:14px 16px',
-    'background:#1a1f2e',
-    'color:#c8d0e4',
-    'border-radius:10px',
-    'font-size:13px',
-    'line-height:1.55',
-    'border-left:3px solid #3aada3',
-    'box-shadow:0 4px 24px rgba(15,22,36,0.4)',
-    'opacity:0',
-    'transition:opacity 0.2s ease',
-    'pointer-events:none',
-    'z-index:9999',
-    'font-family:-apple-system,"PingFang TC","Noto Sans TC",sans-serif'
-  ].join(';');
-  document.body.appendChild(tooltip);
-
-  var timer;
-  document.addEventListener('mouseover', function(e) {
-    var target = e.target.closest('[data-note]');
-    clearTimeout(timer);
-    if (target) {
-      timer = setTimeout(function() {
-        var layer = target.dataset.layer || '';
-        tooltip.innerHTML = (layer
-          ? '<div style="font-size:11px;color:#3aada3;margin-bottom:4px;font-family:\'SF Mono\',\'Cascadia Mono\',monospace;letter-spacing:0.06em">' + layer + '</div>'
-          : '') + target.dataset.note;
-        tooltip.style.opacity = '1';
-      }, 180);
-    } else {
-      tooltip.style.opacity = '0';
-    }
-  });
-
-  document.addEventListener('mouseleave', function() {
-    clearTimeout(timer);
-    tooltip.style.opacity = '0';
-  });
-})();
-
-// ── Hamburger toggle ──
-(function() {
-  var btn = document.getElementById('hamburger');
+  var btn = document.getElementById('hamburger-btn');
   var sidebar = document.getElementById('sidebar');
   var overlay = document.getElementById('sidebar-overlay');
-
+  if (!btn) return;
   function open() {
     sidebar.classList.add('is-open');
-    overlay.classList.add('is-visible');
+    if (overlay) overlay.classList.add('is-visible');
     btn.setAttribute('aria-expanded', 'true');
   }
   function close() {
     sidebar.classList.remove('is-open');
-    overlay.classList.remove('is-visible');
+    if (overlay) overlay.classList.remove('is-visible');
     btn.setAttribute('aria-expanded', 'false');
   }
-
   btn.addEventListener('click', function() {
-    if (sidebar.classList.contains('is-open')) { close(); } else { open(); }
+    sidebar.classList.contains('is-open') ? close() : open();
   });
-  overlay.addEventListener('click', close);
+  if (overlay) overlay.addEventListener('click', close);
+})();
+
+// ── Checkbox row selection + stat counter ──
+(function() {
+  function updateStats() {
+    var cbs = document.querySelectorAll('.tbl tbody input[type="checkbox"]:checked, .mobile-card input[type="checkbox"]:checked');
+    var el = document.querySelector('.stat-card:first-child .stat-value');
+    if (el) el.textContent = cbs.length;
+    document.querySelectorAll('.tbl tbody tr').forEach(function(tr) {
+      var cb = tr.querySelector('input[type="checkbox"]');
+      tr.classList.toggle('tbl-row--selected-demo', !!(cb && cb.checked));
+    });
+    document.querySelectorAll('.mobile-card').forEach(function(card) {
+      var cb = card.querySelector('input[type="checkbox"]');
+      card.style.borderLeftColor = (cb && cb.checked) ? 'var(--hds-primitive-teal-400)' : '';
+    });
+  }
+  document.addEventListener('change', function(e) {
+    if (e.target.type === 'checkbox') updateStats();
+  });
+  updateStats();
+
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    var text = btn.textContent.trim();
+    if (text.includes('加入') || text.includes('批次')) {
+      var n = document.querySelectorAll('input[type="checkbox"]:checked').length;
+      showToast('✓ 已加入 ' + n + ' 位班員');
+    } else if (text.includes('匯出') || text.includes('報表')) {
+      showToast('匯出 CSV 準備中...');
+    }
+  });
+})();
+
+// ── Search filter ──
+(function() {
+  document.querySelectorAll('input[type="text"], input[type="search"]').forEach(function(input) {
+    input.addEventListener('input', function() {
+      var q = this.value.toLowerCase().trim();
+      document.querySelectorAll('.tbl tbody tr').forEach(function(tr) {
+        tr.style.display = (!q || tr.textContent.toLowerCase().includes(q)) ? '' : 'none';
+      });
+      document.querySelectorAll('.mobile-card').forEach(function(card) {
+        card.style.display = (!q || card.textContent.toLowerCase().includes(q)) ? '' : 'none';
+      });
+    });
+    input.addEventListener('focus', function() { this.select(); });
+  });
+  document.querySelectorAll('select').forEach(function(sel) {
+    sel.addEventListener('change', function() {
+      var q = this.value;
+      document.querySelectorAll('.tbl tbody tr, .mobile-card').forEach(function(el) {
+        el.style.display = (!q || el.textContent.toLowerCase().includes(q.toLowerCase())) ? '' : 'none';
+      });
+    });
+  });
+})();
+
+// ── Sidebar nav active ──
+document.querySelectorAll('.sb-item').forEach(function(item) {
+  item.addEventListener('click', function(e) {
+    e.preventDefault();
+    this.closest('aside').querySelectorAll('.sb-item').forEach(function(i) { i.classList.remove('is-active'); });
+    this.classList.add('is-active');
+  });
+});
+
+// ── Toast ──
+function showToast(msg) {
+  var t = document.getElementById('toast-msg');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast-msg';
+    t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#2e1c0d;color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;z-index:9999;pointer-events:none;opacity:0;transition:opacity 0.2s ease;white-space:nowrap;font-family:inherit;';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function() { t.style.opacity = '0'; }, 2200);
+}
+
+// ── Design Tooltip ──
+(function() {
+  var tooltip = document.createElement('div');
+  tooltip.id = 'design-tooltip';
+  tooltip.style.cssText = 'position:fixed;bottom:24px;right:24px;max-width:320px;padding:14px 16px;border-radius:10px;font-size:13px;line-height:1.55;box-shadow:0 4px 20px rgba(0,0,0,0.3);opacity:0;transition:opacity 0.2s ease;pointer-events:none;z-index:9998;font-family:"PingFang TC","Noto Sans TC",sans-serif;background:#2e1c0d;color:#f5ede3;';
+  document.body.appendChild(tooltip);
+  var timer;
+  document.addEventListener('mouseover', function(e) {
+    var t = e.target.closest('[data-note]');
+    clearTimeout(timer);
+    if (t) {
+      timer = setTimeout(function() {
+        var layer = t.dataset.layer || '';
+        tooltip.innerHTML = (layer ? '<div style="font-size:11px;opacity:0.6;margin-bottom:4px;font-family:monospace">' + layer + '</div>' : '') + t.dataset.note;
+        tooltip.style.opacity = '1';
+      }, 180);
+    } else { tooltip.style.opacity = '0'; }
+  });
 })();
 </script>
+
 
 </body>
 </html>
