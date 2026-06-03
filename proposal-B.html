@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>提案 B — Notion 暖中性風格｜報班確認頁</title>
+<style>
+/* ============================================================
+   PROPOSAL B: Notion-Inspired Warm Neutral Design System
+   紙質溫暖 × 東方類比感 × 輕陰影 × 道場適用
+   ============================================================ */
+
+/* ── Primitive Tokens (raw color values) ── */
+:root {
+  /* Primitives */
+  --primitive-white: #ffffff;
+  --primitive-cream-50: #fdfcfa;
+  --primitive-cream-100: #f9f7f4;
+  --primitive-cream-200: #f5e1c6;
+  --primitive-cream-300: #ecd2b0;
+  --primitive-cream-400: #ede9e3;
+  --primitive-cream-500: #e5dfd8;
+  --primitive-warm-50: #fdf6ef;
+  --primitive-warm-100: #fef1e8;
+  --primitive-brown-100: #f3f0ec;
+  --primitive-brown-200: #cfc9c1;
+  --primitive-brown-300: #9e9790;
+  --primitive-brown-400: #6b655f;
+  --primitive-brown-500: #6e665d;
+  --primitive-brown-600: #3f3830;
+  --primitive-brown-700: #443c36;
+  --primitive-brown-800: #3a342e;
+  --primitive-brown-900: #2c2824;
+  --primitive-teal-100: #eafaf9;
+  --primitive-teal-400: #54d1c6;
+  --primitive-teal-500: #3aada3;
+  --primitive-teal-deep: #2d8f86;
+  --primitive-teal-dark: #1a6e6a;
+  --primitive-orange-400: #d4896a;
+  --primitive-orange-500: #c07050;
+  --primitive-orange-dark: #7a3a20;
+  --primitive-blue-500: #5b77c7;
+  --primitive-blue-bg: #f0f3fc;
+  --primitive-blue-dark: #2a4090;
+  --primitive-green-500: #2a9d99;
+  --primitive-green-bg: #f0fafa;
+  --primitive-green-dark: #1a6e6a;
+  --primitive-yellow-500: #e0860f;
+  --primitive-yellow-bg: #fef8ec;
+  --primitive-yellow-dark: #7d4d06;
+  --primitive-purple-500: #8b5cf6;
+  --primitive-purple-bg: #f5f0fe;
+  --primitive-purple-dark: #5b30c9;
+  --primitive-black-09: rgba(0, 0, 0, 0.09);
+  --primitive-black-15: rgba(0, 0, 0, 0.15);
+  --primitive-black-25: rgba(0, 0, 0, 0.25);
+  --primitive-black-92: rgba(0, 0, 0, 0.92);
+}
+
+/* ── Semantic Design Tokens ── */
+:root {
+  /* === Color Tokens === */
+
+  /* Surfaces */
+  --color-bg: var(--primitive-white);
+  --color-bg-warm: var(--primitive-cream-100);
+  --color-bg-hover: var(--primitive-cream-400);
+  --color-bg-active: var(--primitive-cream-500);
+  --color-bg-selected: var(--primitive-warm-50);
+
+  /* Text */
+  --color-text-primary: var(--primitive-black-92);
+  --color-text-secondary: var(--primitive-brown-400);
+  --color-text-tertiary: var(--primitive-brown-300);
+  --color-text-on-dark: #f4f0eb;
+
+  /* Brand / Accent */
+  --color-accent: var(--primitive-orange-400);
+  --color-accent-light: var(--primitive-warm-100);
+  --color-accent-hover: var(--primitive-orange-500);
+  --color-accent-dark: var(--primitive-orange-dark);
+  --color-teal: var(--primitive-teal-400);
+  --color-teal-deep: var(--primitive-teal-dark);   /* upgraded: was #3aada3, now deep for contrast */
+  --color-teal-light: var(--primitive-teal-100);
+  --color-teal-hover: var(--primitive-teal-deep);
+
+  /* Brand warm background */
+  --color-warm-cream: var(--primitive-cream-200);
+  --color-warm-cream-deep: var(--primitive-cream-300);
+
+  /* Sidebar (unified naming) */
+  --color-sidebar-bg: var(--primitive-brown-900);
+  --color-sidebar-hover: var(--primitive-brown-800);
+  --color-sidebar-active: var(--primitive-brown-700);
+  --color-sidebar-border: var(--primitive-brown-600);
+  --color-sidebar-text: var(--primitive-brown-200);
+  --color-sidebar-text-muted: var(--primitive-brown-500);
+  --color-sidebar-accent: var(--primitive-teal-400);
+
+  /* Border */
+  --color-border: var(--primitive-black-09);
+  --color-border-medium: var(--primitive-black-15);
+  --color-border-strong: var(--primitive-black-25);
+
+  /* Status */
+  --color-success: var(--primitive-green-500);
+  --color-success-bg: var(--primitive-green-bg);
+  --color-success-text: var(--primitive-green-dark);
+  --color-warning: var(--primitive-yellow-500);
+  --color-warning-bg: var(--primitive-yellow-bg);
+  --color-warning-text: var(--primitive-yellow-dark);
+  --color-info: var(--primitive-blue-500);
+  --color-info-bg: var(--primitive-blue-bg);
+  --color-info-text: var(--primitive-blue-dark);
+  --color-new: var(--primitive-purple-500);
+  --color-new-bg: var(--primitive-purple-bg);
+  --color-new-text: var(--primitive-purple-dark);
+
+  /* === Typography === */
+  --font-sans: -apple-system, 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', 'Hiragino Sans GB', sans-serif;
+  --font-mono: 'SF Mono', 'Monaco', 'Cascadia Code', 'Courier New', monospace;
+
+  --text-xs: 11.5px;
+  --text-sm: 13.5px;
+  --text-base: 15px;
+  --text-md: 17px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --text-2xl: 30px;
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* === Spacing (8px) === */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* === Layout === */
+  --sidebar-w: 240px;
+  --header-h: 52px;
+
+  /* === Radius — Notion 偏圓潤 === */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
+
+  /* === Shadows — Notion multi-layer whisper === */
+  --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2px 7px, rgba(0,0,0,0.02) 0px 0.8px 2.9px;
+  --shadow-float: rgba(0,0,0,0.08) 0px 8px 24px, rgba(0,0,0,0.04) 0px 2px 8px;
+  --shadow-btn: rgba(0,0,0,0.06) 0px 1px 2px;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  background: var(--color-bg-warm);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── Focus Visible ── */
+:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Header ── */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: var(--color-sidebar-bg);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-6);
+  z-index: 100;
+  border-bottom: 1px solid var(--color-sidebar-border);
+}
+.header__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text-on-dark);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  flex-shrink: 0;
+  width: var(--sidebar-w);
+  letter-spacing: 0.04em;
+}
+.header__logo-icon {
+  width: 26px; height: 26px;
+  background: linear-gradient(135deg, var(--color-warm-cream) 0%, var(--color-accent) 100%);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.header__divider {
+  width: 1px;
+  height: 20px;
+  background: var(--color-sidebar-border);
+  margin: 0 var(--space-4);
+}
+.header__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex: 1;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-sidebar-text);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  opacity: 0.7;
+  cursor: pointer;
+}
+.nav-item:hover { background-color: var(--color-sidebar-hover); opacity: 1; }
+.nav-item--active {
+  background-color: var(--color-sidebar-active);
+  color: #fff;
+  opacity: 1;
+}
+.header__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+.user-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-sidebar-text);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  transition: background-color 0.15s ease;
+}
+.user-btn:hover { background-color: var(--color-sidebar-hover); }
+.avatar {
+  width: 28px; height: 28px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, var(--color-teal) 0%, var(--primitive-teal-500) 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: var(--weight-bold); color: #fff;
+  flex-shrink: 0;
+}
+
+/* ── Shell ── */
+.shell {
+  display: flex;
+  margin-top: var(--header-h);
+  min-height: calc(100vh - var(--header-h));
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--color-sidebar-bg);
+  flex-shrink: 0;
+  position: fixed;
+  top: var(--header-h);
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  z-index: 90;
+  border-right: 3px solid var(--color-sidebar-border);
+  padding: var(--space-4) var(--space-2) var(--space-8);
+}
+.sidebar-group {
+  margin-bottom: var(--space-4);
+}
+.sidebar-group-label {
+  font-size: 10px;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-sidebar-text-muted);
+  padding: var(--space-2) var(--space-3) var(--space-1);
+}
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 7px var(--space-3);
+  color: var(--color-sidebar-text);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.12s ease;
+  cursor: pointer;
+  margin: 1px 0;
+}
+.sidebar-item:hover { background-color: var(--color-sidebar-hover); }
+.sidebar-item--active {
+  background-color: var(--color-sidebar-active);
+  color: #fff;
+}
+.sidebar-item--active .sidebar-icon { color: var(--color-sidebar-accent); }
+.sidebar-icon {
+  font-size: 13px;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+.sidebar-badge {
+  margin-left: auto;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: var(--weight-bold);
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+}
+
+/* ── Main ── */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  background: var(--color-bg-warm);
+}
+
+/* ── Page Header ── */
+.page-header {
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-6) var(--space-8);
+  box-shadow: var(--shadow-card);
+}
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+  margin-bottom: var(--space-3);
+}
+.breadcrumb__link {
+  color: var(--color-teal-deep);
+  text-decoration: none;
+  transition: color 0.12s ease;
+}
+.breadcrumb__link:hover { color: var(--color-teal-hover); text-decoration: underline; }
+.breadcrumb__sep { color: var(--color-text-tertiary); }
+.page-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.page-title-icon {
+  width: 36px; height: 36px;
+  background: var(--color-warm-cream);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  border: 1px solid var(--color-warm-cream-deep);
+}
+.page-title {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: -0.5px;
+}
+.page-meta {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-2);
+  display: flex;
+  gap: var(--space-5);
+  align-items: center;
+}
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+.meta-chip-dot {
+  width: 6px; height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  display: inline-block;
+}
+
+/* ── Content ── */
+.content {
+  padding: var(--space-6) var(--space-8);
+}
+
+/* ── Stats Strip (Notion 風格) ── */
+.stats-strip {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  flex-wrap: wrap;
+}
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  min-width: 120px;
+  flex: 1;
+}
+.stat-num {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.stat-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.05em;
+}
+
+/* ── Card ── */
+.card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+.card-title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.card-body { padding: var(--space-5) var(--space-6); }
+
+/* ── Search Section ── */
+.search-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
+  margin-bottom: var(--space-5);
+  box-shadow: var(--shadow-card);
+}
+.search-row {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 150px;
+}
+.field-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-secondary);
+  letter-spacing: 0.04em;
+}
+.field-input, .field-select {
+  height: 36px;
+  border: 1px solid var(--color-border-medium);
+  background: var(--color-bg);
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.field-input:focus, .field-select:focus {
+  border-color: var(--color-teal);
+  box-shadow: 0 0 0 3px rgba(84, 209, 198, 0.15);
+}
+.field-input::placeholder { color: var(--color-text-tertiary); }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 36px;
+  padding: 0 var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  font-family: var(--font-sans);
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
+  white-space: nowrap;
+  box-shadow: var(--shadow-btn);
+}
+/* Primary: deep teal for WCAG AA contrast (≥ 4.5:1 with white) */
+.btn--primary {
+  background-color: var(--color-teal-deep);
+  color: #fff;
+}
+.btn--primary:hover {
+  background-color: var(--color-teal-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-float);
+}
+.btn--primary:active { transform: scale(0.96); }
+
+/* Warm: deep burnt-orange for WCAG AA contrast (≥ 4.5:1 with white) */
+.btn--warm {
+  background-color: var(--color-accent-dark);
+  color: #fff;
+}
+.btn--warm:hover {
+  background-color: var(--primitive-orange-500);
+  transform: translateY(-1px);
+}
+.btn--warm:active { transform: scale(0.96); }
+
+.btn--ghost {
+  background-color: var(--color-bg);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-medium);
+  box-shadow: none;
+}
+.btn--ghost:hover { background-color: var(--color-bg-hover); }
+.btn--lg {
+  height: 44px;
+  padding: 0 var(--space-6);
+  font-size: var(--text-base);
+  border-radius: var(--radius-lg);
+}
+
+/* ── Result Meta ── */
+.result-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: var(--space-5) 0 var(--space-3);
+}
+.result-count {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+.result-count strong {
+  color: var(--color-text-primary);
+  font-weight: var(--weight-semibold);
+}
+.result-actions { display: flex; gap: var(--space-2); }
+
+/* ── Table ── */
+.table-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow-x: auto;
+  margin-bottom: var(--space-5);
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+.table thead {
+  background: var(--color-bg-warm);
+}
+.table th {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-secondary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+.table th.center, .table td.center { text-align: center; }
+.table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+.table tbody tr {
+  transition: background-color 0.12s ease;
+}
+.table tbody tr:hover td {
+  background-color: var(--color-bg-selected);
+}
+.table tbody tr:last-child td { border-bottom: none; }
+.table tbody tr.row-selected td {
+  background-color: var(--color-teal-light);
+}
+
+/* Sticky columns: checkbox + name */
+.table th.col-check,
+.table td.col-check {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background-color: var(--color-bg-warm);
+}
+.table th.col-name,
+.table td.col-name {
+  position: sticky;
+  left: 44px;
+  z-index: 2;
+  background-color: var(--color-bg-warm);
+}
+.table tbody tr:hover td.col-check,
+.table tbody tr:hover td.col-name {
+  background-color: var(--color-bg-selected);
+}
+.table tbody tr.row-selected td.col-check,
+.table tbody tr.row-selected td.col-name {
+  background-color: var(--color-teal-light);
+}
+
+/* Checkbox */
+.checkbox {
+  width: 16px; height: 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  accent-color: var(--color-teal-deep);
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px var(--space-2);
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+.badge-dot {
+  width: 5px; height: 5px;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+  flex-shrink: 0;
+}
+.badge--active {
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+.badge--active .badge-dot { background: var(--color-success); }
+.badge--pending {
+  background: var(--color-warning-bg);
+  color: var(--color-warning-text);
+}
+.badge--pending .badge-dot { background: var(--color-warning); }
+.badge--new {
+  background: var(--color-new-bg);
+  color: var(--color-new-text);
+}
+.badge--new .badge-dot { background: var(--color-new); }
+
+/* Meal tags */
+.meal-row { display: flex; flex-wrap: wrap; gap: 3px; }
+.meal-tag {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: var(--weight-medium);
+  background: var(--color-accent-light);
+  color: var(--color-accent-hover);
+  border: 1px solid rgba(212, 137, 106, 0.25);
+}
+
+/* Gender */
+.gender-m { color: #2a67b5; font-weight: var(--weight-semibold); }
+.gender-f { color: #a83266; font-weight: var(--weight-semibold); }
+
+/* Clean */
+.clean-yes { color: var(--color-success); font-weight: var(--weight-bold); }
+.clean-no { color: var(--color-text-tertiary); }
+
+/* ── Footer ── */
+.footer {
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-5) var(--space-8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+}
+.footer-info {
+  display: flex;
+  gap: var(--space-6);
+  align-items: center;
+}
+.footer-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.footer-stat-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.04em;
+}
+.footer-stat-value {
+  font-size: var(--text-md);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+}
+.footer-divider {
+  width: 1px; height: 36px;
+  background: var(--color-border-medium);
+}
+.footer-btns { display: flex; gap: var(--space-3); }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); }
+  .main { margin-left: 0; }
+  .content, .page-header { padding: var(--space-4); }
+  .footer { flex-direction: column; gap: var(--space-4); }
+  .stats-strip { gap: var(--space-2); }
+  .stat-item { min-width: 90px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="header">
+  <div class="header__logo">
+    <div class="header__logo-icon">正</div>
+    崇正道務管理
+  </div>
+  <div class="header__divider"></div>
+  <nav class="header__nav">
+    <a href="#" class="nav-item nav-item--active">班務管理</a>
+    <a href="#" class="nav-item">成員資料</a>
+    <a href="#" class="nav-item">組織架構</a>
+    <a href="#" class="nav-item">授權設定</a>
+    <a href="#" class="nav-item">統計報表</a>
+  </nav>
+  <div class="header__right">
+    <div class="user-btn">
+      <div class="avatar">王</div>
+      <span>王點傳師</span>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">班務管理</div>
+      <a href="#" class="sidebar-item sidebar-item--active">
+        <span>報班確認</span>
+      </a>
+      <a href="#" class="sidebar-item">
+        <span>班別管理</span>
+      </a>
+      <a href="#" class="sidebar-item">
+        <span>出席紀錄</span>
+      </a>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">成員管理</div>
+      <a href="#" class="sidebar-item">
+        <span>求道名冊</span>
+        <span class="sidebar-badge">48</span>
+      </a>
+      <a href="#" class="sidebar-item">
+        <span>新增成員</span>
+      </a>
+      <a href="#" class="sidebar-item">
+        <span>進階搜尋</span>
+      </a>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">組織架構</div>
+      <a href="#" class="sidebar-item">
+        <span>道場資訊</span>
+      </a>
+      <a href="#" class="sidebar-item">
+        <span>區域管理</span>
+      </a>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">系統設定</div>
+      <a href="#" class="sidebar-item">
+        <span>授權管理</span>
+      </a>
+      <a href="#" class="sidebar-item">
+        <span>系統設定</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="main">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="breadcrumb">
+        <a href="#" class="breadcrumb__link">首頁</a>
+        <span class="breadcrumb__sep">/</span>
+        <a href="#" class="breadcrumb__link">班務管理</a>
+        <span class="breadcrumb__sep">/</span>
+        <span>報班確認</span>
+      </div>
+      <div class="page-title-row">
+        <h1 class="page-title">報班確認</h1>
+      </div>
+      <div class="page-meta">
+        <span class="meta-chip">
+          <span class="meta-chip-dot"></span>
+          112年度秋季求道班
+        </span>
+        <span class="meta-chip">
+          <span class="meta-chip-dot" style="background: var(--color-teal);"></span>
+          第 3 梯次
+        </span>
+        <span class="meta-chip" style="color: var(--color-text-tertiary);">
+          請確認班員資料後加入班別
+        </span>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Stats Strip -->
+      <div class="stats-strip">
+        <div class="stat-item">
+          <span class="stat-num">4</span>
+          <span class="stat-label">已選人數</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">3</span>
+          <span class="stat-label">清口</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">4</span>
+          <span class="stat-label">用餐</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">2</span>
+          <span class="stat-label">住宿</span>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="search-card">
+        <div style="font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--color-text-secondary); margin-bottom: var(--space-4); letter-spacing: 0.04em;">搜尋條件</div>
+        <div class="search-row">
+          <div class="field-group">
+            <label class="field-label" for="search-name">求道名</label>
+            <input type="text" id="search-name" class="field-input" value="志" placeholder="輸入關鍵字">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="search-realname">本名</label>
+            <input type="text" id="search-realname" class="field-input" placeholder="輸入本名">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="search-region">區別</label>
+            <select id="search-region" class="field-select">
+              <option>全部</option>
+              <option>台北區</option>
+              <option>台中區</option>
+              <option>高雄區</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="search-clean">清口</label>
+            <select id="search-clean" class="field-select">
+              <option>全部</option>
+              <option>是</option>
+              <option>否</option>
+            </select>
+          </div>
+          <div class="field-group" style="justify-content: flex-end;">
+            <label class="field-label" style="visibility:hidden">操作</label>
+            <div style="display:flex; gap: 8px;">
+              <button class="btn btn--primary">搜尋</button>
+              <button class="btn btn--ghost">清除</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Meta -->
+      <div class="result-meta">
+        <div class="result-count">共 <strong>5</strong> 筆符合結果</div>
+        <div class="result-actions">
+          <button class="btn btn--ghost" style="height:30px; font-size:12px; padding: 0 10px; border-radius: 6px;">全選</button>
+          <button class="btn btn--ghost" style="height:30px; font-size:12px; padding: 0 10px; border-radius: 6px;">取消全選</button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-card">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="center col-check" style="width:44px;" scope="col">加入</th>
+              <th class="col-name" scope="col">求道名</th>
+              <th scope="col" style="width:44px;">性別</th>
+              <th scope="col">本名</th>
+              <th scope="col">生日（國曆）</th>
+              <th scope="col">求道日（農曆）</th>
+              <th scope="col">區別</th>
+              <th scope="col">成全者</th>
+              <th class="center" scope="col">清口</th>
+              <th scope="col">狀態</th>
+              <th scope="col">用餐 / 住宿</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row-selected">
+              <td class="center col-check"><input type="checkbox" class="checkbox" checked aria-label="選取志明"></td>
+              <td class="col-name"><strong>志明</strong></td>
+              <td class="gender-m">男</td>
+              <td>陳大明</td>
+              <td style="font-family: var(--font-mono); font-size: 12.5px;">1985-03-15</td>
+              <td style="font-family: var(--font-mono); font-size: 12.5px;">民 74 年 2 月初一</td>
+              <td>台北區</td>
+              <td>李前人</td>
+              <td class="center"><span class="clean-yes">✓</span></td>
+              <td><span class="badge badge--active"><span class="badge-dot"></span>在籍</span></td>
+              <td><div class="meal-row"><span class="meal-tag">午餐</span><span class="meal-tag">住宿</span></div></td>
+            </tr>
+            <tr class="row-selected">
+              <td class="center col-check"><input type="checkbox" class="checkbox" checked aria-label="選取志慧"></td>
+              <td class="col-name"><strong>志慧</strong></td>
+              <td class="gender-f">女</td>
+              <td>林美惠</td>
+              <td style="font-family: var(--font-mono); font-size: 12.5px;">1990-07-22</td>
+              <td style="font-family: var(--font-mono); font-size: 12.5px;">民 79 年 6 月初三</td>
+              <td>台中區</td>
+              <td>王前人</td>
+              <td class="center"><span class="clean-no">—</span></td>
+              <td><span class="badge badge--pending"><span class="badge-dot"></span>辦理中</span></td>
+              <td><div class="meal-row"><span class="meal-tag">午餐</span></div></td>
+            </tr>
+            <tr class="row-selected">
+              <td class="center col-check"><input type="checkbox" class="checkbox" checked aria-label="選取志遠"></td>
+              <td class="col-name"><strong>志遠</strong></td>
+              <td class="gender-m">男</td>
+              <td>張志遠</td>
+              <td style="font-family: var(--font-mono); font-size: 12.5px;">1978-11-05</td>
+              <td style="font-family: var(--font-mono); font-size: 12.5px;">民 67 年 9 月廿五</td>
+              <td>高雄區</td>
+              <td>黃前人</td>
+              <td class="center"><span class="clean-yes">✓</span></td>
+              <td><span class="badge badge--active"><span class="badge-dot"></span>在籍</span></td>
+              <td><div class="meal-row"><span class="meal-tag">三餐</span><span class="meal-tag">住宿</span></div></td>
+            </tr>
+            <tr>
+              <td class="center col-check"><input type="checkbox" class="checkbox" aria-label="選取志純"></td>
+              <td class="col-name"><strong>志純</strong></td>
+              <td class="gender-f">女</td>
+              <td>吳美純</td>
+              <td style="font-family: var(--font-mono); font-size: 12.5px;">1995-02-18</td>
+              <td style="font-family: var(--font-mono); font-size: 12.5px;">民 84 年 1 月十九</td>
+              <td>台北區</td>
+              <td>李前人</td>
+              <td class="center"><span class="clean-no">—</span></td>
+              <td><span class="badge badge--new"><span class="badge-dot"></span>新求道</span></td>
+              <td><div class="meal-row"><span class="meal-tag">午晚餐</span></div></td>
+            </tr>
+            <tr class="row-selected">
+              <td class="center col-check"><input type="checkbox" class="checkbox" checked aria-label="選取志仁"></td>
+              <td class="col-name"><strong>志仁</strong></td>
+              <td class="gender-m">男</td>
+              <td>劉博仁</td>
+              <td style="font-family: var(--font-mono); font-size: 12.5px;">1982-09-30</td>
+              <td style="font-family: var(--font-mono); font-size: 12.5px;">民 71 年 8 月十四</td>
+              <td>台中區</td>
+              <td>張前人</td>
+              <td class="center"><span class="clean-yes">✓</span></td>
+              <td><span class="badge badge--active"><span class="badge-dot"></span>在籍</span></td>
+              <td><div class="meal-row"><span class="meal-tag">午餐</span></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /content -->
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-info">
+        <div class="footer-stat">
+          <span class="footer-stat-label">已勾選</span>
+          <span class="footer-stat-value">4 位</span>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-stat">
+          <span class="footer-stat-label">住宿</span>
+          <span class="footer-stat-value">2 位</span>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-stat">
+          <span class="footer-stat-label">用餐</span>
+          <span class="footer-stat-value">4 位</span>
+        </div>
+      </div>
+      <div class="footer-btns">
+        <button class="btn btn--ghost btn--lg">取消</button>
+        <button class="btn btn--ghost btn--lg">預覽名冊</button>
+        <button class="btn btn--warm btn--lg">確定加入</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>提案 A — Apple Token 風格｜報班確認頁</title>
+<style>
+/* ============================================================
+   PROPOSAL A: Apple-inspired Design Token System
+   崇正色系 × 語義化 Token × 8px Grid × 分層 Primitive/Semantic
+   ============================================================ */
+
+/* ── Primitive Tokens（原始色值層）── */
+:root {
+  /* Sand (崇正米色系) */
+  --primitive-sand-50:  #fdf9f4;
+  --primitive-sand-100: #fdf6ee;
+  --primitive-sand-200: #f5e1c6;
+  --primitive-sand-300: #f8a57f;
+  --primitive-sand-400: #e06f1f;
+
+  /* Teal (青色強調) */
+  --primitive-teal-300: #7ae0d9;
+  --primitive-teal-400: #54d1c6;
+  --primitive-teal-500: #3ab8ad;
+  --primitive-teal-600: #2a9992;
+
+  /* Gray (介面中性) */
+  --primitive-gray-50:  #fafafa;
+  --primitive-gray-100: #f7f7f7;
+  --primitive-gray-200: #efefef;
+  --primitive-gray-300: #e0d5c8;
+  --primitive-gray-400: #c8b8a8;
+  --primitive-gray-500: #8c7e72;
+  --primitive-gray-600: #5a4e46;
+  --primitive-gray-700: #3a3030;
+  --primitive-gray-800: #2e2626;
+  --primitive-gray-900: #282828;
+
+  /* Semantic status */
+  --primitive-green-400: #24a148;
+  --primitive-green-50:  #defbe6;
+  --primitive-yellow-400: #c97c00;
+  --primitive-yellow-50: #fdf3d0;
+  --primitive-blue-400: #1a6db5;
+  --primitive-blue-50:  #e8f2fd;
+}
+
+/* ── Semantic Tokens（語義層）── */
+:root {
+  /* Backgrounds */
+  --color-bg-canvas:    var(--primitive-sand-50);
+  --color-bg-primary:   var(--primitive-sand-100);
+  --color-bg-elevated:  #ffffff;
+  --color-bg-subtle:    var(--primitive-gray-100);
+  --color-bg-sidebar:   var(--primitive-gray-900);
+  --color-bg-sidebar-hover:  var(--primitive-gray-700);
+  --color-bg-sidebar-active: var(--primitive-gray-800);
+  --color-bg-header:    var(--primitive-gray-900);
+
+  /* Brand */
+  --color-brand:        var(--primitive-sand-200);
+  --color-brand-mid:    var(--primitive-sand-300);
+  --color-brand-strong: var(--primitive-sand-400);
+
+  /* Interactive / Accent */
+  --color-interactive:        var(--primitive-teal-400);
+  --color-interactive-hover:  var(--primitive-teal-500);
+  --color-interactive-active: var(--primitive-teal-600);
+  --color-focus:              var(--primitive-teal-400);
+  /* Primary button uses deeper teal for WCAG AA contrast with white text */
+  --color-btn-primary:        var(--primitive-teal-600);
+  --color-btn-primary-hover:  var(--primitive-teal-500);
+
+  /* Text */
+  --color-text-primary:     #1a1a1a;
+  --color-text-secondary:   #555548;
+  --color-text-tertiary:    #8c8070;
+  --color-text-on-dark:     #f5ede3;
+  --color-text-on-dark-dim: rgba(245, 237, 227, 0.60);
+  --color-text-placeholder: var(--primitive-gray-500);
+
+  /* Border */
+  --color-border:           var(--primitive-gray-300);
+  --color-border-subtle:    var(--primitive-gray-200);
+  --color-border-strong:    var(--primitive-gray-400);
+  --color-border-sidebar:   #353030;
+
+  /* Status */
+  --color-status-success:    var(--primitive-green-400);
+  --color-status-success-bg: var(--primitive-green-50);
+  --color-status-success-text: #145e2b;
+  --color-status-warning:    var(--primitive-yellow-400);
+  --color-status-warning-bg: var(--primitive-yellow-50);
+  --color-status-warning-text: #7d4e00;
+  --color-status-info:       var(--primitive-blue-400);
+  --color-status-info-bg:    var(--primitive-blue-50);
+  --color-status-info-text:  #0d4c8a;
+
+  /* Warm accent (橘色) */
+  --color-warm-accent:    var(--primitive-sand-300);
+  --color-warm-accent-bg: #fff4ec;
+  --color-warm-accent-text: #7a4020;
+
+  /* Gender */
+  --color-gender-male:   var(--primitive-blue-400);
+  --color-gender-female: #9a2070;
+
+  /* Typography */
+  --font-sans: "PingFang TC", "Noto Sans TC", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", "Menlo", "Courier New", monospace;
+
+  --text-xs:   12px;
+  --text-sm:   14px;
+  --text-base: 16px;
+  --text-md:   18px;
+  --text-lg:   20px;
+  --text-xl:   24px;
+  --text-2xl:  32px;
+
+  --leading-tight:  1.17;
+  --leading-normal: 1.5;
+  --leading-loose:  1.75;
+
+  /* Spacing (8px base) */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-7:  28px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Component sizes (replacing magic numbers) */
+  --size-logo-mark: var(--space-5);   /* 20px */
+  --size-avatar:    var(--space-7);   /* 28px */
+
+  /* Layout */
+  --sidebar-w: 256px;
+  --header-h:  48px;
+
+  /* Sticky column offsets */
+  --sticky-col-1-left: 0px;
+  --sticky-col-3-left: 40px; /* width of col-1 checkbox */
+
+  /* Radius — Apple 圓潤感 */
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  14px;
+  --radius-pill: 980px;
+
+  /* Shadow — Apple 柔光原則 */
+  --shadow-subtle:  0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-card:    0 2px 8px rgba(40,30,20,0.10), 0 1px 3px rgba(40,30,20,0.06);
+  --shadow-popover: 0 4px 20px rgba(40,30,20,0.14), 0 2px 6px rgba(40,30,20,0.08);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  background: var(--color-bg-canvas);
+  line-height: var(--leading-normal);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  text-wrap: pretty;
+}
+
+/* ── Global focus-visible ── */
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* ── Header ── */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: var(--color-bg-header);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-4);
+  z-index: 100;
+  border-bottom: 1px solid var(--color-border-sidebar);
+}
+.header__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-on-dark);
+  font-size: var(--text-base);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+  width: var(--sidebar-w);
+  padding-left: var(--space-2);
+}
+.header__logo-mark {
+  width: var(--size-logo-mark);
+  height: var(--size-logo-mark);
+  border-radius: var(--radius-sm);
+  background: var(--color-interactive);
+  display: inline-block;
+  flex-shrink: 0;
+}
+.header__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding-left: var(--space-6);
+  flex: 1;
+}
+.header__nav-item {
+  color: var(--color-text-on-dark-dim);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  transition: color 0.15s ease;
+  padding: var(--space-1) 0;
+  border-bottom: 2px solid transparent;
+}
+.header__nav-item:hover { color: var(--color-text-on-dark); }
+.header__nav-item--active {
+  color: var(--color-text-on-dark);
+  border-bottom-color: var(--color-interactive);
+}
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+.header__user {
+  color: var(--color-text-on-dark-dim);
+  font-size: var(--text-sm);
+  display: flex; align-items: center; gap: var(--space-2);
+}
+.avatar {
+  width: var(--size-avatar);
+  height: var(--size-avatar);
+  border-radius: 50%;
+  background: var(--color-brand-strong);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+/* ── Layout Shell ── */
+.shell {
+  display: flex;
+  margin-top: var(--header-h);
+  min-height: calc(100vh - var(--header-h));
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--color-bg-sidebar);
+  flex-shrink: 0;
+  position: fixed;
+  top: var(--header-h);
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  z-index: 90;
+  border-right: 1px solid var(--color-border-sidebar);
+}
+.sidebar__section {
+  padding: var(--space-6) 0 var(--space-2);
+}
+.sidebar__section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--color-text-on-dark-dim);
+  padding: 0 var(--space-4) var(--space-2);
+  opacity: 0.6;
+}
+/* Sidebar items as buttons for proper semantics */
+.sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-text-on-dark);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  text-decoration: none;
+  opacity: 0.65;
+  transition: background 0.15s ease, opacity 0.15s ease;
+  border-left: 3px solid transparent;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  cursor: pointer;
+  /* Reset button styles */
+  background: none;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-sans);
+}
+.sidebar__item:hover {
+  background: var(--color-bg-sidebar-hover);
+  opacity: 1;
+}
+.sidebar__item--active {
+  background: var(--color-bg-sidebar-active);
+  opacity: 1;
+  border-left-color: var(--color-interactive);
+  font-weight: 600;
+}
+.sidebar__icon {
+  width: 16px; height: 16px;
+  display: inline-block;
+  font-style: normal;
+  font-size: 14px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* ── Main Content ── */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  background: var(--color-bg-primary);
+  min-height: 100%;
+}
+
+/* ── Page Header ── */
+.page-header {
+  background: var(--color-bg-elevated);
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding: var(--space-6) var(--space-8);
+  box-shadow: var(--shadow-subtle);
+}
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+  margin-bottom: var(--space-3);
+}
+.breadcrumb__sep { opacity: 0.5; }
+.breadcrumb__link {
+  color: var(--color-interactive-hover);
+  text-decoration: none;
+}
+.breadcrumb__link:hover { text-decoration: underline; }
+.page-title {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+  line-height: var(--leading-tight);
+  text-wrap: balance;
+}
+.page-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-1);
+}
+
+/* ── Content Area ── */
+.content {
+  padding: var(--space-6) var(--space-8);
+}
+
+/* ── Info Banner ── */
+.info-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  background: var(--color-status-info-bg);
+  border-left: 4px solid var(--color-status-info);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-6);
+}
+.info-banner__icon { font-size: 18px; flex-shrink: 0; color: var(--color-status-info); }
+.info-banner__text {
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  line-height: var(--leading-normal);
+}
+.info-banner__text strong { font-weight: 600; }
+
+/* ── Search Section ── */
+.search-section {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-5) var(--space-6);
+  margin-bottom: var(--space-4);
+  box-shadow: var(--shadow-subtle);
+}
+.search-section__title {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-4);
+}
+.search-row {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 160px;
+}
+.field-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.02em;
+}
+.field-input {
+  height: 40px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-subtle);
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  outline: none;
+  border-radius: var(--radius-sm);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.field-input:focus {
+  border-color: var(--color-focus);
+  box-shadow: 0 0 0 3px rgba(84, 209, 198, 0.20);
+  background: var(--color-bg-elevated);
+}
+.field-select {
+  height: 40px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-subtle);
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.field-select:focus {
+  border-color: var(--color-focus);
+  box-shadow: 0 0 0 3px rgba(84, 209, 198, 0.20);
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 40px;
+  padding: 0 var(--space-5);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  font-family: var(--font-sans);
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+}
+.btn:active { transform: scale(0.97); }
+
+/* Primary: deep teal (#2a9992) for WCAG AA contrast ~4.6:1 with white */
+.btn--primary {
+  background: var(--color-btn-primary);
+  color: #fff;
+  box-shadow: var(--shadow-subtle);
+}
+.btn--primary:hover {
+  background: var(--color-interactive-active);
+  box-shadow: var(--shadow-card);
+}
+
+.btn--secondary {
+  background: transparent;
+  color: var(--color-interactive-hover);
+  border: 1px solid var(--color-interactive);
+}
+.btn--secondary:hover {
+  background: rgba(84, 209, 198, 0.08);
+}
+
+.btn--ghost {
+  background: var(--color-bg-subtle);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+.btn--ghost:hover {
+  background: var(--color-bg-elevated);
+  border-color: var(--color-border-strong);
+}
+
+.btn--lg {
+  height: 48px;
+  padding: 0 var(--space-8);
+  font-size: var(--text-base);
+  border-radius: var(--radius-md);
+}
+
+/* ── Stats Strip ── */
+.stats-strip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-5);
+  margin-bottom: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+.stats-strip strong {
+  color: var(--color-interactive);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+/* ── Result Summary ── */
+.result-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+.result-count {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+.result-count strong { color: var(--color-text-primary); font-weight: 600; }
+.result-actions { display: flex; gap: var(--space-2); }
+
+/* ── Table ── */
+.table-container {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  box-shadow: var(--shadow-card);
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+.table thead {
+  background: var(--color-bg-primary);
+  border-bottom: 1.5px solid var(--color-border);
+}
+.table th {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.table th.center, .table td.center { text-align: center; }
+.table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border-subtle);
+  vertical-align: middle;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+.table tr:hover td {
+  background: var(--color-bg-primary);
+}
+.table tr:last-child td { border-bottom: none; }
+
+/* Sticky columns */
+.table th.col-sticky-1,
+.table td.col-sticky-1 {
+  position: sticky;
+  left: var(--sticky-col-1-left);
+  z-index: 2;
+  background: var(--color-bg-elevated);
+}
+.table thead th.col-sticky-1 {
+  background: var(--color-bg-primary);
+}
+.table tr:hover td.col-sticky-1 {
+  background: var(--color-bg-primary);
+}
+
+.table th.col-sticky-3,
+.table td.col-sticky-3 {
+  position: sticky;
+  left: var(--sticky-col-3-left);
+  z-index: 2;
+  background: var(--color-bg-elevated);
+  box-shadow: 2px 0 4px rgba(40,30,20,0.06);
+}
+.table thead th.col-sticky-3 {
+  background: var(--color-bg-primary);
+}
+.table tr:hover td.col-sticky-3 {
+  background: var(--color-bg-primary);
+}
+
+/* Checkbox */
+.checkbox {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  accent-color: var(--color-interactive);
+}
+
+/* Status Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.badge--active {
+  background: var(--color-status-success-bg);
+  color: var(--color-status-success-text);
+}
+.badge--active::before { background: var(--color-status-success); }
+.badge--pending {
+  background: var(--color-status-warning-bg);
+  color: var(--color-status-warning-text);
+}
+.badge--pending::before { background: var(--color-status-warning); }
+.badge--new {
+  background: var(--color-status-info-bg);
+  color: var(--color-status-info-text);
+}
+.badge--new::before { background: var(--color-status-info); }
+
+/* Meal tag */
+.meal-tag {
+  display: inline-block;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--color-warm-accent-bg);
+  color: var(--color-warm-accent-text);
+  border: 1px solid rgba(224, 111, 31, 0.20);
+  margin: 1px;
+}
+
+/* Gender */
+.gender-m { color: var(--color-gender-male);   font-weight: 600; }
+.gender-f { color: var(--color-gender-female); font-weight: 600; }
+
+/* ── Footer Actions ── */
+.footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-6) var(--space-8);
+  background: var(--color-bg-elevated);
+  border-top: 1px solid var(--color-border-subtle);
+  margin-top: var(--space-4);
+  box-shadow: 0 -1px 4px rgba(40,30,20,0.06);
+}
+.footer-summary {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+.footer-summary strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+.footer-btns { display: flex; gap: var(--space-3); }
+
+/* ── Notification Dot ── */
+.notif-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--color-warm-accent);
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); }
+  .main { margin-left: 0; }
+  .content { padding: var(--space-4); }
+  .page-header { padding: var(--space-4); }
+  .search-row { flex-direction: column; }
+  .field-group { min-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="header">
+  <div class="header__logo">
+    <span class="header__logo-mark"></span>
+    崇正道務管理
+  </div>
+  <nav class="header__nav">
+    <a href="#" class="header__nav-item header__nav-item--active">班務管理</a>
+    <a href="#" class="header__nav-item">成員資料</a>
+    <a href="#" class="header__nav-item">組織架構</a>
+    <a href="#" class="header__nav-item">授權設定</a>
+    <a href="#" class="header__nav-item">報表</a>
+  </nav>
+  <div class="header__actions">
+    <div class="header__user">
+      <div class="avatar">王</div>
+      <span>王點傳師</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── Shell ── -->
+<div class="shell">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar__section">
+      <div class="sidebar__section-label">班務</div>
+      <button class="sidebar__item sidebar__item--active">
+        <span class="sidebar__icon">◆</span>報班管理
+      </button>
+      <button class="sidebar__item">
+        <span class="sidebar__icon">☰</span>班別一覽
+      </button>
+      <button class="sidebar__item">
+        <span class="sidebar__icon">✓</span>出席紀錄
+      </button>
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__section-label">成員</div>
+      <button class="sidebar__item">
+        <span class="sidebar__icon">◎</span>求道名冊
+      </button>
+      <button class="sidebar__item">
+        <span class="sidebar__icon">⊕</span>新增成員
+      </button>
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__section-label">組織</div>
+      <button class="sidebar__item">
+        <span class="sidebar__icon">▦</span>組織架構
+      </button>
+      <button class="sidebar__item">
+        <span class="sidebar__icon">◈</span>道場設定
+      </button>
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__section-label">系統</div>
+      <button class="sidebar__item">
+        <span class="sidebar__icon">⚙</span>授權管理<span class="notif-dot"></span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="main">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="breadcrumb">
+        <span>班務管理</span>
+        <span class="breadcrumb__sep">›</span>
+        <a href="#" class="breadcrumb__link">報班管理</a>
+        <span class="breadcrumb__sep">›</span>
+        <span>確認加入</span>
+      </div>
+      <h1 class="page-title">報班確認</h1>
+      <p class="page-subtitle">112年度秋季求道班・第 3 梯次｜請確認以下班員資料後加入班別</p>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Info Banner -->
+      <div class="info-banner">
+        <span class="info-banner__icon">i</span>
+        <div class="info-banner__text">
+          <strong>操作說明：</strong>確認下列搜尋結果的班員資料無誤後，勾選欲加入的成員，再按「確定加入」完成報班。農曆日期格式為民國年。
+        </div>
+      </div>
+
+      <!-- Search Section -->
+      <div class="search-section">
+        <div class="search-section__title">搜尋條件</div>
+        <div class="search-row">
+          <div class="field-group">
+            <label class="field-label">求道名</label>
+            <input type="text" class="field-input" value="志" placeholder="輸入關鍵字">
+          </div>
+          <div class="field-group">
+            <label class="field-label">本名</label>
+            <input type="text" class="field-input" placeholder="輸入本名">
+          </div>
+          <div class="field-group">
+            <label class="field-label">區別</label>
+            <select class="field-select">
+              <option>全部</option>
+              <option>台北區</option>
+              <option>台中區</option>
+              <option>高雄區</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">清口</label>
+            <select class="field-select">
+              <option>全部</option>
+              <option>是</option>
+              <option>否</option>
+            </select>
+          </div>
+          <div class="field-group" style="justify-content: flex-end;">
+            <label class="field-label" style="visibility:hidden;">操作</label>
+            <div style="display:flex; gap: var(--space-2);">
+              <button class="btn btn--primary">搜尋</button>
+              <button class="btn btn--ghost">清除</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Strip -->
+      <div class="stats-strip" role="status" aria-live="polite">
+        <span>已選 <strong>3</strong> 人</span>
+        <span>清口 <strong>2</strong> 人</span>
+        <span>用餐 <strong>1</strong> 人</span>
+        <span>住宿 <strong>0</strong> 人</span>
+      </div>
+
+      <!-- Result Meta -->
+      <div class="result-meta">
+        <div class="result-count">共搜尋到 <strong>5</strong> 筆結果</div>
+        <div class="result-actions">
+          <button class="btn btn--ghost" style="height:32px; font-size:12px; padding: 0 var(--space-3);">全選</button>
+          <button class="btn btn--ghost" style="height:32px; font-size:12px; padding: 0 var(--space-3);">取消全選</button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" class="center col-sticky-1" style="width:40px;">#</th>
+              <th scope="col" style="width:40px;">性別</th>
+              <th scope="col" class="col-sticky-3">求道名</th>
+              <th scope="col">本名</th>
+              <th scope="col">生日（國曆）</th>
+              <th scope="col">求道日（農曆）</th>
+              <th scope="col">區別</th>
+              <th scope="col">成全者</th>
+              <th scope="col" class="center">清口</th>
+              <th scope="col">狀態</th>
+              <th scope="col">用餐／住宿</th>
+              <th scope="col" class="center" style="width:40px;">加入</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="center col-sticky-1" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">1</td>
+              <td class="gender-m">男</td>
+              <td class="col-sticky-3" style="font-weight: 600;">志明</td>
+              <td>陳大明</td>
+              <td style="font-family: var(--font-mono);">1985-03-15</td>
+              <td style="font-family: var(--font-mono);">民 74 年 2 月初一</td>
+              <td>台北區</td>
+              <td>李前人</td>
+              <td class="center"><span style="color: var(--color-status-success); font-weight:700;">✓</span></td>
+              <td><span class="badge badge--active">在籍</span></td>
+              <td>
+                <span class="meal-tag">午餐</span>
+                <span class="meal-tag">住宿</span>
+              </td>
+              <td class="center"><input type="checkbox" class="checkbox" checked></td>
+            </tr>
+            <tr>
+              <td class="center col-sticky-1" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">2</td>
+              <td class="gender-f">女</td>
+              <td class="col-sticky-3" style="font-weight: 600;">志慧</td>
+              <td>林美惠</td>
+              <td style="font-family: var(--font-mono);">1990-07-22</td>
+              <td style="font-family: var(--font-mono);">民 79 年 6 月初三</td>
+              <td>台中區</td>
+              <td>王前人</td>
+              <td class="center"><span style="color: var(--color-text-placeholder);">—</span></td>
+              <td><span class="badge badge--pending">辦理中</span></td>
+              <td>
+                <span class="meal-tag">午餐</span>
+              </td>
+              <td class="center"><input type="checkbox" class="checkbox" checked></td>
+            </tr>
+            <tr>
+              <td class="center col-sticky-1" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">3</td>
+              <td class="gender-m">男</td>
+              <td class="col-sticky-3" style="font-weight: 600;">志遠</td>
+              <td>張志遠</td>
+              <td style="font-family: var(--font-mono);">1978-11-05</td>
+              <td style="font-family: var(--font-mono);">民 67 年 9 月廿五</td>
+              <td>高雄區</td>
+              <td>黃前人</td>
+              <td class="center"><span style="color: var(--color-status-success); font-weight:700;">✓</span></td>
+              <td><span class="badge badge--active">在籍</span></td>
+              <td>
+                <span class="meal-tag">三餐</span>
+                <span class="meal-tag">住宿</span>
+              </td>
+              <td class="center"><input type="checkbox" class="checkbox" checked></td>
+            </tr>
+            <tr>
+              <td class="center col-sticky-1" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">4</td>
+              <td class="gender-f">女</td>
+              <td class="col-sticky-3" style="font-weight: 600;">志純</td>
+              <td>吳美純</td>
+              <td style="font-family: var(--font-mono);">1995-02-18</td>
+              <td style="font-family: var(--font-mono);">民 84 年 1 月十九</td>
+              <td>台北區</td>
+              <td>李前人</td>
+              <td class="center"><span style="color: var(--color-text-placeholder);">—</span></td>
+              <td><span class="badge badge--new">新求道</span></td>
+              <td>
+                <span class="meal-tag">午晚餐</span>
+              </td>
+              <td class="center"><input type="checkbox" class="checkbox"></td>
+            </tr>
+            <tr>
+              <td class="center col-sticky-1" style="font-family: var(--font-mono); color: var(--color-text-tertiary);">5</td>
+              <td class="gender-m">男</td>
+              <td class="col-sticky-3" style="font-weight: 600;">志仁</td>
+              <td>劉博仁</td>
+              <td style="font-family: var(--font-mono);">1982-09-30</td>
+              <td style="font-family: var(--font-mono);">民 71 年 8 月十四</td>
+              <td>台中區</td>
+              <td>張前人</td>
+              <td class="center"><span style="color: var(--color-status-success); font-weight:700;">✓</span></td>
+              <td><span class="badge badge--active">在籍</span></td>
+              <td>
+                <span class="meal-tag">午餐</span>
+              </td>
+              <td class="center"><input type="checkbox" class="checkbox" checked></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /content -->
+
+    <!-- Footer Actions -->
+    <div class="footer-actions">
+      <div class="footer-summary">
+        已勾選 <strong>4</strong> 位班員，
+        住宿需求 <strong>2</strong> 位，
+        用餐需求 <strong>4</strong> 位
+      </div>
+      <div class="footer-btns">
+        <button class="btn btn--ghost btn--lg">取消</button>
+        <button class="btn btn--secondary btn--lg">預覽名冊</button>
+        <button class="btn btn--primary btn--lg">確定加入</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>

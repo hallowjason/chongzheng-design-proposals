@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>崇正道務管理系統 — Design System 提案總覽</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f5f5f0;
+      --surface: #ffffff;
+      --border: #e2e2dc;
+      --text-primary: #1a1a18;
+      --text-secondary: #5c5c58;
+      --text-muted: #9a9a94;
+      --accent: #2c2c28;
+      --radius-card: 12px;
+      --radius-btn: 8px;
+      --shadow-card: 0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04);
+      --shadow-card-hover: 0 8px 24px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.06);
+      --font: "PingFang TC", "Noto Sans TC", sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      text-align: center;
+      padding: 56px 24px 48px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .site-header .system-name {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .site-header h1 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 14px;
+      text-wrap: balance;
+    }
+
+    .site-header .subtitle {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+      margin: 20px auto 0;
+      border-radius: 2px;
+    }
+
+    /* ── Proposal Cards Grid ── */
+    .proposals-section {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px 64px;
+    }
+
+    .proposals-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .proposal-card {
+      background: var(--surface);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .proposal-card:hover {
+      box-shadow: var(--shadow-card-hover);
+      transform: translateY(-2px);
+    }
+
+    /* ── iframe Preview ── */
+    .preview-container {
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+      background: #e8e8e4;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .preview-container iframe {
+      width: 1440px;
+      height: 900px;
+      border: none;
+      transform: scale(0.375);
+      transform-origin: top left;
+      pointer-events: none;
+      display: block;
+    }
+
+    /* ── Card Body ── */
+    .card-body {
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .proposal-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .proposal-title {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+    }
+
+    .proposal-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .proposal-features li {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .proposal-features li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 9px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--text-muted);
+    }
+
+    /* ── CTA Button ── */
+    .card-footer {
+      padding: 0 24px 24px;
+    }
+
+    .btn-view {
+      display: block;
+      width: 100%;
+      padding: 11px 20px;
+      background: var(--accent);
+      color: #ffffff;
+      text-align: center;
+      font-family: var(--font);
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius-btn);
+      cursor: pointer;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: background 0.18s ease, opacity 0.18s ease;
+    }
+
+    .btn-view:hover {
+      background: #3d3d38;
+      opacity: 0.92;
+    }
+
+    /* ── Comparison Table Section ── */
+    .comparison-section {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .section-heading {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+
+    .table-wrapper {
+      background: var(--surface);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    thead tr {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    thead th {
+      padding: 14px 18px;
+      text-align: left;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    thead th:first-child {
+      border-radius: var(--radius-card) 0 0 0;
+    }
+
+    thead th:last-child {
+      border-radius: 0 var(--radius-card) 0 0;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #fafaf7;
+    }
+
+    tbody td {
+      padding: 13px 18px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      vertical-align: top;
+    }
+
+    tbody td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── RWD ── */
+    @media (max-width: 900px) {
+      .proposals-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .site-header {
+        padding: 40px 20px 36px;
+      }
+
+      .proposals-section,
+      .comparison-section {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      thead th:first-child { border-radius: 0; }
+      thead th:last-child { border-radius: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .table-wrapper {
+        border-radius: 8px;
+      }
+
+      thead th,
+      tbody td {
+        padding: 11px 12px;
+        font-size: 0.8125rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <p class="system-name">崇正道務管理系統</p>
+    <h1>Design System 提案</h1>
+    <p class="subtitle">請團隊成員瀏覽三份提案，選出最符合道場氛圍與使用需求的設計方向</p>
+    <div class="divider"></div>
+  </header>
+
+  <!-- Proposals Grid -->
+  <section class="proposals-section">
+    <div class="proposals-grid">
+
+      <!-- Proposal A -->
+      <article class="proposal-card">
+        <div class="preview-container">
+          <iframe src="./proposal-A.html" title="提案 A 預覽" loading="lazy" scrolling="no"></iframe>
+        </div>
+        <div class="card-body">
+          <span class="proposal-label">Proposal A</span>
+          <h2 class="proposal-title">崇正原色系 × Apple Token</h2>
+          <ul class="proposal-features">
+            <li>沉穩有根的米沙色底，貼近道場質樸氛圍</li>
+            <li>深木炭側欄搭配崇正青色強調，層次分明</li>
+            <li>Apple 圓潤圓角與柔光陰影，精緻而不張揚</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <a class="btn-view" href="./proposal-A.html" target="_blank" rel="noopener">查看完整提案</a>
+        </div>
+      </article>
+
+      <!-- Proposal B -->
+      <article class="proposal-card">
+        <div class="preview-container">
+          <iframe src="./proposal-B.html" title="提案 B 預覽" loading="lazy" scrolling="no"></iframe>
+        </div>
+        <div class="card-body">
+          <span class="proposal-label">Proposal B</span>
+          <h2 class="proposal-title">暖中性 × 文件感</h2>
+          <ul class="proposal-features">
+            <li>暖米白底搭配深棕側欄，如紙張般的閱讀感</li>
+            <li>卡片塊狀結構清晰，視覺分區一目了然</li>
+            <li>最寬鬆行高設計，長時間操作最為舒適</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <a class="btn-view" href="./proposal-B.html" target="_blank" rel="noopener">查看完整提案</a>
+        </div>
+      </article>
+
+      <!-- Proposal C -->
+      <article class="proposal-card">
+        <div class="preview-container">
+          <iframe src="./proposal-C.html" title="提案 C 預覽" loading="lazy" scrolling="no"></iframe>
+        </div>
+        <div class="card-body">
+          <span class="proposal-label">Proposal C</span>
+          <h2 class="proposal-title">Stripe Premium × 數據驅動</h2>
+          <ul class="proposal-features">
+            <li>純白底配深海軍藍側欄，現代專業的企業風格</li>
+            <li>頂部數據統計卡（Stats Strip），關鍵數字一覽無遺</li>
+            <li>最高資訊密度，適合多工與數據監控場景</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <a class="btn-view" href="./proposal-C.html" target="_blank" rel="noopener">查看完整提案</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Comparison Table -->
+  <section class="comparison-section">
+    <h2 class="section-heading">特色定位比較</h2>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>比較面向</th>
+            <th>提案 A</th>
+            <th>提案 B</th>
+            <th>提案 C</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>色調方向</td>
+            <td>米沙色底 + 深木炭側欄</td>
+            <td>暖米白底 + 深棕側欄</td>
+            <td>純白底 + 深海軍藍側欄</td>
+          </tr>
+          <tr>
+            <td>風格感受</td>
+            <td>沉穩、有根、Apple 精緻感</td>
+            <td>溫暖、親和、紙張文件感</td>
+            <td>專業、數據驅動、Stripe 現代感</td>
+          </tr>
+          <tr>
+            <td>Token 架構</td>
+            <td>primitive / semantic 雙層（最完整）</td>
+            <td>primitive / semantic 雙層</td>
+            <td>primitive / semantic 雙層</td>
+          </tr>
+          <tr>
+            <td>Stats 統計</td>
+            <td>米色底 + 青色數字</td>
+            <td>暖白卡片 + 橘色數字</td>
+            <td>深藍卡片 + 四色邊框（最突出）</td>
+          </tr>
+          <tr>
+            <td>表格密度</td>
+            <td>中等密度</td>
+            <td>最寬鬆（閱讀最舒適）</td>
+            <td>最緊湊（資訊最密）</td>
+          </tr>
+          <tr>
+            <td>情感對位</td>
+            <td>最符合道場氛圍</td>
+            <td>溫和親切</td>
+            <td>現代專業</td>
+          </tr>
+          <tr>
+            <td>最大亮點</td>
+            <td>原色系 + 最完整架構</td>
+            <td>最舒適的閱讀節奏</td>
+            <td>數據一覽性最強</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    崇正道務管理系統開發團隊 &copy; 2026
+  </footer>
+
+</body>
+</html>
