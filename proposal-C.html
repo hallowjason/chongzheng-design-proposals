@@ -926,6 +926,710 @@ body {
 }
 .footer-btns { display: flex; gap: var(--sp-3); align-items: center; }
 
+/* ══════════════════════════════════════════════════════════════
+   LAYER 2 — Component System Demo Section
+   ══════════════════════════════════════════════════════════════ */
+.layer-section {
+  padding: var(--sp-6) var(--sp-8);
+  background: var(--hds-color-bg-offset);
+}
+.layer-section-title {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--hds-color-heading);
+  letter-spacing: -0.3px;
+  margin-bottom: var(--sp-2);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+.layer-badge {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 3px var(--sp-3);
+  border-radius: var(--radius-pill);
+  background: var(--hds-primitive-navy-800);
+  color: var(--hds-primitive-teal-400);
+  font-family: var(--font-mono);
+}
+.layer-section-desc {
+  font-size: var(--text-sm);
+  color: var(--hds-color-tertiary);
+  margin-bottom: var(--sp-6);
+}
+
+/* Component sub-section */
+.comp-section {
+  margin-bottom: var(--sp-6);
+}
+.comp-section-title {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--hds-color-secondary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: var(--sp-3);
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--hds-color-border);
+}
+.comp-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+/* Input demo states */
+.input-demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--sp-4);
+}
+.input-demo-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.input-demo-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--hds-color-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.field-input--focus {
+  border-color: var(--hds-color-border-focus);
+  box-shadow: var(--hds-shadow-focus);
+  background: var(--hds-color-bg);
+}
+.field-input--error {
+  border-color: var(--hds-color-error);
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.15);
+  background: var(--hds-color-bg);
+}
+.field-input--disabled {
+  background: var(--hds-color-bg-subtle);
+  color: var(--hds-color-placeholder);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.input-error-msg {
+  font-size: var(--text-xs);
+  color: var(--hds-color-error);
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+/* Table demo */
+.tbl-demo {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+.tbl-demo th {
+  padding: var(--sp-3) var(--sp-4);
+  text-align: left;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--hds-color-secondary);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  background: var(--hds-color-bg-offset);
+  border-bottom: 1px solid var(--hds-color-border);
+  white-space: nowrap;
+}
+.tbl-demo td {
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--hds-color-border);
+  vertical-align: middle;
+  color: var(--hds-color-body);
+}
+.tbl-demo tr:last-child td { border-bottom: none; }
+.tbl-demo tr.row--hover td { background: var(--hds-color-bg-subtle); }
+.tbl-demo tr.row--selected td {
+  background: var(--hds-color-primary-light);
+  border-left: 3px solid var(--hds-primitive-navy-800);
+}
+
+/* Mini stats strip */
+.stats-strip--mini {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+.stat-card--mini {
+  background: var(--hds-primitive-navy-800);
+  border: 1px solid var(--hds-primitive-navy-600);
+  border-radius: var(--radius-md);
+  padding: var(--sp-3) var(--sp-4);
+  position: relative;
+  overflow: hidden;
+}
+.stat-card--mini::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(58,173,163,0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+.stat-value--mini {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--hds-primitive-white);
+  font-family: var(--font-mono);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.stat-label--mini {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--hds-sidebar-text);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 2px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LAYER 3 — Responsive: Tablet (≤ 1024px)
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: var(--sidebar-w-collapsed);
+    overflow: visible;
+  }
+  .sidebar .sb-label { display: none; }
+  .sidebar .sb-item-text { display: none; }
+  .sidebar .sb-count { display: none; }
+  .sidebar .sb-item {
+    justify-content: center;
+    padding: var(--sp-3);
+    gap: 0;
+  }
+  .sidebar .sb-icon { width: auto; font-size: 16px; }
+  .header-logo { width: var(--sidebar-w-collapsed); }
+  .header-logo .logo-text, .header-logo .logo-sub { display: none; }
+  .main { margin-left: var(--sidebar-w-collapsed); }
+  .stats-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
+  }
+  .stats-strip--mini {
+    grid-template-columns: 1fr 1fr;
+  }
+  .content { padding: var(--sp-5) var(--sp-5); }
+  .layer-section { padding: var(--sp-5) var(--sp-5); }
+  .page-header { padding: var(--sp-4) var(--sp-5) var(--sp-5); }
+  .footer { padding: var(--sp-4) var(--sp-5); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LAYER 3 — Responsive: Mobile (≤ 768px)
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: var(--sidebar-w);
+  }
+  .sidebar.is-open {
+    transform: translateX(0);
+    overflow-y: auto;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.25);
+  }
+  .sidebar.is-open .sb-label { display: block; }
+  .sidebar.is-open .sb-item-text { display: block; }
+  .sidebar.is-open .sb-count { display: flex; }
+  .sidebar.is-open .sb-item { justify-content: flex-start; padding: var(--sp-2) var(--sp-3); gap: var(--sp-3); }
+  .sidebar.is-open .sb-icon { font-size: 14px; width: 20px; }
+
+  .hamburger-btn {
+    display: flex;
+  }
+  .header-logo { width: auto; }
+  .header-logo .logo-text, .header-logo .logo-sub { display: block; }
+  .main { margin-left: 0; }
+  .content { padding: var(--sp-4); }
+  .layer-section { padding: var(--sp-4); }
+  .page-header { padding: var(--sp-4) var(--sp-4) var(--sp-4); }
+  .ph-body { flex-direction: column; gap: var(--sp-3); }
+  .ph-body > div:last-child { width: 100%; justify-content: flex-end; display: flex; }
+  .footer { flex-direction: column; gap: var(--sp-3); padding: var(--sp-4); }
+  .footer-btns { width: 100%; justify-content: flex-end; }
+  .stats-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
+  }
+  .stats-strip--mini {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Mobile: table → data cards */
+  .tbl-mobile-hide { display: none; }
+  .table-wrapper { border: none; background: transparent; box-shadow: none; }
+  .tbl { display: none; }
+  .mobile-card-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+  .mobile-card {
+    background: var(--hds-color-bg);
+    border: 1px solid var(--hds-color-border);
+    border-left: 3px solid var(--hds-color-primary);
+    border-radius: var(--radius-md);
+    padding: var(--sp-4);
+    box-shadow: var(--hds-shadow-xs);
+  }
+  .mobile-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--sp-3);
+  }
+  .mobile-card-name {
+    font-weight: 700;
+    color: var(--hds-color-heading);
+    font-size: var(--text-base);
+  }
+  .mobile-card-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-2) var(--sp-4);
+  }
+  .mobile-field-label {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--hds-color-tertiary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .mobile-field-value {
+    font-size: var(--text-sm);
+    color: var(--hds-color-body);
+  }
+  .header-nav { display: none; }
+  .header-sep { display: none; }
+  .search-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* Hamburger button (hidden by default on desktop) */
+.hamburger-btn {
+  display: none;
+  width: 32px; height: 32px;
+  background: var(--hds-sidebar-bg-hover);
+  border: 1px solid var(--hds-sidebar-border);
+  border-radius: var(--radius-sm);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 4px;
+  padding: 7px;
+  margin-right: var(--sp-3);
+}
+.hamburger-btn span {
+  display: block;
+  height: 2px;
+  background: var(--hds-sidebar-text);
+  border-radius: 1px;
+  width: 100%;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+/* Sidebar overlay on mobile */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10,14,26,0.5);
+  z-index: 99;
+}
+@media (max-width: 768px) {
+  .sidebar-overlay.is-visible { display: block; }
+}
+
+/* ── Layer annotation pill (for demo) ── */
+.layer-token-pill {
+  display: inline-block;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--hds-primitive-teal-400);
+  background: var(--hds-primitive-navy-800);
+  border: 1px solid var(--hds-primitive-navy-600);
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+  margin-left: var(--sp-2);
+}
+
+/* ── Responsive demo callout ── */
+.responsive-callout {
+  background: var(--hds-primitive-navy-800);
+  border: 1px solid var(--hds-primitive-navy-600);
+  border-left: 3px solid var(--hds-primitive-teal-400);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4) var(--sp-5);
+  margin-bottom: var(--sp-5);
+}
+.responsive-callout p {
+  font-size: var(--text-sm);
+  color: var(--hds-sidebar-text);
+  line-height: 1.6;
+}
+.responsive-callout strong { color: var(--hds-primitive-white); }
+
+/* breakpoint list */
+.bp-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+}
+.bp-item {
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  color: var(--hds-sidebar-text);
+  background: var(--hds-primitive-navy-700);
+  border: 1px solid var(--hds-primitive-navy-600);
+  padding: 3px var(--sp-3);
+  border-radius: var(--radius-xs);
+}
+.bp-item strong { color: var(--hds-primitive-teal-400); }
+
+/* Mobile card demo (always visible for showcase) */
+.mobile-demo-section .mobile-card-list { display: flex; }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="header"
+  data-layer="L1"
+  data-note="深海軍藍 #1a1f2e 直接延伸至 Header，消除 header/sidebar 的視覺斷層。對於高頻使用的後台系統，減少視覺切換點可降低用戶的認知負荷。">
+  <button class="hamburger-btn" id="hamburger" type="button" aria-label="開啟選單">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="header-logo">
+    <div class="logo-mark">☯</div>
+    <div>
+      <div class="logo-text">崇正道務管理</div>
+      <div class="logo-sub">CHONGZHENG ADMIN</div>
+    </div>
+  </div>
+  <div class="header-sep"></div>
+  <nav class="header-nav">
+    <a class="h-nav-item h-nav-item--active" href="#">班務管理</a>
+    <a class="h-nav-item" href="#">成員資料</a>
+    <a class="h-nav-item" href="#">組織架構</a>
+    <a class="h-nav-item" href="#">授權設定</a>
+    <a class="h-nav-item" href="#">統計報表</a>
+  </nav>
+  <div class="header-right">
+    <button class="notif-btn" type="button" aria-label="通知">
+      🔔
+      <div class="notif-badge"></div>
+    </button>
+    <button class="user-chip" type="button">
+      <div class="avatar">王</div>
+      <span class="user-name">王點傳師</span>
+    </button>
+  </div>
+</header>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="shell">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar" id="sidebar"
+    data-layer="L1+L3"
+    data-note="C 提案的 sidebar 採用最深的 navy-800，與白底主區形成最強對比（ΔLch > 60）。寬度 232px 是三份中最窄，留更多空間給數據主區。平板模式自動縮為 64px icon-only，手機模式完全隱藏。">
+    <div class="sb-group">
+      <div class="sb-label">班務</div>
+      <a class="sb-item sb-item--active" href="#">
+        <span class="sb-icon">◈</span><span class="sb-item-text">報班確認</span>
+      </a>
+      <a class="sb-item" href="#">
+        <span class="sb-icon">☰</span><span class="sb-item-text">班別管理</span>
+      </a>
+      <a class="sb-item" href="#">
+        <span class="sb-icon">✓</span><span class="sb-item-text">出席紀錄</span>
+      </a>
+    </div>
+    <div class="sb-group">
+      <div class="sb-label">成員</div>
+      <a class="sb-item" href="#">
+        <span class="sb-icon">◎</span><span class="sb-item-text">求道名冊</span>
+        <span class="sb-count">48</span>
+      </a>
+      <a class="sb-item" href="#">
+        <span class="sb-icon">⊕</span><span class="sb-item-text">新增成員</span>
+      </a>
+      <a class="sb-item" href="#">
+        <span class="sb-icon">⊗</span><span class="sb-item-text">進階搜尋</span>
+      </a>
+    </div>
+    <div class="sb-group">
+      <div class="sb-label">組織</div>
+      <a class="sb-item" href="#">
+        <span class="sb-icon">▣</span><span class="sb-item-text">組織架構</span>
+      </a>
+      <a class="sb-item" href="#">
+        <span class="sb-icon">◧</span><span class="sb-item-text">區域管理</span>
+      </a>
+    </div>
+    <div class="sb-group">
+      <div class="sb-label">系統</div>
+      <a class="sb-item" href="#">
+        <span class="sb-icon">⚿</span><span class="sb-item-text">授權管理</span>
+        <span class="sb-count sb-count--warm">2</span>
+      </a>
+      <a class="sb-item" href="#">
+        <span class="sb-icon">⚙</span><span class="sb-item-text">系統設定</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="main">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="breadcrumb">
+        <a href="#" class="bc-link">首頁</a>
+        <span class="bc-sep">›</span>
+        <a href="#" class="bc-link">班務管理</a>
+        <span class="bc-sep">›</span>
+        <span>報班確認</span>
+      </div>
+      <div class="ph-body">
+        <div>
+          <h1 class="page-title">報班確認</h1>
+          <div class="page-desc">
+            <span class="desc-tag">112年度秋季求道班</span>
+            <span class="desc-tag desc-tag-warm">第 3 梯次</span>
+            <span style="color: var(--hds-color-tertiary); font-size: var(--text-xs);">請確認班員資料後加入班別</span>
+          </div>
+        </div>
+        <div style="display:flex; gap: var(--sp-2); margin-top: var(--sp-1);">
+          <button class="btn btn--outline" type="button">匯出名冊</button>
+          <button class="btn btn--primary" type="button">批次加入</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Stats Strip -->
+      <div class="stats-strip"
+        data-layer="L2+UX"
+        data-note="Stats Strip 是 C 提案的招牌設計：讓管理員在確認前即時掌握人數統計。深色卡片四色 border-left 遵循語義色系（teal=已選、green=清口、orange=用餐、purple=住宿）。">
+        <div class="stat-card stat-card--selected">
+          <div class="stat-label">
+            <span class="stat-indicator" style="background: var(--hds-primitive-teal-400);"></span>已選人數
+          </div>
+          <div class="stat-value">4</div>
+          <div class="stat-sub">共 5 位符合條件</div>
+        </div>
+        <div class="stat-card stat-card--clean">
+          <div class="stat-label">
+            <span class="stat-indicator" style="background: var(--hds-color-success);"></span>清口人數
+          </div>
+          <div class="stat-value">3</div>
+          <div class="stat-sub">素食安排</div>
+        </div>
+        <div class="stat-card stat-card--meal">
+          <div class="stat-label">
+            <span class="stat-indicator" style="background: var(--hds-color-warm);"></span>用餐人數
+          </div>
+          <div class="stat-value">4</div>
+          <div class="stat-sub">需安排餐食</div>
+        </div>
+        <div class="stat-card stat-card--lodging">
+          <div class="stat-label">
+            <span class="stat-indicator" style="background: var(--hds-color-warning);"></span>住宿人數
+          </div>
+          <div class="stat-value">2</div>
+          <div class="stat-sub">需安排住宿</div>
+        </div>
+      </div>
+
+      <!-- Search Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">搜尋條件</span>
+          <button class="btn btn--ghost btn--sm" type="button">清除條件</button>
+        </div>
+        <div class="panel-body">
+          <div class="search-grid">
+            <div class="field-group">
+              <label class="field-label">求道名</label>
+              <input type="text" class="field-input" value="志" placeholder="關鍵字">
+            </div>
+            <div class="field-group">
+              <label class="field-label">本名</label>
+              <input type="text" class="field-input" placeholder="輸入本名">
+            </div>
+            <div class="field-group">
+              <label class="field-label">區別</label>
+              <select class="field-select">
+                <option>全部區別</option>
+                <option>台北區</option>
+                <option>台中區</option>
+                <option>高雄區</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label">清口</label>
+              <select class="field-select">
+                <option>全部</option>
+                <option>是</option>
+                <option>否</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label">狀態</label>
+              <select class="field-select">
+                <option>全部狀態</option>
+                <option>在籍</option>
+                <option>辦理中</option>
+                <option>新求道</option>
+              </select>
+            </div>
+            <div class="field-group" style="justify-content: flex-end;">
+              <label class="field-label" style="visibility:hidden">操作</label>
+              <button class="btn btn--primary" type="button" style="width:100%;">搜尋</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Bar -->
+      <div class="result-bar">
+        <div class="result-text">共 <strong>5</strong> 筆符合結果</div>
+        <div class="result-controls">
+          <button class="btn btn--ghost btn--sm" type="button">全選</button>
+          <button class="btn btn--ghost btn--sm" type="button">取消全選</button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-wrapper"
+        data-layer="L2"
+        data-note="C 的表格行高 40px 是三份最緊湊，配合 tabular-nums 讓農曆日期、道親編號精準對齊。適合需要一次審核大量班員的進階管理員。">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th class="c sticky-check" style="width:36px;" scope="col">序</th>
+              <th class="sticky-name" scope="col">求道名</th>
+              <th style="width:40px;" scope="col">性別</th>
+              <th scope="col">本名</th>
+              <th scope="col">生日（國曆）</th>
+              <th scope="col">求道日（農曆）</th>
+              <th scope="col">區別</th>
+              <th scope="col">成全者</th>
+              <th class="c" scope="col">清口</th>
+              <th scope="col">狀態</th>
+              <th scope="col">用餐 / 住宿</th>
+              <th class="c" style="width:44px;" scope="col">加入</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="selected">
+              <td class="c sticky-check"><span class="seq">01</span></td>
+              <td class="sticky-name"><span class="name-link">志明</span></td>
+              <td class="g-m">男</td>
+              <td>陳大明</td>
+              <td><span style="font-family: var(--font-mono); font-size:12px;">1985-03-15</span></td>
+              <td><span style="font-family: var(--font-mono); font-size:12px;">民 74 年 2 月初一</span></td>
+              <td>台北區</td>
+              <td>李前人</td>
+              <td class="c"><span class="c-yes">✓</span></td>
+              <td><span class="badge badge--success"><span class="badge-dot"></span>在籍</span></td>
+              <td><div class="meal-wrap"><span class="meal-tag">午餐</span><span class="meal-tag">住宿</span></div></td>
+              <td class="c"><input type="checkbox" class="chk" checked></td>
+            </tr>
+            <tr class="selected">
+              <td class="c sticky-check"><span class="seq">02</span></td>
+              <td class="sticky-name"><span class="name-link">志慧</span></td>
+              <td class="g-f">女</td>
+              <td>林美惠</td>
+              <td><span style="font-family: var(--font-mono); font-size:12px;">1990-07-22</span></td>
+              <td><span style="font-family: var(--font-mono); font-size:12px;">民 79 年 6 月初三</span></td>
+              <td>台中區</td>
+              <td>王前人</td>
+              <td class="c"><span class="c-no">—</span></td>
+              <td><span class="badge badge--warning"><span class="badge-dot"></span>辦理中</span></td>
+              <td><div class="meal-wrap"><span class="meal-tag">午餐</span></div></td>
+              <td class="c"><input type="checkbox" class="chk" checked></td>
+            </tr>
+            <tr class="selected">
+              <td class="c sticky-check"><span class="seq">03</span></td>
+              <td class="sticky-name"><span class="name-link">志遠</span></td>
+              <td class="g-m">男</td>
+              <td>張志遠</td>
+              <td><span style="font-family: var(--font-mono); font-size:12px;">1978-11-05</span></td>
+              <td><span style="font-family: var(--font-mono); font-size:12px;">民 67 年 9 月廿五</span></td>
+              <td>高雄區</td>
+              <td>黃前人</td>
+              <td class="c"><span class="c-yes">✓</span></td>
+              <td><span class="badge badge--success"><span class="badge-dot"></span>在籍</span></td>
+              <td><div class="meal-wrap"><span class="meal-tag">三餐</span><span class="meal-tag">住宿</span></div></td>
+              <td class="c"><input type="checkbox" class="chk" checked></td>
+            </tr>
+            <tr>
+              <td class="c sticky-check"><span class="seq">04</span></td>
+              <td class="sticky-name"><span class="name-link">志純</span></td>
+              <td class="g-f">女</td>
+              <td>吳美純</td>
+              <td><span style="font-family: var(--font-mono); font-size:12px;">1995-02-18</span></td>
+              <td><span style="font-family: var(--font-mono); font-size:12px;">民 84 年 1 月十九</span></td>
+              <td>台北區</td>
+              <td>李前人</td>
+              <td class="c"><span class="c-no">—</span></td>
+              <td><span class="badge badge--new"><span class="badge-dot"></span>新求道</span></td>
+              <td><div class="meal-wrap"><span class="meal-tag">午晚餐</span></div></td>
+              <td class="c"><input type="checkbox" class="chk"></td>
+            </tr>
+            <tr class="selected">
+              <td class="c sticky-check"><span class="seq">05</span></td>
+              <td class="sticky-name"><span class="name-link">志仁</span></td>
+              <td class="g-m">男</td>
+              <td>劉博仁</td>
+              <td><span style="font-family: var(--font-mono); font-size:12px;">1982-09-30</span></td>
+              <td><span style="font-family: var(--font-mono); font-size:12px;">民 71 年 8 月十四</span></td>
+              <td>台中區</td>
+              <td>張前人</td>
+              <td class="c"><span class="c-yes">✓</span></td>
+              <td><span class="badge badge--success"><span class="badge-dot"></span>在籍</span></td>
+              <td><div class="meal-wrap"><span class="meal-tag">午餐</span></div></td>
+              <td class="c"><input type="checkbox" class="chk" checked></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /content -->
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-hint">
+        <div class="footer-hint-icon">i</div>
+        已勾選<strong class="footer-hint-strong">4</strong>位班員
+        ・住宿<strong class="footer-hint-strong">2</strong>位
+        ・用餐<strong class="footer-hint-strong">4</strong>位
+      </div>
+      <div class="footer-btns">
+        <button class="btn btn--ghost btn--lg" type="button">取消</button>
+        <button class="btn btn--outline btn--lg" type="button">預覽名冊</button>
+        <button class="btn btn--confirm btn--lg" type="button">確定加入</button>
+      </div>
+    </div>
+
 
     <!-- ══════════════════════════════════════════════════════
          LAYER 3 — Responsive Layout Demo
