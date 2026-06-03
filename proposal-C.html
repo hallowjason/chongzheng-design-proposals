@@ -13,11 +13,11 @@
 
 /* ── Primitive Tokens (color primitives, never reference directly in components) ── */
 :root {
-  --hds-primitive-navy-900: #180e08;
-  --hds-primitive-navy-800: #2e1c0d;
-  --hds-primitive-navy-700: #3e2b18;
-  --hds-primitive-navy-600: #503a24;
-  --hds-primitive-navy-500: #6b4e38;
+  --hds-primitive-navy-900: #2c1c08;
+  --hds-primitive-navy-800: #4a3015;
+  --hds-primitive-navy-700: #614020;
+  --hds-primitive-navy-600: #7a542c;
+  --hds-primitive-navy-500: #a87c50;
   --hds-primitive-teal-400: #54d1c6;
   --hds-primitive-teal-500: #3aada3;
   --hds-primitive-teal-600: #2d9089;
@@ -65,9 +65,9 @@
   --hds-sidebar-bg: var(--hds-primitive-navy-800);
   --hds-sidebar-bg-hover: var(--hds-primitive-navy-700);
   --hds-sidebar-bg-active: var(--hds-primitive-navy-600);
-  --hds-sidebar-border: rgba(255,255,255,0.07);
-  --hds-sidebar-text: #c8d0e4;
-  --hds-sidebar-text-muted: var(--hds-primitive-navy-500);
+  --hds-sidebar-border: rgba(255, 210, 140, 0.12);
+  --hds-sidebar-text: #f5e6cc;
+  --hds-sidebar-text-muted: #c4a478;
   --hds-sidebar-accent: var(--hds-primitive-teal-400);
 
   /* === Text Colors === */
@@ -1810,7 +1810,7 @@ function showToast(msg) {
   if (!t) {
     t = document.createElement('div');
     t.id = 'toast-msg';
-    t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#2e1c0d;color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;z-index:9999;pointer-events:none;opacity:0;transition:opacity 0.2s ease;white-space:nowrap;font-family:inherit;';
+    t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#4a3015;color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;z-index:9999;pointer-events:none;opacity:0;transition:opacity 0.2s ease;white-space:nowrap;font-family:inherit;';
     document.body.appendChild(t);
   }
   t.textContent = msg;
@@ -1823,7 +1823,7 @@ function showToast(msg) {
 (function() {
   var tooltip = document.createElement('div');
   tooltip.id = 'design-tooltip';
-  tooltip.style.cssText = 'position:fixed;bottom:24px;right:24px;max-width:320px;padding:14px 16px;border-radius:10px;font-size:13px;line-height:1.55;box-shadow:0 4px 20px rgba(0,0,0,0.3);opacity:0;transition:opacity 0.2s ease;pointer-events:none;z-index:9998;font-family:"PingFang TC","Noto Sans TC",sans-serif;background:#2e1c0d;color:#f5ede3;';
+  tooltip.style.cssText = 'position:fixed;bottom:24px;right:24px;max-width:320px;padding:14px 16px;border-radius:10px;font-size:13px;line-height:1.55;box-shadow:0 4px 20px rgba(0,0,0,0.3);opacity:0;transition:opacity 0.2s ease;pointer-events:none;z-index:9998;font-family:"PingFang TC","Noto Sans TC",sans-serif;background:#4a3015;color:#f5ede3;';
   document.body.appendChild(tooltip);
   var timer;
   document.addEventListener('mouseover', function(e) {
