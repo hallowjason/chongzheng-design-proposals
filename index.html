@@ -135,9 +135,9 @@ body { font-family: var(--font-sans); font-size: var(--text-base); color: var(--
 .ds-sidebar-brand-badge { display: inline-block; margin-top: 8px; padding: 2px 9px; background: rgba(84,209,198,0.15); color: var(--color-teal); border-radius: var(--radius-pill); font-size: 10px; font-weight: var(--weight-semibold); letter-spacing: 0.04em; }
 .ds-nav-group { padding: var(--space-4) 0 0; }
 .ds-nav-label { padding: 0 var(--space-5) var(--space-2); font-size: 10px; font-weight: var(--weight-semibold); letter-spacing: 0.09em; color: var(--color-sidebar-text-muted); text-transform: uppercase; }
-.ds-nav-item { display: block; padding: 7px var(--space-5); font-size: var(--text-sm); color: var(--color-sidebar-text); text-decoration: none; cursor: pointer; border-left: 3px solid transparent; transition: background 0.12s, color 0.12s; }
+.ds-nav-item { display: block; padding: 7px var(--space-5); font-size: var(--text-sm); color: var(--color-sidebar-text); text-decoration: none; cursor: pointer; transition: background 0.12s, color 0.12s; }
 .ds-nav-item:hover { background: var(--color-sidebar-hover); color: var(--color-text-on-dark); }
-.ds-nav-item.is-active { background: var(--color-sidebar-active); color: var(--color-text-on-dark); border-left-color: var(--color-sidebar-accent); }
+.ds-nav-item.is-active { background: var(--color-sidebar-active); color: var(--color-text-on-dark); font-weight: var(--weight-semibold); }
 
 /* ── Main ── */
 .ds-main { margin-left: var(--sidebar-w); flex: 1; min-width: 0; }
@@ -273,15 +273,15 @@ body { font-family: var(--font-sans); font-size: var(--text-base); color: var(--
 .tbl tbody tr { cursor: pointer; transition: background 0.1s; }
 .tbl tbody tr:hover { background: var(--primitive-yellow-bg); }
 .tbl tbody tr.row-sel { background: var(--color-bg-selected); }
-.tbl tbody tr.row-sel td:first-child { box-shadow: inset 3px 0 0 var(--color-accent); }
+.tbl tbody tr.row-sel td:first-child { }
 .cb { width: 16px; height: 16px; cursor: pointer; accent-color: var(--color-accent); }
 .tc { text-align: center; }
 
 /* ─── Components: Sidebar demo ─── */
 .sidebar-demo { background: var(--color-sidebar-bg); border-radius: var(--radius-lg); padding: var(--space-3) 0; min-width: 200px; }
-.sidebar-demo-item { padding: 8px var(--space-5); font-size: var(--text-sm); color: var(--color-sidebar-text); cursor: pointer; border-left: 3px solid transparent; transition: background 0.12s; display: flex; align-items: center; gap: 6px; }
+.sidebar-demo-item { padding: 8px var(--space-5); font-size: var(--text-sm); color: var(--color-sidebar-text); cursor: pointer; transition: background 0.12s; display: flex; align-items: center; gap: 6px; }
 .sidebar-demo-item:hover { background: var(--color-sidebar-hover); }
-.sidebar-demo-item.is-active { background: var(--color-sidebar-active); border-left-color: var(--color-sidebar-accent); color: var(--color-text-on-dark); }
+.sidebar-demo-item.is-active { background: var(--color-sidebar-active); color: var(--color-text-on-dark); font-weight: var(--weight-semibold); }
 
 /* ─── Components: Action bar ─── */
 .action-bar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-5); background: var(--color-bg); border-top: 1px solid var(--color-border-medium); border-radius: 0 0 var(--radius-lg) var(--radius-lg); box-shadow: var(--shadow-float); }
@@ -301,9 +301,9 @@ body { font-family: var(--font-sans); font-size: var(--text-base); color: var(--
 .sc-sb-name { font-size: var(--text-xs); font-weight: var(--weight-bold); color: var(--color-text-on-dark); line-height: 1.4; }
 .sc-sb-sub { font-size: 10px; color: var(--color-sidebar-text-muted); margin-top: 2px; }
 .sc-nav-lbl { padding: var(--space-3) var(--space-4) var(--space-1); font-size: 10px; font-weight: var(--weight-semibold); color: var(--color-sidebar-text-muted); text-transform: uppercase; letter-spacing: 0.07em; }
-.sc-nav-item { padding: 7px var(--space-4); font-size: var(--text-xs); color: var(--color-sidebar-text); cursor: pointer; border-left: 3px solid transparent; transition: background 0.1s; display: flex; align-items: center; gap: 6px; }
+.sc-nav-item { padding: 7px var(--space-4); font-size: var(--text-xs); color: var(--color-sidebar-text); cursor: pointer; transition: background 0.1s; display: flex; align-items: center; gap: 6px; }
 .sc-nav-item:hover { background: var(--color-sidebar-hover); }
-.sc-nav-item.is-active { background: var(--color-sidebar-active); border-left-color: var(--color-sidebar-accent); color: var(--color-text-on-dark); }
+.sc-nav-item.is-active { background: var(--color-sidebar-active); color: var(--color-text-on-dark); font-weight: var(--weight-semibold); }
 
 /* sc main */
 .sc-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
@@ -327,7 +327,7 @@ body { font-family: var(--font-sans); font-size: var(--text-base); color: var(--
 .sc-tbl tbody tr { cursor: pointer; transition: background 0.1s; }
 .sc-tbl tbody tr:hover { background: var(--primitive-yellow-bg); }
 .sc-tbl tbody tr.sc-sel { background: var(--color-bg-selected); }
-.sc-tbl tbody tr.sc-sel td:first-child { box-shadow: inset 3px 0 0 var(--color-accent); }
+.sc-tbl tbody tr.sc-sel td:first-child { }
 
 /* sc stats */
 .sc-stats-strip { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--space-3); margin-bottom: var(--space-4); }
@@ -341,7 +341,7 @@ body { font-family: var(--font-sans); font-size: var(--text-base); color: var(--
 .sc-class-list { width: 174px; flex-shrink: 0; display: flex; flex-direction: column; gap: var(--space-2); overflow-y: auto; }
 .sc-class-card { background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); cursor: pointer; transition: border-color 0.1s, background 0.1s; }
 .sc-class-card:hover { border-color: var(--color-accent); background: var(--color-accent-light); }
-.sc-class-card.is-sel { border-color: var(--color-accent); background: var(--color-accent-light); box-shadow: inset 3px 0 0 var(--color-accent); }
+.sc-class-card.is-sel { border-color: var(--color-accent); background: var(--color-accent-light); box-shadow: 0 0 0 1px var(--color-accent); }
 .sc-class-name { font-size: var(--text-xs); font-weight: var(--weight-semibold); }
 .sc-class-count { font-size: 10px; color: var(--color-text-tertiary); margin-top: 2px; }
 .sc-add-panel { flex: 1; background: var(--color-bg); border-radius: var(--radius-md); border: 1px solid var(--color-border); display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
@@ -382,7 +382,7 @@ details[open] summary::before { transform: rotate(90deg); }
 .archive-card-tag { font-size: var(--text-xs); font-weight: var(--weight-semibold); color: var(--color-text-tertiary); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: var(--space-2); }
 .archive-card-name { font-size: var(--text-sm); font-weight: var(--weight-semibold); }
 .archive-card-desc { font-size: var(--text-xs); color: var(--color-text-tertiary); margin-top: 4px; }
-.archive-note { font-size: var(--text-sm); color: var(--color-text-tertiary); margin-top: var(--space-4); padding: var(--space-3) var(--space-4); background: var(--color-bg); border-radius: var(--radius-md); border-left: 3px solid var(--color-accent); }
+.archive-note { font-size: var(--text-sm); color: var(--color-text-tertiary); margin-top: var(--space-4); padding: var(--space-3) var(--space-4); background: var(--color-accent-light); border-radius: var(--radius-md); border: 1px solid var(--color-border-medium); }
 
 /* ─── Toast ─── */
 #toast-root { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
@@ -691,7 +691,7 @@ details[open] summary::before { transform: rotate(90deg); }
 
         <div class="ds-block" id="c-table">
           <h3 class="ds-block-title">表格與列狀態</h3>
-          <p style="font-size:var(--text-sm);color:var(--color-text-secondary);margin-bottom:var(--space-3)">點擊 checkbox 勾選列；hover 顯示暖米黃底；選取以左側 3px 橘邊框 + 奶油白底標示。行高 48px。</p>
+          <p style="font-size:var(--text-sm);color:var(--color-text-secondary);margin-bottom:var(--space-3)">點擊 checkbox 勾選列；hover 顯示暖米黃底；選取以奶油白底標示。行高 48px。</p>
           <div class="tbl-wrap">
             <table class="tbl" id="demo-tbl">
               <thead><tr>
@@ -719,7 +719,7 @@ details[open] summary::before { transform: rotate(90deg); }
                   <td><strong>志義</strong></td><td>高雄區</td>
                   <td><span class="badge badge--active"><span class="badge-dot"></span>在籍</span></td>
                   <td><span class="badge badge--clean"><span class="badge-dot"></span>清口</span></td>
-                  <td style="font-size:var(--text-xs);color:var(--color-text-tertiary)">Selected — 奶油白 + 左橘框</td>
+                  <td style="font-size:var(--text-xs);color:var(--color-text-tertiary)">Selected — 奶油白底</td>
                 </tr>
               </tbody>
             </table>
@@ -733,10 +733,10 @@ details[open] summary::before { transform: rotate(90deg); }
               <div class="group-label" style="margin-bottom:var(--space-3)">Desktop 完整展開（240px）</div>
               <div class="sidebar-demo">
                 <div class="sc-nav-lbl" style="padding:var(--space-3) var(--space-5) var(--space-1)">道務管理</div>
-                <div class="sidebar-demo-item">👥 道親名冊</div>
-                <div class="sidebar-demo-item is-active">📋 班別管理</div>
-                <div class="sidebar-demo-item">✅ 出席登記</div>
-                <div class="sidebar-demo-item">📊 統計儀表板</div>
+                <div class="sidebar-demo-item">道親名冊</div>
+                <div class="sidebar-demo-item is-active">班別管理</div>
+                <div class="sidebar-demo-item">出席登記</div>
+                <div class="sidebar-demo-item">統計儀表板</div>
               </div>
             </div>
             <div style="flex:1;min-width:220px">
@@ -744,7 +744,7 @@ details[open] summary::before { transform: rotate(90deg); }
               <table style="font-size:var(--text-xs);border-collapse:collapse;width:100%">
                 <tr><td style="padding:7px var(--space-3);border-bottom:1px solid var(--color-border);color:var(--color-text-tertiary)">Normal</td><td style="padding:7px var(--space-3);border-bottom:1px solid var(--color-border)">brown-900 底 · brown-200 文字</td></tr>
                 <tr><td style="padding:7px var(--space-3);border-bottom:1px solid var(--color-border);color:var(--color-text-tertiary)">Hover</td><td style="padding:7px var(--space-3);border-bottom:1px solid var(--color-border)">brown-800 底 · 輕微提亮</td></tr>
-                <tr><td style="padding:7px var(--space-3);color:var(--color-text-tertiary)">Active</td><td style="padding:7px var(--space-3)">brown-700 底 · 左側 3px teal 邊框</td></tr>
+                <tr><td style="padding:7px var(--space-3);color:var(--color-text-tertiary)">Active</td><td style="padding:7px var(--space-3)">brown-700 底 · semibold 字重</td></tr>
               </table>
             </div>
           </div>
@@ -787,12 +787,12 @@ details[open] summary::before { transform: rotate(90deg); }
               <aside class="sc-sb">
                 <div class="sc-sb-brand"><div class="sc-sb-name">崇正道務管理系統</div><div class="sc-sb-sub">v1.0</div></div>
                 <div class="sc-nav-lbl">道務管理</div>
-                <div class="sc-nav-item is-active">👥 道親名冊</div>
-                <div class="sc-nav-item">📋 班別管理</div>
-                <div class="sc-nav-item">✅ 出席登記</div>
-                <div class="sc-nav-item">📊 統計儀表板</div>
+                <div class="sc-nav-item is-active">道親名冊</div>
+                <div class="sc-nav-item">班別管理</div>
+                <div class="sc-nav-item">出席登記</div>
+                <div class="sc-nav-item">統計儀表板</div>
                 <div class="sc-nav-lbl">系統</div>
-                <div class="sc-nav-item">⚙️ 系統設定</div>
+                <div class="sc-nav-item">系統設定</div>
               </aside>
               <div class="sc-main">
                 <div class="sc-hdr">
@@ -840,10 +840,10 @@ details[open] summary::before { transform: rotate(90deg); }
               <aside class="sc-sb">
                 <div class="sc-sb-brand"><div class="sc-sb-name">崇正道務管理系統</div><div class="sc-sb-sub">v1.0</div></div>
                 <div class="sc-nav-lbl">道務管理</div>
-                <div class="sc-nav-item">👥 道親名冊</div>
-                <div class="sc-nav-item is-active">📋 班別管理</div>
-                <div class="sc-nav-item">✅ 出席登記</div>
-                <div class="sc-nav-item">📊 統計儀表板</div>
+                <div class="sc-nav-item">道親名冊</div>
+                <div class="sc-nav-item is-active">班別管理</div>
+                <div class="sc-nav-item">出席登記</div>
+                <div class="sc-nav-item">統計儀表板</div>
               </aside>
               <div class="sc-main">
                 <div class="sc-hdr">
@@ -899,10 +899,10 @@ details[open] summary::before { transform: rotate(90deg); }
               <aside class="sc-sb">
                 <div class="sc-sb-brand"><div class="sc-sb-name">崇正道務管理系統</div><div class="sc-sb-sub">v1.0</div></div>
                 <div class="sc-nav-lbl">道務管理</div>
-                <div class="sc-nav-item">👥 道親名冊</div>
-                <div class="sc-nav-item">📋 班別管理</div>
-                <div class="sc-nav-item is-active">✅ 出席登記</div>
-                <div class="sc-nav-item">📊 統計儀表板</div>
+                <div class="sc-nav-item">道親名冊</div>
+                <div class="sc-nav-item">班別管理</div>
+                <div class="sc-nav-item is-active">出席登記</div>
+                <div class="sc-nav-item">統計儀表板</div>
               </aside>
               <div class="sc-main">
                 <div class="sc-hdr">
@@ -958,10 +958,10 @@ details[open] summary::before { transform: rotate(90deg); }
               <aside class="sc-sb">
                 <div class="sc-sb-brand"><div class="sc-sb-name">崇正道務管理系統</div><div class="sc-sb-sub">v1.0</div></div>
                 <div class="sc-nav-lbl">道務管理</div>
-                <div class="sc-nav-item">👥 道親名冊</div>
-                <div class="sc-nav-item">📋 班別管理</div>
-                <div class="sc-nav-item">✅ 出席登記</div>
-                <div class="sc-nav-item is-active">📊 統計儀表板</div>
+                <div class="sc-nav-item">道親名冊</div>
+                <div class="sc-nav-item">班別管理</div>
+                <div class="sc-nav-item">出席登記</div>
+                <div class="sc-nav-item is-active">統計儀表板</div>
               </aside>
               <div class="sc-main">
                 <div class="sc-hdr">
@@ -970,10 +970,10 @@ details[open] summary::before { transform: rotate(90deg); }
                 </div>
                 <div class="sc-body">
                   <div class="sc-stats-strip">
-                    <div class="sc-stat" style="border-left:3px solid var(--color-teal)"><div class="sc-stat-label">在籍道親</div><div class="sc-stat-value">248</div><div class="sc-stat-delta">↑ 較上月 +12</div></div>
-                    <div class="sc-stat" style="border-left:3px solid var(--color-accent)"><div class="sc-stat-label">本月新求道</div><div class="sc-stat-value">8</div><div class="sc-stat-delta">本季共 23 位</div></div>
-                    <div class="sc-stat" style="border-left:3px solid var(--color-info)"><div class="sc-stat-label">平均出席率</div><div class="sc-stat-value">76%</div><div class="sc-stat-delta">↑ 較上季 +4%</div></div>
-                    <div class="sc-stat" style="border-left:3px solid var(--color-warning)"><div class="sc-stat-label">待審核</div><div class="sc-stat-value">5</div><div class="sc-stat-delta" style="color:var(--color-warning-text)">需人工複核</div></div>
+                    <div class="sc-stat"><div class="sc-stat-label">在籍道親</div><div class="sc-stat-value" style="color:var(--color-teal-deep)">248</div><div class="sc-stat-delta">↑ 較上月 +12</div></div>
+                    <div class="sc-stat"><div class="sc-stat-label">本月新求道</div><div class="sc-stat-value" style="color:var(--color-accent-hover)">8</div><div class="sc-stat-delta">本季共 23 位</div></div>
+                    <div class="sc-stat"><div class="sc-stat-label">平均出席率</div><div class="sc-stat-value">76%</div><div class="sc-stat-delta">↑ 較上季 +4%</div></div>
+                    <div class="sc-stat"><div class="sc-stat-label">待審核</div><div class="sc-stat-value" style="color:var(--color-warning)">5</div><div class="sc-stat-delta" style="color:var(--color-warning-text)">需人工複核</div></div>
                   </div>
                   <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)">
                     <div class="sc-tbl-wrap" style="padding:var(--space-4)">
