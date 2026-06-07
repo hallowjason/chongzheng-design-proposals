@@ -332,7 +332,7 @@ body { font-family: var(--font-sans); font-size: var(--text-base); color: var(--
 .sc-stat { background: var(--color-bg); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border); }
 .sc-stat-label { font-size: 10px; color: var(--color-text-tertiary); font-weight: var(--weight-medium); }
 .sc-stat-value { font-size: var(--text-xl); font-weight: var(--weight-bold); margin-top: 2px; font-variant-numeric: tabular-nums; }
-.sc-stat-delta { font-size: 10px; color: var(--color-success); margin-top: 1px; }
+.sc-stat-delta { font-size: 10px; color: var(--color-text-tertiary); margin-top: 1px; }
 
 /* sc class split */
 .sc-split { display: flex; gap: var(--space-4); height: 100%; }
@@ -988,10 +988,10 @@ details[open] summary::before { transform: rotate(90deg); }
                 </div>
                 <div class="sc-body">
                   <div class="sc-stats-strip">
-                    <div class="sc-stat"><div class="sc-stat-label">在籍道親</div><div class="sc-stat-value" style="color:var(--color-teal-deep)">248</div><div class="sc-stat-delta">↑ 較上月 +12</div></div>
-                    <div class="sc-stat"><div class="sc-stat-label">本月新求道</div><div class="sc-stat-value" style="color:var(--color-accent-hover)">8</div><div class="sc-stat-delta">本季共 23 位</div></div>
+                    <div class="sc-stat"><div class="sc-stat-label">在籍道親</div><div class="sc-stat-value">248</div><div class="sc-stat-delta">↑ 較上月 +12</div></div>
+                    <div class="sc-stat"><div class="sc-stat-label">本月新求道</div><div class="sc-stat-value">8</div><div class="sc-stat-delta">本季共 23 位</div></div>
                     <div class="sc-stat"><div class="sc-stat-label">平均出席率</div><div class="sc-stat-value">76%</div><div class="sc-stat-delta">↑ 較上季 +4%</div></div>
-                    <div class="sc-stat"><div class="sc-stat-label">待審核</div><div class="sc-stat-value" style="color:var(--color-warning)">5</div><div class="sc-stat-delta" style="color:var(--color-warning-text)">需人工複核</div></div>
+                    <div class="sc-stat" style="background:var(--color-accent-light);border-color:rgba(212,137,106,0.25)"><div class="sc-stat-label" style="color:var(--primitive-orange-dark)">待審核</div><div class="sc-stat-value" style="color:var(--primitive-orange-dark)">5</div><div class="sc-stat-delta" style="color:var(--primitive-orange-dark)">需人工複核</div></div>
                   </div>
                   <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)">
                     <div class="sc-tbl-wrap" style="padding:var(--space-4)">
